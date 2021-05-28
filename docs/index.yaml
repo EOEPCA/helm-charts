@@ -1,0 +1,140 @@
+apiVersion: v1
+entries:
+  cheese:
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2021-05-28T14:04:21.010968825Z"
+    description: Cheese web pages used for testing ingress
+    digest: aaf7af3571d17585dabe64410d71bbda0768d98f47f60f9def9470122b27f28f
+    name: cheese
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/cheese-0.2.2/cheese-0.2.2.tgz
+    version: 0.2.2
+  jupyter:
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2021-05-28T14:04:21.154017527Z"
+    description: Jupyter demo
+    digest: 63bb1c645e1be8179c194457834394e0619d20a3ede254c5e1704360ec80c3f1
+    name: jupyter
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/jupyter-0.1.3/jupyter-0.1.3.tgz
+    version: 0.1.3
+  login-service:
+  - apiVersion: v1
+    appVersion: "1"
+    created: "2021-05-28T14:04:21.311133259Z"
+    description: A Helm chart for Login Service
+    digest: f801495d5e70ef33ea2228954aa991727101412450df58c37cf1981401438cf4
+    maintainers:
+    - name: eoepca
+    name: login-service
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/login-service-0.1.5/login-service-0.1.5.tgz
+    version: 0.1.5
+  nextcloud:
+  - apiVersion: v1
+    appVersion: "19"
+    created: "2021-05-28T14:04:21.516832465Z"
+    description: A Helm chart for Nextcloud (acting as Workspace stub)
+    digest: c961e9d4682a97969d0b9f55cac08c96b877f62d6bd3cedf35f1f606ae6e8ab2
+    maintainers:
+    - name: eoepca
+    name: nextcloud
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/nextcloud-0.1.0/nextcloud-0.1.0.tgz
+    version: 0.1.0
+  nfs-provisioner:
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2021-05-28T14:04:21.678350794Z"
+    description: Dynamic storage provisioner for NFS
+    digest: 30f1667c72e7d64eb35116eb786eba84ca47dce39b1e120081f77ca516456916
+    name: nfs-provisioner
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/nfs-provisioner-0.1.0/nfs-provisioner-0.1.0.tgz
+    version: 0.1.0
+  pdp-engine:
+  - apiVersion: v1
+    appVersion: "1"
+    created: "2021-05-28T14:04:21.837242605Z"
+    description: A Helm chart for PDP Engine
+    digest: 3c2e77681e751740c4702643477284fd3ecbaab6071c493fad3b8995ccb83d2c
+    maintainers:
+    - name: eoepca
+    name: pdp-engine
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/pdp-engine-0.1.3/pdp-engine-0.1.3.tgz
+    version: 0.1.3
+  pep-engine:
+  - apiVersion: v1
+    appVersion: "1"
+    created: "2021-05-28T14:04:21.98147356Z"
+    description: A Helm chart for PEP Engine
+    digest: c647f3b209737c3ba0212e852b32922a1bbdf33120601bb4d45c25d7ebc0395c
+    maintainers:
+    - name: eoepca
+    name: pep-engine
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/pep-engine-0.1.6/pep-engine-0.1.6.tgz
+    version: 0.1.6
+  rm-resource-catalogue:
+  - apiVersion: v2
+    appVersion: 2.6.0
+    created: "2021-05-28T14:04:22.131001452Z"
+    description: A Helm chart for Resource Catalogue
+    digest: 4c69257f044d37838bf9ab77906fa0aa6cde8dc6c305613f63583a310d39e094
+    name: rm-resource-catalogue
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/rm-resource-catalogue-0.1.5/rm-resource-catalogue-0.1.5.tgz
+    version: 0.1.5
+  rm-user-workspace:
+  - apiVersion: v2
+    appVersion: 0.0.0
+    created: "2021-05-28T14:04:22.325285447Z"
+    dependencies:
+    - name: vs
+      repository: https://charts-public.hub.eox.at/
+      version: 1.1.5
+    - name: rm-resource-catalogue
+      repository: file://../rm-resource-catalogue
+      version: 0.1.5
+    description: A Helm chart for Kubernetes
+    digest: 1de1da400d57f61af663633007909ee651458d7935672fbaac42c7ea969443d8
+    name: rm-user-workspace
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/rm-user-workspace-0.0.13/rm-user-workspace-0.0.13.tgz
+    version: 0.0.13
+  storage:
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2021-05-28T14:04:22.478666411Z"
+    description: Basic EOEPCA storage provision
+    digest: b2570ebe74c90511db6a4cf13435318c69ee3c8291a5424828f78e9b71142ae8
+    name: storage
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/storage-0.1.4/storage-0.1.4.tgz
+    version: 0.1.4
+  user-profile:
+  - apiVersion: v1
+    appVersion: "1"
+    created: "2021-05-28T14:04:22.61673349Z"
+    description: A Helm chart for User Profile
+    digest: e98ab58d546ce947ec87c95b0595b9e190162d03e08696cec735ebbcc16f2d24
+    maintainers:
+    - name: eoepca
+    name: user-profile
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
+    version: 0.1.1
+generated: "2021-05-28T14:04:22.616741091Z"
