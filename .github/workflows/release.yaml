@@ -21,7 +21,6 @@ jobs:
 
       - name: Add helm repos
         run: |
-          helm repo list
           helm repo add eox https://charts-public.hub.eox.at/
           helm repo list
 
