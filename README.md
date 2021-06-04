@@ -60,7 +60,9 @@ $ helm install test eoepca/cheese
 ## Development process
 This helm chart repository is used following the example at https://helm.sh/docs/topics/chart_repository/#github-pages-example it uses the chart releaser (cr) https://helm.sh/docs/howto/chart_releaser_action/ in a github action to create the packages and update the repository index automatically.
 When a a change is detected in one of the charts at charts/ folder it creates a new package and add it to the index, this means that every time a change is made, the version needs to be increased.
-Due to these limitations and in the pourpouse of having the most stable repo posible a helm-charts-dev git repository has been created https://eoepca.github.io/helm-charts-dev/ All development must be done in this dev repository and when the developer is happy with the version a pull request must be done to the main repository
+Due to these limitations and in the pourpouse of having the most stable repo posible a helm-charts-dev git repository has been created https://eoepca.github.io/helm-charts-dev/ All development must be done in this dev repository on the develop branch, once the version is ready to release merge it with the main branch, this will start an automatic process to release it on the helm-charts repository
+
+For more specific information go to https://eoepca.github.io/helm-charts-dev/
 
 
 
