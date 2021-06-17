@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.global.pricing }}
+  labels:
+    app: {{ .Values.global.pricing }}
+spec:
+  type: NodePort
+  ports:
+  - port: 5570
+    name: http-pricing
+    targetPort: 5570
+    protocol: TCP
+    nodePort: 31708
+  - port: 1025
+    name: https-pricing
+    targetPort: 443
+    protocol: TCP
+  selector:
+    app: {{ .Values.global.pricing }}

@@ -5,16 +5,12 @@ metadata:
   labels:
     app: {{ .Values.global.pep }}
 spec:
-  type: NodePort
   ports:
-  - port: 5566
-    name: proxy-pep
-    targetPort: 5566
-    protocol: TCP
-    nodePort: {{ .Values.global.proxyNodePort | default 31707 }}
-  - port: 5576
-    name: resources-pep
-    targetPort: 5576
-    protocol: TCP
+    {{- range $key, $value := .Values.ports }}
+    - port: {{ $value.port }}
+      targetPort: {{ $value.targetPort }}
+      protocol: {{ $value.type }}
+      name: {{ $key }}
+    {{- end }}
   selector:
     app: {{ .Values.global.pep }}

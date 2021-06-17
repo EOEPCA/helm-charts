@@ -8,13 +8,13 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: {{ .Values.global.proxyHost | quote }}
+  - host: {{ printf "%s.%s" .Values.context .Values.global.domain | quote }}
     http:
       paths:
       - path: /
         backend:
           serviceName: {{ .Values.global.pep }}
-          servicePort: 5566
+          servicePort: {{ .Values.global.proxyServicePort }}
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -25,10 +25,10 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: {{ .Values.global.resourceHost | quote }}
+  - host: {{ printf "%s-pepapi.%s" .Values.context .Values.global.domain | quote }}
     http:
       paths:
       - path: /
         backend:
           serviceName: {{ .Values.global.pep }}
-          servicePort: 5576
+          servicePort: {{ .Values.global.resourcesServicePort }}

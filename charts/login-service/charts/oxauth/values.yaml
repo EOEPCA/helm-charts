@@ -8,9 +8,6 @@ image:
   tag: 4.1.1_03
   pullPolicy: Always
 
-# VolumeClaim values
-volumeClaim:
-  storage: 50M
 falsure: "'false'"
 #ConfigMap values
 gluuLdapUrl: opendj:1636
@@ -31,7 +28,7 @@ persistence:
   statefulSetReplicas: 1
   imagePullPolicy: Always
   restartPolicy: Never
-  image: eoepca/um-login-persistence:v0.3
+  image: eoepca/um-login-persistence:v1.0-RC
   configAdapter: GLUU_CONFIG_ADAPTER
   adapter: "kubernetes"
   secretAdapter: GLUU_SECRET_ADAPTER
@@ -69,6 +66,7 @@ readinessProbe:
 # VolumeClaim values
 volumeClaim:
   name: um-login-service-oxauth-pvc
+  storage: 50M
 
 #VolumeMounts
 volumeMounts:

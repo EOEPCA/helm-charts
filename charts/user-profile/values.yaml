@@ -33,7 +33,7 @@ global:
 image: 
   statefulSetReplicas: 1
   imagePullPolicy: Always
-  image: eoepca/um-user-profile:latest
+  image: eoepca/um-user-profile:v0.3
 persistence: 
   accessModes: ReadWriteMany
   dbStorageSize: 5Gi

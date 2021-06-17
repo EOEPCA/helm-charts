@@ -18,7 +18,7 @@ global:
 image: 
   statefulSetReplicas: 1
   imagePullPolicy: IfNotPresent
-  image: eoepca/um-pdp-engine:latest
+  image: eoepca/um-pdp-engine:v1.0-RC
 persistence: 
   accessModes: ReadWriteMany
   dbStorageSize: 5Gi

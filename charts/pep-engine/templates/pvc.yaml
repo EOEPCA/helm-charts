@@ -1,0 +1,23 @@
+{{ if .Values.volumeClaim.create }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.volumeClaim.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    eoepca_type: userman
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  storageClassName: ""
+  accessModes:
+    - {{ .Values.persistence.accessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.dbStorageSize }}
+  selector:
+    matchLabels:
+      eoepca_type: userman
+{{ end }}

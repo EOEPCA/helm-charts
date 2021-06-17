@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.global.bis }}
+  labels:
+    app: {{ .Values.global.bis }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.global.bis }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.bis }}
+    spec:
+      containers:
+      - name: {{ .Values.global.bis }}
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        image: {{ .Values.image.image }}
+        ports:
+        - name: http-bis
+          containerPort: 5569
+          protocol: TCP
+        - name: https-bis
+          containerPort: 443
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: um-billing-service-config
+      - name: mongo
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        image: mongo
+        ports:
+        - name: http-rp
+          containerPort: 27017
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: um-billing-service-config
+        volumeMounts:
+        - mountPath: /data/db/
+          sub_path: billing-service/db/policy
+          name: eoepca-bis-pv-host
+      hostAliases:
+      - ip: {{ .Values.global.nginxIp }}
+        hostnames:
+        - {{ .Values.global.ep }}
+      volumes:
+        - name: eoepca-bis-pv-host
+          persistentVolumeClaim:
+            claimName: eoepca-bis-pvc
