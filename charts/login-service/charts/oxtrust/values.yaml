@@ -20,15 +20,12 @@ service:
   type: ClusterIP
   port: 80
 
-# PVC storage
-volumeClaim:
-  storage: 10M
-
 #resources: 
 limits:
-  memory: 128Mi
+  memory: 600Mi
 requests:
-  memory: 300Mi
+  cpu: 200m
+  memory: 500Mi
 
 #containerPOrt ot connect the container with
 containerPort: 8080
@@ -36,13 +33,13 @@ nginxIp: 10.0.2.15
 gluuOxauthBackend: oxauth:8080
 
 livenessProbe:
-  initialDelaySeconds: 200
-  periodSeconds: 200
+  initialDelaySeconds: 100
+  periodSeconds: 60
 
 # readinessProbe
 readinessProbe:
-  initialDelaySeconds: 200
-  periodSeconds: 200
+  initialDelaySeconds: 100
+  periodSeconds: 60
 
 #service values
 #port for which to open in oxtrust ss
@@ -52,6 +49,7 @@ clusterIp: None
 # VolumeClaim values
 volumeClaim:
   name: um-login-service-oxtrust-pvc
+  storage: 10M
 
 volumeMounts:
   logs:

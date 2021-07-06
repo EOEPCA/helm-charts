@@ -1,18 +1,30 @@
-# Default values for user-profile
+# Default values for login-service.
 
 global:
-  namespace: default
-  ep: test.10.0.2.15.nip.io
-  ssoUrl: https://test.10.0.2.15.nip.io
+  nginxIp: 10.0.2.15
+  domain: demoexample.gluu.org
+  serviceHost: 0.0.0.0
+  servicePort: 5566
+  user: user-profile
+  baseUri: "/web_ui"
+
+ports:
+  http-up:
+    port: 5566
+    targetPort: 5566
+    type: TCP
+  https-up:
+    port: 1028
+    targetPort: 443
+    type: TCP
+
+configMap:
   title: "EOEPCA User Profile"
   scopes: "openid email user_name"
-  redirectUri: "http://test.10.0.2.15.nip.io/web_ui/oauth/callback"
-  postLogoutRedirectUri: http://test.10.0.2.15.nip.io/web_ui"
-  baseUri: "/web_ui"
+  redirectUri: "/web_ui/oauth/callback"
+  postLogoutRedirectUri: "/web_ui"
   oauthCallbackPath: "/oauth/callback"
   logoutEndpoint: "/logout"
-  serviceHost: "0.0.0.0"
-  servicePort: "5566"
   protectedAttributes: "userName active emails displayName value primary"
   blacklistAttributes: "schemas id meta $ref"
   separatorUiAttributes: "->"
@@ -25,23 +37,31 @@ global:
   colorButtonModify: "#38A79F"
   useThreads: "true"
   debugMode: "true"
-  user: user-profile
-  nginxIp: 10.0.2.15
-
 
 
 image: 
-  statefulSetReplicas: 1
-  imagePullPolicy: Always
+  imagePullPolicy: IfNotPresent
   image: eoepca/um-user-profile:v0.3
+
 persistence: 
   accessModes: ReadWriteMany
   dbStorageSize: 5Gi
   type: DirectoryOrCreate
 
-config:
-  enabled: true
-
 # VolumeClaim values
 volumeClaim:
   name: um-user-profile-pvc
+  create: true
+
+readinessProbe:
+  initialDelaySeconds: 150
+  periodSeconds: 90
+livenessProbe:
+  initialDelaySeconds: 150
+  periodSeconds: 90
+
+requests:
+  memory: 70Mi
+  cpu: 3m
+
+context: user

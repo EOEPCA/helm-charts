@@ -4,6 +4,9 @@ metadata:
   name: cheddar
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    {{- if .Values.elbIp }}
+    kubernetes.io/elb.ip: {{ .Values.elbIp }}
+    {{- end }}
 spec:
   tls:
     - hosts:
@@ -24,6 +27,9 @@ metadata:
   name: stilton
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    {{- if .Values.elbIp }}
+    kubernetes.io/elb.ip: {{ .Values.elbIp }}
+    {{- end }}
 spec:
   tls:
     - hosts:
@@ -44,6 +50,9 @@ metadata:
   name: wensleydale
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    {{- if .Values.elbIp }}
+    kubernetes.io/elb.ip: {{ .Values.elbIp }}
+    {{- end }}
 spec:
   tls:
     - hosts:

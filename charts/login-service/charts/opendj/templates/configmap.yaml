@@ -15,6 +15,7 @@ data:
   GLUU_CACHE_TYPE: {{ .Values.gluuRedisCacheType | quote }}
   GLUU_REDIS_URL: {{ .Values.gluuRedisUrl | quote }}
   GLUU_REDIS_TYPE: {{ .Values.gluuRedisType | quote }}
+  PDP_EP: {{ .Values.persistence.pdpEp | quote}}
   {{- else }}
   GLUU_CACHE_TYPE: {{ .Values.gluuCacheType | quote }}
   {{- end }}

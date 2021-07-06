@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.global.pdp }}
+  name: {{ .Values.global.user }}
   labels:
-    app: {{ .Values.global.pdp }}
+    app: {{ .Values.global.user }}
 spec:
   ports:
     {{- range $key, $value := .Values.ports }}
@@ -13,7 +13,7 @@ spec:
       name: {{ $key }}
     {{- end }}
   selector:
-    app: {{ .Values.global.pdp }}
+    app: {{ .Values.global.user }}
   {{- if .Values.elbIp }}
   type: NodePort
   {{- end }}

@@ -5,7 +5,11 @@ metadata:
   name: {{ .Values.context }}-service
   
   annotations:
+    {{- if .Values.elbIp }}
+    kubernetes.io/elb.ip: {{ .Values.elbIp }}
+    {{- else }}
     kubernetes.io/ingress.class: nginx
+    {{- end }}
 spec:
   rules:
   - host: {{ printf "%s.%s" .Values.context .Values.global.domain | quote }}
@@ -22,7 +26,11 @@ metadata:
   name: {{ .Values.context }}-resources
   
   annotations:
+    {{- if .Values.elbIp }}
+    kubernetes.io/elb.ip: {{ .Values.elbIp }}
+    {{- else }}
     kubernetes.io/ingress.class: nginx
+    {{- end }}
 spec:
   rules:
   - host: {{ printf "%s-pepapi.%s" .Values.context .Values.global.domain | quote }}

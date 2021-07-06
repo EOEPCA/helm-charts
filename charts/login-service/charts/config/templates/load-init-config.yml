@@ -22,6 +22,12 @@ spec:
       containers:
       - name: {{ template "login-service.name" . }}-load
         image: gluufederation/config-init:4.1.1_02
+        resources:
+          requests:
+            memory: {{ .Values.requests.memory }}
+            cpu: {{ .Values.requests.cpu }}
+          # limits:
+          #   memory: {{ .Values.limits.memory }}
         volumeMounts:
           - mountPath: /opt/config-init/db/
             subPath: config-init/db

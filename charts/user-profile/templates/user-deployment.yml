@@ -1,35 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.global.pdp }}
+  name: {{ .Values.global.user }}
   labels:
-    app: {{ .Values.global.pdp }}
+    app: {{ .Values.global.user }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.global.pdp }}
+      app: {{ .Values.global.user }}
   template:
     metadata:
       labels:
-        app: {{ .Values.global.pdp }}
+        app: {{ .Values.global.user }}
     spec:
       containers:
-      - name: {{ .Values.global.pdp }}
+      - name: {{ .Values.global.user }}
         imagePullPolicy: {{ .Values.image.imagePullPolicy }}
         image: {{ .Values.image.image }}
         resources:
           requests:
-            memory: {{ .Values.requests.serviceMemory }}
-            cpu: {{ .Values.requests.serviceCpu }}
+            memory: {{ .Values.requests.memory }}
+            cpu: {{ .Values.requests.cpu }}
         livenessProbe:
           tcpSocket:
-            port: {{ .Values.global.port }}
+            port: {{ .Values.global.servicePort }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
         readinessProbe:
           tcpSocket:
-            port: {{ .Values.global.port }}
+            port: {{ .Values.global.servicePort }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
         ports:
@@ -40,30 +40,24 @@ spec:
         {{- end }}
         envFrom:
         - configMapRef:
-            name: {{ .Values.global.pdp }}-cm
-      - name: mongo
-        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
-        image: mongo
-        resources:
-          requests:
-            memory: {{ .Values.requests.dbMemory }}
-            cpu: {{ .Values.requests.dbCpu }}
-        ports:
-        - name: http-rp
-          containerPort: 27017
-          protocol: TCP
-        envFrom:
-        - configMapRef:
-            name: {{ .Values.global.pdp }}-cm
+            name: {{ .Values.global.user }}-cm
         volumeMounts:
-        - mountPath: /data/db/
-          subPath: {{ .Values.global.pdp }}/data/db
-          name: vol-userman
+        - mountPath: /opt/user-profile/db/um-user-profile-config
+          subPath: um-user-profile-config
+          name: config-user
+          mountPropagation: HostToContainer
+        - mountPath: /opt/gluu/jetty/user-profile/logs
+          subPath: user-profile/logs
+          name: {{ .Values.volumeClaim.name }}
+      
       hostAliases:
       - ip: {{ .Values.global.nginxIp }}
         hostnames:
         - {{ .Values.global.domain }}
       volumes:
-        - name: vol-userman
+        - name: {{ .Values.volumeClaim.name }}
           persistentVolumeClaim:
             claimName: {{ .Values.volumeClaim.name }}
+        - name: config-user
+          configMap:
+            name: {{ .Values.global.user }}-cm

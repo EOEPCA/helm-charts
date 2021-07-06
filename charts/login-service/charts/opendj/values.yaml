@@ -38,7 +38,7 @@ persistence:
   statefulSetReplicas: 1
   imagePullPolicy: Always
   restartPolicy: Never
-  image: eoepca/um-login-persistence:v1.0-RC
+  image: eoepca/um-login-persistence:v1.0.1-RC
   configAdapter: GLUU_CONFIG_ADAPTER
   adapter: "kubernetes"
   secretAdapter: GLUU_SECRET_ADAPTER
@@ -56,16 +56,27 @@ persistence:
   clientIDv: "59f1fed27153f631bc08"
   clientSecret: LP_CLIENT_SECRET
   clientSecretv: "640baffac0948454c48de2505726f53d11adc8a6"
+  pdpEp: /pdp
+#COIH Provider values needs to be configured after deployment for security issues
+  coihClientID: COIH_CLIENT_ID
+  coihClientIDv: ""
+  coihClientSecret: COIH_CLIENT_SECRET
+  coihClientSecretv: ""
 #container specific values declared here
 tcpSocket:
   port: 1636
 readinessProbe:
-  initialDelaySeconds: 90
+  initialDelaySeconds: 150
   periodSeconds: 90
 livenessProbe:
-  initialDelaySeconds: 90
+  initialDelaySeconds: 150
   periodSeconds: 90
 
+limits:
+  memory: 600Mi
+requests:
+  cpu: 700m
+  memory: 500Mi
 #servicePorts values used in StatefulSet container
 ports:
   ldaps:

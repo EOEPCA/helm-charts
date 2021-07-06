@@ -2,20 +2,24 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: gluu-ingress-user-profile-static
+  name: {{ .Values.context }}-service-static
   
   annotations:
+    {{- if .Values.elbIp }}
+    kubernetes.io/elb.ip: {{ .Values.elbIp }}
+    {{- else }}
     kubernetes.io/ingress.class: nginx
+    {{- end }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: {{ .Values.global.ep | quote }}
+  - host: {{ .Values.global.domain | quote }}
     http:
       paths:
       - path: /static
         backend:
-          serviceName: user-profile
-          servicePort: 5566
+          serviceName: {{ .Values.global.user }}
+          servicePort: {{ .Values.global.servicePort }}
 
 
 
@@ -25,17 +29,17 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: gluu-ingress-user-profile
+  name: {{ .Values.context }}-service
   
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: {{ .Values.global.ep | quote }}
+  - host: {{ .Values.global.domain | quote }}
     http:
       paths:
-      - path: /web_ui
+      - path: {{ .Values.global.baseUri }}
         backend:
-          serviceName: user-profile
-          servicePort: 5566
+          serviceName: {{ .Values.global.user }}
+          servicePort: {{ .Values.global.servicePort }}

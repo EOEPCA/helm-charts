@@ -14,8 +14,8 @@ ldapPass: admin_Abcd1234#
 email: eoepca@deimos-space.com
 orgName: Deimos Space S.L.U.
 gluuConfAdapter: kubernetes
-ldapType: opendj
 redisPass: aaaa
+pdpEp: /pdp
 
 nameOverride: ""
 fullNameOverride: ""
@@ -23,6 +23,12 @@ fullNameOverride: ""
 # VolumeClaim values
 volumeClaim:
   name: um-login-service-config-pvc
+
+limits:
+  memory: 600Mi
+requests:
+  cpu: 100m
+  memory: 500Mi
 
 persistence:
   size: 1Gi

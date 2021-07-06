@@ -5,6 +5,9 @@ metadata:
   labels:
     app: {{ .Values.global.pep }}
 spec:
+  {{- if .Values.elbIp }}
+  type: NodePort
+  {{- end }}
   ports:
     {{- range $key, $value := .Values.ports }}
     - port: {{ $value.port }}

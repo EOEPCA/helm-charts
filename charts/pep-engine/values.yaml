@@ -48,8 +48,8 @@ requests:
 
 image: 
   statefulSetReplicas: 1
-  imagePullPolicy: Always
-  image: eoepca/um-pep-engine:v1.0-RC
+  imagePullPolicy: IfNotPresent
+  image: eoepca/um-pep-engine:v1.0.2-RC
 persistence: 
   accessModes: ReadWriteMany
   dbStorageSize: 5Gi

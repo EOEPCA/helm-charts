@@ -18,14 +18,13 @@ service:
   port: 8090
 
 livenessProbe:
-  initialDelaySeconds: 90
-  periodSeconds: 90
+  initialDelaySeconds: 60
+  periodSeconds: 30
 
 # readinessProbe
 readinessProbe:
-  initialDelaySeconds: 90
-  periodSeconds: 90
-resources: {}
+  initialDelaySeconds: 60
+  periodSeconds: 30
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -33,9 +32,11 @@ resources: {}
   # limits:
   #  cpu: 100m
   #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
+requests:
+  cpu: 100m
+  memory: 500Mi
+limits:
+  memory: 600Mi
 
 nodeSelector: {}
 

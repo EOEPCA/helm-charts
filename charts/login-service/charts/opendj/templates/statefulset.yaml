@@ -24,6 +24,12 @@ spec:
       - name: {{ template "login-service.fullname" . }}-init-container
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         image: {{ .Values.image }}
+        resources:
+          requests:
+            memory: {{ .Values.requests.memory }}
+            cpu: {{ .Values.requests.cpu }}
+        #   limits:
+        #     memory: {{ .Values.limits.memory }}
         lifecycle:
           postStart:
             exec:
@@ -55,14 +61,14 @@ spec:
           - mountPath: /flag
             subPath: opendj/flag
             name: vol-userman
-        readinessProbe:
-          tcpSocket: 
-            port: {{ .Values.tcpSocket.port }}
-          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-        livenessProbe:
-          tcpSocket:
-            port: {{ .Values.tcpSocket.port }}
-          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+        # readinessProbe:
+        #   tcpSocket: 
+        #     port: {{ .Values.tcpSocket.port }}
+        #   initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+        #   periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: {{ .Values.tcpSocket.port }}
+        #   initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+        #   periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
   

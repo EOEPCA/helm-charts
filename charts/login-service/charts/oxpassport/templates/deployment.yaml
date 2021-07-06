@@ -25,7 +25,7 @@ spec:
         - {{ .Values.global.domain }}
       containers:
         - name:  {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: oxpassport
@@ -34,18 +34,9 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ template "oxpassport.fullname" . }}-cm
-          
           resources:
-{{ toYaml .Values.resources | indent 12 }}
-    {{- with .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+            requests:
+              memory: {{ .Values.requests.memory }}
+              cpu: {{ .Values.requests.cpu }}
+            # limits:
+            #   memory: {{ .Values.limits.memory }}

@@ -4,6 +4,9 @@ metadata:
   name: jupyter
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    {{- if .Values.elbIp }}
+    kubernetes.io/elb.ip: {{ .Values.elbIp }}
+    {{- end }}
 spec:
   tls:
     - hosts:
