@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.global.license }}
+  labels:
+    app: {{ .Values.global.license }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.global.license }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.license }}
+    spec:
+      containers:
+      - name: {{ .Values.global.license }}
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        image: {{ .Values.image.image }}
+        ports:
+        - name: http-license
+          containerPort: 5566
+          protocol: TCP
+        - name: https-license
+          containerPort: 443
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: license-cm
+      - name: mongo
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        image: mongo
+        ports:
+        - name: http-rp
+          containerPort: 27017
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: license-cm
+        volumeMounts:
+        - mountPath: /data/db/
+          sub_path: license-engine/db/resource
+          name: eoepca-license-pv-host
+      hostAliases:
+      - ip: {{ .Values.global.nginxIp }}
+        hostnames:
+        - {{ .Values.global.ep }}
+      volumes:
+        - name: eoepca-license-pv-host
+          persistentVolumeClaim:
+            claimName: eoepca-license-pvc

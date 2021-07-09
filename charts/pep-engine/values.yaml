@@ -1,0 +1,65 @@
+# Default values for login-service.
+
+global:
+  namespace: default
+  domain: demoexample.gluu.org
+  pep: pep-engine
+  realm: eoepca
+  serviceHost: 0.0.0.0
+  proxyServicePort: 5566
+  resourcesServicePort: 5576
+  nginxIp: 10.0.2.15
+
+ports:
+  proxy-pep:
+    port: 5566
+    targetPort: 5566
+    type: TCP
+  resources-pep:
+    port: 5576
+    targetPort: 5576
+    type: TCP
+
+configMap:
+  margin: 5
+  sslCerts: "'false'"
+  useThreads: "'true'"
+  debugMode: "'true'"
+  resourceServer: http://ades/
+  umaValidation: "'true'"
+  limitUses: 1
+  pdpPort: 5567
+  pdpPolicy: /pdp/policy/
+  verifySignature: "'false'"
+  defaultResourcePath: /data/default-resources.json
+
+readinessProbe:
+  initialDelaySeconds: 1
+  periodSeconds: 90
+livenessProbe:
+  initialDelaySeconds: 1
+  periodSeconds: 90
+
+requests:
+  serviceCpu: 2m
+  serviceMemory: 50Mi
+  dbCpu: 3m
+  dbMemory: 150Mi
+
+image: 
+  statefulSetReplicas: 1
+  imagePullPolicy: IfNotPresent
+  image: eoepca/um-pep-engine:v1.0.2-RC
+persistence: 
+  accessModes: ReadWriteMany
+  dbStorageSize: 5Gi
+  type: DirectoryOrCreate
+
+# The PEP context is used to distinguish PEP instances,
+# e.g. PEP for ADES vs PEP for Catalogue etc.
+context: generic
+
+# VolumeClaim values
+volumeClaim:
+  name: um-pep-engine-pvc
+  create: true

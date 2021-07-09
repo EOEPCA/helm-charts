@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.global.pep }}
+  labels:
+    app: {{ .Values.global.pep }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.global.pep }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.pep }}
+    spec:
+      containers:
+      - name: {{ .Values.global.pep }}
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        image: {{ .Values.image.image }}
+        resources:
+          requests:
+            memory: {{ .Values.requests.serviceMemory }}
+            cpu: {{ .Values.requests.serviceCpu }}
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.global.proxyServicePort }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+        readinessProbe:
+          tcpSocket:
+            port: {{ .Values.global.proxyServicePort }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+        ports:
+        {{- range $key, $value := .Values.ports }}
+        - containerPort: {{ $value.targetPort }}
+          name: {{ $key }}
+          protocol: {{ $value.type }}
+        {{- end }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.global.pep }}-cm
+        volumeMounts:
+        - name: default-resources
+          mountPath: /data/
+      - name: mongo
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        image: mongo
+        resources:
+          requests:
+            memory: {{ .Values.requests.dbMemory }}
+            cpu: {{ .Values.requests.dbCpu }}
+        ports:
+        - name: http-rp
+          containerPort: 27017
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.global.pep }}-cm
+        volumeMounts:
+        - mountPath: /data/db/
+          subPath: {{ .Values.global.pep }}/{{ .Values.context }}/data/db
+          name: {{ .Values.volumeClaim.name }}
+      hostAliases:
+      - ip: {{ .Values.global.nginxIp }}
+        hostnames:
+        - {{ .Values.global.domain }}
+      volumes:
+        - name: {{ .Values.volumeClaim.name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.volumeClaim.name }}
+        - name: default-resources
+          configMap:
+            name: custom-resources

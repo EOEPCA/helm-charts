@@ -1,0 +1,17 @@
+{{ if .Values.volumeClaim.create }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.volumeClaim.name }}
+  labels:
+    eoepca_type: userman
+spec:
+  capacity:
+    storage: {{ .Values.persistence.dbStorageSize }}
+  accessModes:
+    - {{ .Values.persistence.accessModes }}
+  hostPath:
+    path: "/data/"
+    type: {{ .Values.persistence.type }}
+{{ end }}

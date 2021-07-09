@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.global.pricing }}
+  labels:
+    app: {{ .Values.global.pricing }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.global.pricing }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.pricing }}
+    spec:
+      containers:
+      - name: {{ .Values.global.pricing }}
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        image: {{ .Values.image.image }}
+        ports:
+        - name: http-pricing
+          containerPort: 5570
+          protocol: TCP
+        - name: https-pricing
+          containerPort: 443
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: um-pricing-engine-config
+      - name: mongo
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        image: mongo
+        ports:
+        - name: http-rp
+          containerPort: 27017
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: um-pricing-engine-config
+        volumeMounts:
+        - mountPath: /data/db/
+          sub_path: pricing-engine/db/item
+          name: eoepca-pricing-pv-host
+      hostAliases:
+      - ip: {{ .Values.global.nginxIp }}
+        hostnames:
+        - {{ .Values.global.ep }}
+      volumes:
+        - name: eoepca-pricing-pv-host
+          persistentVolumeClaim:
+            claimName: eoepca-pricing-pvc

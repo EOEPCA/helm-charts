@@ -1,0 +1,81 @@
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+dynamicStorage: true
+
+image:
+  repository: oxauth
+  tag: 4.1.1_03
+  pullPolicy: Always
+
+falsure: "'false'"
+#ConfigMap values
+gluuLdapUrl: opendj:1636
+gluuMaxRamFraction: 1
+
+#Resources for the deployment
+requests:
+  cpu: 200m
+  memory: 900Mi
+limits:
+  memory: 1.2Gi
+persistence:
+  size: 100M
+  pvcSize: 3Gi
+  name: persistence
+  accessModes: ReadWriteMany
+  type: DirectoryOrCreate
+  dbStorageSize: 5Gi
+  statefulSetReplicas: 1
+  imagePullPolicy: Always
+  restartPolicy: Never
+  image: eoepca/um-login-persistence:v1.0.1-RC
+  configAdapter: GLUU_CONFIG_ADAPTER
+  adapter: "kubernetes"
+  secretAdapter: GLUU_SECRET_ADAPTER
+  passport: GLUU_PASSPORT_ENABLED
+  passportv: "'true'"
+  ldapUrl: GLUU_LDAP_URL
+  ldapUrlv: "opendj:1636"
+  persistenceType: GLUU_PERSISTENCE_TYPE
+  persistenceTypev: "ldap"
+  oxtrustConf: GLUU_OXTRUST_CONFIG_GENERATION
+  oxtrustConfv: "'false'"
+  cacheType: GLUU_CACHE_TYPE
+  cacheTypev: "NATIVE_PERSISTENCE"
+#hostAliases
+nginxIp: 10.0.2.15
+
+#ports for the deployment
+ports:
+  containerPort: 8080
+
+# livenessProbe
+livenessProbe:
+  initialDelaySeconds: 100
+  periodSeconds: 60
+
+# readinessProbe
+readinessProbe:
+  initialDelaySeconds: 100
+  periodSeconds: 60
+
+# VolumeClaim values
+volumeClaim:
+  name: um-login-service-oxauth-pvc
+  storage: 50M
+
+#VolumeMounts
+volumeMounts:
+  logs:
+    mountPath: /opt/gluu/jetty/oxauth/logs
+    subPath: oxauth/logs
+  ext:
+    mountPath: /opt/gluu/jetty/oxauth/lib/ext
+    subPath: oxauth/lib/ext
+  static:
+    mountPath: /opt/gluu/jetty/oxauth/custom/static
+    subPath: oxauth/custom/static
+  pages:
+    mountPath: /opt/gluu/jetty/oxauth/custom/pages
+    subPath: oxauth/custom/pages

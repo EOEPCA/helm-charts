@@ -1,0 +1,9 @@
+dependencies:
+- name: vs
+  repository: https://charts-public.hub.eox.at/
+  version: 1.1.5
+- name: rm-resource-catalogue
+  repository: file://../rm-resource-catalogue
+  version: 0.3.1
+digest: sha256:c667ac1e77da2820aef79c339b7bd352d36a7e81fab6dbdf112f1550dd25db7f
+generated: "2021-06-12T13:26:17.789915332+03:00"

@@ -1,0 +1,66 @@
+# Default values for oxtrust.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+gluuMaxRamFraction: 1
+
+dynamicStorage: true
+
+image:
+  repository: oxtrust
+  tag: 4.1.1_02
+  pullPolicy: Always
+  
+persistence: 
+  accessModes: ReadWriteMany
+  dbStorageSize: 5Gi
+  type: DirectoryOrCreate
+
+service:
+  type: ClusterIP
+  port: 80
+
+#resources: 
+limits:
+  memory: 600Mi
+requests:
+  cpu: 200m
+  memory: 500Mi
+
+#containerPOrt ot connect the container with
+containerPort: 8080
+nginxIp: 10.0.2.15
+gluuOxauthBackend: oxauth:8080
+
+livenessProbe:
+  initialDelaySeconds: 100
+  periodSeconds: 60
+
+# readinessProbe
+readinessProbe:
+  initialDelaySeconds: 100
+  periodSeconds: 60
+
+#service values
+#port for which to open in oxtrust ss
+port: 8080
+clusterIp: None
+
+# VolumeClaim values
+volumeClaim:
+  name: um-login-service-oxtrust-pvc
+  storage: 10M
+
+volumeMounts:
+  logs:
+    mountPath: /opt/gluu/jetty/identity/logs
+    subPath: oxtrust/logs
+  ext:
+    mountPath: /opt/gluu/jetty/identity/lib/ext
+    subPath: oxtrust/lib/ext
+  static:
+    mountPath: /opt/gluu/jetty/identity/custom/static
+    subPath: oxtrust/custom/static
+  pages:
+    mountPath: /opt/gluu/jetty/identity/custom/pages
+    subPath: oxtrust/custom/pages

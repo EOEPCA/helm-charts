@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.global.user }}-cm
+data:
+  UP_SSO_URL: {{ .Values.global.domain | quote }}
+  UP_TITLE: {{ .Values.configMap.title | quote }}
+  UP_SCOPES: {{ .Values.configMap.scopes | quote }}
+  UP_REDIRECT_URI: "http://{{ .Values.global.domain }}{{ .Values.configMap.redirectUri }}"
+  UP_POST_LOGOUT_REDIRECT_URI: "http://{{ .Values.global.domain }}{{ .Values.configMap.postLogoutRedirectUri }}"
+  UP_BASE_URI: {{ .Values.global.baseUri | quote }}
+  UP_OAUTH_CALLBACK_PATH: {{ .Values.configMap.oauthCallbackPath | quote }}
+  UP_LOGOUT_ENDPOINT: {{ .Values.configMap.logoutEndpoint | quote }}
+  UP_SERVICE_HOST: {{ .Values.global.serviceHost | quote }}
+  UP_SERVICE_PORT: {{ .Values.global.servicePort | quote }}
+  UP_PROTECTED_ATTRIBUTES: {{ .Values.configMap.protectedAttributes | quote }}
+  UP_BLACKLIST_ATTRIBUTES: {{ .Values.configMap.blacklistAttributes | quote }}
+  UP_SEPARATOR_UI_ATTRIBUTES: {{ .Values.configMap.separatorUiAttributes | quote }}
+  UP_COLOR_WEB_BACKGROUND: {{ .Values.configMap.colorWebBackground | quote }}
+  UP_COLOR_WEB_HEADER: {{ .Values.configMap.colorWebHeader | quote }}
+  UP_LOGO_ALT_NAME: {{ .Values.configMap.logoAltName | quote }}
+  UP_LOGO_IMAGE_PATH: {{ .Values.configMap.logoImagePath | quote }}
+  UP_COLOR_HEADER_TABLE: {{ .Values.configMap.colorHeaderTable | quote }}
+  UP_COLOR_TEXT_HEADER_TABLE: {{ .Values.configMap.colorTextHeaderTable | quote }}
+  UP_COLOR_BUTTON_MODIFY: {{ .Values.configMap.colorButtonModify | quote }}
+  UP_USE_THREADS: {{ .Values.configMap.useThreads | quote }}
+  UP_DEBUG_MODE: {{ .Values.configMap.debugMode | quote }}
