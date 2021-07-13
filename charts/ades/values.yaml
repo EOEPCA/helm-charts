@@ -127,6 +127,11 @@ workflowExecutor:
   useResourceManager: false
   resourceManagerEndpoint: "https://resourcemanager-api.com"
   resourceManagerWorkspacePrefix: "rm-user"
+  platformDomain: "https://platform-eoepca.com"
+  
+
+  # custom backoff limit for calrissian job
+  backofflimit: 3
 
 wps:
   pepBaseUrl: "https://pep.eoepca.terradue.com"

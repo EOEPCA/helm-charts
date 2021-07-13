@@ -16,3 +16,6 @@ spec:
   selector:
     app: {{ include "oxpassport.name" . }}
     release: {{ .Release.Name }}
+  {{- if .Values.elbIp }}
+  type: NodePort
+  {{- end }}

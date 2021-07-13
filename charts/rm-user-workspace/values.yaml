@@ -200,7 +200,7 @@ vs:
   registrar:
     image:
       repository: eoepca/rm-data-access-core
-      tag: latest
+      tag: "0.9.0"
       pullPolicy: Always
     replicaCount: 1
     resources:
@@ -214,7 +214,7 @@ vs:
   renderer:
     image:
       repository: eoepca/rm-data-access-core
-      tag: latest
+      tag: "0.9.0"
       pullPolicy: Always
     replicaCount: 1
     resources:
