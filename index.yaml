@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   ades:
   - apiVersion: v2
+    appVersion: dev0.4.5
+    created: "2021-07-14T13:49:41.831254143Z"
+    description: A Helm chart for the ADES
+    digest: bfc59f374b5a931f1cdcd21a7d4e1137f49d629988d541d68993773a8c629cdb
+    name: ades
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/ades-0.9.1/ades-0.9.1.tgz
+    version: 0.9.1
+  - apiVersion: v2
     appVersion: 0.4.3
     created: "2021-07-13T14:42:54.78971109Z"
     description: A Helm chart for the ADES
@@ -252,6 +262,18 @@ entries:
   pep-engine:
   - apiVersion: v1
     appVersion: v1.0.2-RC
+    created: "2021-07-14T13:49:42.02429972Z"
+    description: A Helm chart for PEP Engine
+    digest: 8eb6f658ae947a1d44d41a71bb63416e7c92984403e8dd8c8a1ffd9f525145b5
+    maintainers:
+    - name: eoepca
+    name: pep-engine
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/pep-engine-0.9.9/pep-engine-0.9.9.tgz
+    version: 0.9.9
+  - apiVersion: v1
+    appVersion: v1.0.2-RC
     created: "2021-07-06T16:04:52.600993041Z"
     description: A Helm chart for PEP Engine
     digest: 143b2f0c844fe2b51a343f8c05cf572b9f587b1c651b9729d73f727827fce99c
@@ -302,6 +324,15 @@ entries:
   rm-resource-catalogue:
   - apiVersion: v2
     appVersion: 2.6.0
+    created: "2021-07-14T13:49:42.235295396Z"
+    description: A Helm chart for Resource Catalogue
+    digest: b068845bcb4636f0f5f0a41c02833949aad5654f4e0d05ac5e1bcdf65fcdd3ab
+    name: rm-resource-catalogue
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/rm-resource-catalogue-0.9.1/rm-resource-catalogue-0.9.1.tgz
+    version: 0.9.1
+  - apiVersion: v2
+    appVersion: 2.6.0
     created: "2021-07-12T16:48:18.302138114Z"
     description: A Helm chart for Resource Catalogue
     digest: 17389e8be9e7e5211c58fd8e7a6542ef4f85a4d5a2c891d82857f978ef13103e
@@ -328,6 +359,23 @@ entries:
     - https://github.com/EOEPCA/helm-charts/releases/download/rm-resource-catalogue-0.1.5/rm-resource-catalogue-0.1.5.tgz
     version: 0.1.5
   rm-user-workspace:
+  - apiVersion: v2
+    appVersion: 0.0.0
+    created: "2021-07-14T13:49:42.452608108Z"
+    dependencies:
+    - name: vs
+      repository: https://charts-public.hub.eox.at/
+      version: 1.1.5
+    - name: rm-resource-catalogue
+      repository: file://../rm-resource-catalogue
+      version: 0.9.1
+    description: A Helm chart for Kubernetes
+    digest: c9b9f84cf8fc11872824779c7ff6a6fc4794c11ad794d99e458d83a1867b1539
+    name: rm-user-workspace
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/rm-user-workspace-0.9.1/rm-user-workspace-0.9.1.tgz
+    version: 0.9.1
   - apiVersion: v2
     appVersion: 0.0.0
     created: "2021-07-13T14:42:55.098802986Z"
@@ -466,4 +514,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2021-07-13T14:42:55.231107984Z"
+generated: "2021-07-14T13:49:42.452741109Z"
