@@ -49,7 +49,9 @@ requests:
 image: 
   statefulSetReplicas: 1
   imagePullPolicy: IfNotPresent
-  image: eoepca/um-pep-engine:v1.0.2-RC
+  repository: eoepca/um-pep-engine
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
 persistence: 
   accessModes: ReadWriteMany
   dbStorageSize: 5Gi

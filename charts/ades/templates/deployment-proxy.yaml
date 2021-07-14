@@ -29,7 +29,8 @@ spec:
         - name: {{ include "ades.fullname" . }}-kubeproxy
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: eoepca/kubectl-proxy:latest
+          image: "{{ .Values.image.proxyRepository }}:{{ .Values.image.proxyTag | default "latest" }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8001
       restartPolicy: Always
