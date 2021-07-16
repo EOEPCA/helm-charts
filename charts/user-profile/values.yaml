@@ -40,8 +40,10 @@ configMap:
 
 
 image: 
-  imagePullPolicy: IfNotPresent
-  image: eoepca/um-user-profile:v0.3
+  repository: eoepca/um-user-profile
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
 
 persistence: 
   accessModes: ReadWriteMany

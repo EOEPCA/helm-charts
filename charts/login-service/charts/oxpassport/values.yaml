@@ -4,12 +4,12 @@
 
 replicaCount: 1
 
-image:
-  repository: eoepca/um-login-passport
-  # repository: gluufederation/oxpassport
-  tag: v0.1.1
-  # tag: 4.0.1_03
-  pullPolicy: Always
+# image:
+#   repository: eoepca/um-login-passport
+#   # repository: gluufederation/oxpassport
+#   pullPolicy: IfNotPresent
+#   tag: ""
+#   # tag: 4.0.1_03
 
 nameOverride: ""
 fullnameOverride: ""

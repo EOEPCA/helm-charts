@@ -5,6 +5,9 @@ metadata:
   name: {{ .Values.context }}-service
   
   annotations:
+    {{- if .Values.certManager.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.certManager.clusterIssuer }}
+    {{- end }}
     {{- if .Values.elbIp }}
     kubernetes.io/elb.ip: {{ .Values.elbIp }}
     {{- else }}
@@ -19,6 +22,12 @@ spec:
         backend:
           serviceName: {{ .Values.global.pep }}
           servicePort: {{ .Values.global.proxyServicePort }}
+  {{- if .Values.certManager.clusterIssuer }}
+  tls:
+    - hosts:
+        - {{ printf "%s.%s" .Values.context .Values.global.domain | quote }}
+      secretName: {{ printf "%s-pep-tls" .Values.context | quote }}
+  {{- end }}
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress

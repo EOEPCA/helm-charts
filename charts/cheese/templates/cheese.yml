@@ -15,8 +15,9 @@ spec:
         app: cheddar
     spec:
       containers:
-      - image: {{ .Values.image.cheddar }}
-        name: cheese
+      - name: cheddar
+        image: "{{ .Values.cheddar.image.repository }}:{{ .Values.cheddar.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.cheddar.image.pullPolicy }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -35,8 +36,9 @@ spec:
         app: stilton
     spec:
       containers:
-      - image: {{ .Values.image.stilton }}
-        name: cheese
+      - name: stilton
+        image: "{{ .Values.stilton.image.repository }}:{{ .Values.stilton.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.stilton.image.pullPolicy }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -55,8 +57,9 @@ spec:
         app: wensleydale
     spec:
       containers:
-      - image: {{ .Values.image.wensleydale }}
-        name: cheese
+      - name: wensleydale
+        image: "{{ .Values.wensleydale.image.repository }}:{{ .Values.wensleydale.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.wensleydale.image.pullPolicy }}
 ---
 apiVersion: v1
 kind: Service

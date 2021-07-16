@@ -19,30 +19,7 @@ requests:
   memory: 900Mi
 limits:
   memory: 1.2Gi
-persistence:
-  size: 100M
-  pvcSize: 3Gi
-  name: persistence
-  accessModes: ReadWriteMany
-  type: DirectoryOrCreate
-  dbStorageSize: 5Gi
-  statefulSetReplicas: 1
-  imagePullPolicy: Always
-  restartPolicy: Never
-  image: eoepca/um-login-persistence:v1.0.1-RC
-  configAdapter: GLUU_CONFIG_ADAPTER
-  adapter: "kubernetes"
-  secretAdapter: GLUU_SECRET_ADAPTER
-  passport: GLUU_PASSPORT_ENABLED
-  passportv: "'true'"
-  ldapUrl: GLUU_LDAP_URL
-  ldapUrlv: "opendj:1636"
-  persistenceType: GLUU_PERSISTENCE_TYPE
-  persistenceTypev: "ldap"
-  oxtrustConf: GLUU_OXTRUST_CONFIG_GENERATION
-  oxtrustConfv: "'false'"
-  cacheType: GLUU_CACHE_TYPE
-  cacheTypev: "NATIVE_PERSISTENCE"
+
 #hostAliases
 nginxIp: 10.0.2.15
 

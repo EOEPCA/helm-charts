@@ -1,9 +1,20 @@
 baseHostname: 192.168.49.2.nip.io
 
-image:
-    cheddar: errm/cheese:cheddar
-    stilton: errm/cheese:stilton
-    wensleydale: errm/cheese:wensleydale
+cheddar:
+    image:
+        repository: errm/cheese
+        pullPolicy: IfNotPresent
+        tag: cheddar
+stilton:
+    image:
+        repository: errm/cheese
+        pullPolicy: IfNotPresent
+        tag: stilton
+wensleydale:
+    image:
+        repository: errm/cheese
+        pullPolicy: IfNotPresent
+        tag: wensleydale
 
 service:
     port: 80

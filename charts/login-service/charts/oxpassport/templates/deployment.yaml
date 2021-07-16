@@ -25,8 +25,8 @@ spec:
         - {{ .Values.global.domain }}
       containers:
         - name:  {{ .Chart.Name }}
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ tpl .Values.image.repository $ }}:{{ tpl .Values.image.tag $ | default .Chart.AppVersion }}
+          imagePullPolicy: {{ tpl .Values.image.pullPolicy $ }}
           ports:
             - name: oxpassport
               containerPort: 8090

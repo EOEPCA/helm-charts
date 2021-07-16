@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.global.pep }}
-        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         resources:
           requests:
@@ -45,7 +45,7 @@ spec:
         - name: default-resources
           mountPath: /data/
       - name: mongo
-        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         image: mongo
         resources:
           requests:

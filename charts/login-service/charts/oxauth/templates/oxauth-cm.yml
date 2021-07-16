@@ -9,3 +9,6 @@ data:
   GLUU_LDAP_URL: {{ .Values.global.gluuLdapUrl | quote }}
   GLUU_MAX_RAM_FRACTION: {{ .Values.gluuMaxRamFraction | quote }}
   GLUU_SYNC_CASA_MANIFESTS: {{ .Values.falsure | quote }}
+  {{- if .Values.elbIp }}
+  GLUU_SSL_CERT_FROM_SECRETS: "true"
+  {{- end }}

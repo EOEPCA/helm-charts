@@ -2,8 +2,10 @@
 hostname: 192.168.49.2.nip.io
 
 image:
-  image: eoepca/jupyterlab:latest
-  # imagePullPolicy: IfNotPresent
+  repository: eoepca/jupyterlab
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
 
 service:
   port: 80

@@ -37,9 +37,12 @@ requests:
   dbCpu: 2m
   dbMemory: 70Mi
 
-image: 
-  imagePullPolicy: IfNotPresent
-  image: eoepca/um-pdp-engine:v1.0.1-RC
+image:
+  repository: eoepca/um-pdp-engine
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
 persistence: 
   accessModes: ReadWriteMany
   dbStorageSize: 5Gi

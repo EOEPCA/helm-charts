@@ -46,12 +46,13 @@ requests:
   dbCpu: 3m
   dbMemory: 150Mi
 
-image: 
+image:
   statefulSetReplicas: 1
-  imagePullPolicy: IfNotPresent
   repository: eoepca/um-pep-engine
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
+
 persistence: 
   accessModes: ReadWriteMany
   dbStorageSize: 5Gi
@@ -60,6 +61,11 @@ persistence:
 # The PEP context is used to distinguish PEP instances,
 # e.g. PEP for ADES vs PEP for Catalogue etc.
 context: generic
+
+# Add TLS certs.
+# Empty value for `clusterIssuer` disables
+certManager:
+  clusterIssuer: ""
 
 # VolumeClaim values
 volumeClaim:

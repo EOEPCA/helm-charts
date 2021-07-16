@@ -17,6 +17,16 @@ global:
   gcePdStorageType: pd-standard
   description: gluu-config-init-volume
   fsType: ext4
+
+  images:
+    persistence:
+      repository: eoepca/um-login-persistence
+      pullPolicy: IfNotPresent
+      tag: "v1.0.1-RC"
+    passport:
+      repository: eoepca/um-login-passport
+      pullPolicy: IfNotPresent
+      tag: "v0.1.1"
   
 persistence: 
   accessModes: ReadWriteMany
@@ -70,9 +80,18 @@ opendj:
   gluuRedisEnabled: false
   volumeClaim:
     name: um-login-service-pvc
+  persistence:
+    image:
+      repository: "{{ .Values.global.images.persistence.repository }}"
+      pullPolicy: "{{ .Values.global.images.persistence.pullPolicy }}"
+      tag: "{{ .Values.global.images.persistence.tag }}"
 
 oxpassport:
   enabled: true  
+  image:
+    repository: "{{ .Values.global.images.passport.repository }}"
+    pullPolicy: "{{ .Values.global.images.passport.pullPolicy }}"
+    tag: "{{ .Values.global.images.passport.tag }}"
 
 oxauth:
   enabled: true

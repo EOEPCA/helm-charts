@@ -16,12 +16,10 @@ spec:
     spec:
       containers:
       - name: jupyter
-        image: {{ .Values.image.image }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         command: ["jupyter"]
         args: ["lab", "--NotebookApp.token=''"]
-{{- if .Values.image.imagePullPolicy }}
-        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
-{{- end }}
         ports:
         - name: http-jupyter
           containerPort: 80
