@@ -22,7 +22,7 @@ global:
     persistence:
       repository: eoepca/um-login-persistence
       pullPolicy: IfNotPresent
-      tag: "v1.0.1-RC"
+      tag: "v0.9.0"
     passport:
       repository: eoepca/um-login-passport
       pullPolicy: IfNotPresent
