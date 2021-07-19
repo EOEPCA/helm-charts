@@ -7,6 +7,11 @@ metadata:
     chart: {{ include "oxpassport.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+  {{- if .Values.global.elbId }}
+  annotations: 
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.id: f4ba5972-e647-4715-9fb4-1e9926205fd3
+  {{- end }}
 spec:
   ports:
     - port: 8090
@@ -18,4 +23,7 @@ spec:
     release: {{ .Release.Name }}
   {{- if .Values.elbIp }}
   type: NodePort
+  {{- end }}
+  {{- if .Values.global.elbId }}
+  type: LoadBalancer
   {{- end }}
