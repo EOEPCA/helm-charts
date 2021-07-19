@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   ades:
   - apiVersion: v2
+    appVersion: 0.9.0
+    created: "2021-07-19T11:32:05.945868988Z"
+    description: A Helm chart for the ADES
+    digest: e9c2ad54e7789120d63dcf2facdd41d85db62439218b5e1e3f9015db00106295
+    name: ades
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/ades-0.9.2/ades-0.9.2.tgz
+    version: 0.9.2
+  - apiVersion: v2
     appVersion: dev0.4.5
     created: "2021-07-14T13:49:41.831254143Z"
     description: A Helm chart for the ADES
@@ -128,6 +138,16 @@ entries:
     version: 0.9.2
   jupyter:
   - apiVersion: v2
+    appVersion: 0.9.0
+    created: "2021-07-19T11:32:06.067176959Z"
+    description: Jupyter demo
+    digest: d324cedfeca1ed97954bf8bb83e8ffaebf473a956678f7d2c568a47da6e1b7f1
+    name: jupyter
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/jupyter-0.9.1/jupyter-0.9.1.tgz
+    version: 0.9.1
+  - apiVersion: v2
     appVersion: 0.3.2
     created: "2021-07-16T08:06:04.71432398Z"
     description: Jupyter demo
@@ -181,6 +201,18 @@ entries:
     - https://github.com/EOEPCA/helm-charts/releases/download/license-manager-0.1.0/license-manager-0.1.0.tgz
     version: 0.1.0
   login-service:
+  - apiVersion: v1
+    appVersion: 0.9.0
+    created: "2021-07-19T11:32:06.214419324Z"
+    description: A Helm chart for Login Service
+    digest: d97627061fd68b3779a1816f77945def8c5b6abc7ec5600e4c8c927238d98a29
+    maintainers:
+    - name: eoepca
+    name: login-service
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/login-service-0.9.21/login-service-0.9.21.tgz
+    version: 0.9.21
   - apiVersion: v1
     appVersion: v1.0.1-RC
     created: "2021-07-16T08:06:04.932557398Z"
@@ -640,4 +672,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2021-07-19T07:53:56.199837027Z"
+generated: "2021-07-19T11:32:06.224382237Z"
