@@ -23,7 +23,7 @@ spec:
           value: {{ .Values.pycsw.config.server.url }}
         - name: PYCSW_REPOSITORY_DATABASE_URI
           value: {{ .Values.pycsw.config.repository.database }}
-        image: "{{ .Values.pycsw.image.repository }}:{{ .Values.pycsw.image.tag | default .Chart.AppVersion }}"
+        image: {{ .Values.pycsw.image.repository }}:{{ .Values.pycsw.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.pycsw.image.pullPolicy }}
         name: pycsw
         ports:
