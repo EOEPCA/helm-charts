@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   ades:
   - apiVersion: v2
+    appVersion: 0.9.1
+    created: "2021-07-22T13:13:49.916370683Z"
+    description: A Helm chart for the ADES
+    digest: f950c7049619433fa87a09158ff1a7a8172d532d8196e75bd4b4cc49d6da8c20
+    name: ades
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/ades-0.9.3/ades-0.9.3.tgz
+    version: 0.9.3
+  - apiVersion: v2
     appVersion: 0.9.0
     created: "2021-07-19T11:32:05.945868988Z"
     description: A Helm chart for the ADES
@@ -211,6 +221,18 @@ entries:
     - https://github.com/EOEPCA/helm-charts/releases/download/license-manager-0.1.0/license-manager-0.1.0.tgz
     version: 0.1.0
   login-service:
+  - apiVersion: v1
+    appVersion: 0.9.0
+    created: "2021-07-22T13:13:50.117358067Z"
+    description: A Helm chart for Login Service
+    digest: 73de5afd2fe0bdcaa0a32e7d53500f85123b55853476eccbf2419171474cf10b
+    maintainers:
+    - name: eoepca
+    name: login-service
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/login-service-0.9.23/login-service-0.9.23.tgz
+    version: 0.9.23
   - apiVersion: v1
     appVersion: 0.9.0
     created: "2021-07-19T11:39:55.87058516Z"
@@ -742,4 +764,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2021-07-21T10:49:25.151010851Z"
+generated: "2021-07-22T13:13:50.117489367Z"
