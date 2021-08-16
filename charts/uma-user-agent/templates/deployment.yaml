@@ -48,6 +48,8 @@ spec:
               value: {{ .Values.service.port | quote }}
             - name: USER_ID_COOKIE_NAME
               value: {{ .Values.userIdCookieName | quote }}
+            - name: UNAUTHORIZED_RESPONSE
+              value: {{ .Values.unauthorizedResponse | quote }}
           ports:
             - name: http
               containerPort: 80

@@ -76,6 +76,12 @@ pepUrl: "http://pep/"
 # Name of the cookie that will carry the User ID Token
 userIdCookieName: "auth_user_id"
 
+# Content of the header Www-Authenticate for an Unauthorized (401) response.
+# Ref. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate
+# E.g.
+# unauthorizedResponse: 'Basic realm="Access to the platform", charset="UTF-8"'
+unauthorizedResponse: ''
+
 # Add TLS certs.
 # Empty value for `clusterIssuer` disables
 certManager:
