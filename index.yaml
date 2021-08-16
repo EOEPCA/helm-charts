@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   ades:
   - apiVersion: v2
+    appVersion: 0.9.6
+    created: "2021-08-16T08:35:55.39132561Z"
+    description: A Helm chart for the ADES
+    digest: 78192320f8717efdfb963c1dd1c64ae8c616c3a8b059b9fb9ce1bc51a488ffdd
+    name: ades
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/ades-0.9.6/ades-0.9.6.tgz
+    version: 0.9.6
+  - apiVersion: v2
     appVersion: 0.9.1
     created: "2021-07-22T13:13:49.916370683Z"
     description: A Helm chart for the ADES
@@ -65,6 +75,16 @@ entries:
     - https://github.com/EOEPCA/helm-charts/releases/download/billing-service-0.1.0/billing-service-0.1.0.tgz
     version: 0.1.0
   cheese:
+  - apiVersion: v2
+    appVersion: 0.9.0
+    created: "2021-08-16T08:35:55.511223177Z"
+    description: Cheese web pages used for testing ingress
+    digest: 5c1263e831324f7716f63fa7f7f5171f2f1bb158ebc1af8fe7eb2c3f918b99e3
+    name: cheese
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/cheese-0.9.1/cheese-0.9.1.tgz
+    version: 0.9.1
   - apiVersion: v2
     appVersion: 0.9.0
     created: "2021-07-16T08:06:04.267075078Z"
@@ -149,6 +169,16 @@ entries:
   jupyter:
   - apiVersion: v2
     appVersion: 0.9.1
+    created: "2021-08-16T08:35:55.634608512Z"
+    description: Jupyter demo
+    digest: 35666cb930ff484e7e64ef2a7c2922e68cb8777c3ff792c8870cef9512951539
+    name: jupyter
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/jupyter-0.9.3/jupyter-0.9.3.tgz
+    version: 0.9.3
+  - apiVersion: v2
+    appVersion: 0.9.1
     created: "2021-07-21T10:49:25.150877076Z"
     description: Jupyter demo
     digest: 4f53f0d1e6c9dbddbf1db13cb4e7c241c462725f51b64f6959b1266450ed519c
@@ -221,6 +251,18 @@ entries:
     - https://github.com/EOEPCA/helm-charts/releases/download/license-manager-0.1.0/license-manager-0.1.0.tgz
     version: 0.1.0
   login-service:
+  - apiVersion: v1
+    appVersion: 0.9.0
+    created: "2021-08-16T08:35:55.768131747Z"
+    description: A Helm chart for Login Service
+    digest: b798655b484f9b50b6a92cf00aa63cdc60025e363bdc88f4adf82da77865bc48
+    maintainers:
+    - name: eoepca
+    name: login-service
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/login-service-0.9.29/login-service-0.9.29.tgz
+    version: 0.9.29
   - apiVersion: v1
     appVersion: 0.9.0
     created: "2021-07-22T13:13:50.117358067Z"
@@ -344,6 +386,18 @@ entries:
   pdp-engine:
   - apiVersion: v1
     appVersion: v0.9.0
+    created: "2021-08-16T08:35:55.886891991Z"
+    description: A Helm chart for PDP Engine
+    digest: 47e1411472a0ffc16268d9966bfa43335ed0f249b3417c95eb52e1f7106021c5
+    maintainers:
+    - name: eoepca
+    name: pdp-engine
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/pdp-engine-0.9.6/pdp-engine-0.9.6.tgz
+    version: 0.9.6
+  - apiVersion: v1
+    appVersion: v0.9.0
     created: "2021-07-19T11:47:56.860466427Z"
     description: A Helm chart for PDP Engine
     digest: 0a32b14f9e0fd09f2d250e9328fda1df15ddbe9e421977f5ec91baaee0ba4893
@@ -403,6 +457,18 @@ entries:
     - https://github.com/EOEPCA/helm-charts/releases/download/pdp-engine-0.1.3/pdp-engine-0.1.3.tgz
     version: 0.1.3
   pep-engine:
+  - apiVersion: v1
+    appVersion: task415_3
+    created: "2021-08-16T08:35:56.019426206Z"
+    description: A Helm chart for PEP Engine
+    digest: bef6914f7510668510a449b5a2d7f3145548e49f5bc5296ffa6a37434041d538
+    maintainers:
+    - name: eoepca
+    name: pep-engine
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/pep-engine-0.9.19/pep-engine-0.9.19.tgz
+    version: 0.9.19
   - apiVersion: v1
     appVersion: v0.9.1
     created: "2021-07-19T12:53:17.260749618Z"
@@ -691,7 +757,30 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/storage-0.1.4/storage-0.1.4.tgz
     version: 0.1.4
+  uma-user-agent:
+  - apiVersion: v2
+    appVersion: 0.0.2
+    created: "2021-08-16T08:35:56.147042925Z"
+    description: A Helm chart for Kubernetes
+    digest: 34bb2e95faa4d84d3925342d9264a4b6766e13c52228649c574da2443b535e0c
+    name: uma-user-agent
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/uma-user-agent-0.0.6/uma-user-agent-0.0.6.tgz
+    version: 0.0.6
   user-profile:
+  - apiVersion: v1
+    appVersion: v0.9.0
+    created: "2021-08-16T08:35:56.274037631Z"
+    description: A Helm chart for the User Profile
+    digest: 5e3b1b56604115103ee0ce9d9f25964064e6c7a3c719d86915a0d769fb428be5
+    maintainers:
+    - name: eoepca
+    name: user-profile
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.9.7/user-profile-0.9.7.tgz
+    version: 0.9.7
   - apiVersion: v1
     appVersion: v0.9.0
     created: "2021-07-19T11:47:57.110371638Z"
@@ -764,4 +853,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2021-07-22T13:13:50.117489367Z"
+generated: "2021-08-16T08:35:56.274272636Z"
