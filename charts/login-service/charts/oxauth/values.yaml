@@ -16,9 +16,10 @@ gluuMaxRamFraction: 1
 #Resources for the deployment
 requests:
   cpu: 200m
-  memory: 900Mi
-limits:
   memory: 1.2Gi
+limits:
+  cpu: 200m
+  memory: 1.5Gi
 
 #hostAliases
 nginxIp: 10.0.2.15

@@ -2,20 +2,19 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Values.context }}-service
-  
+  name: {{ .Values.context }}-pep
   annotations:
     {{- if .Values.certManager.clusterIssuer }}
     cert-manager.io/cluster-issuer: {{ .Values.certManager.clusterIssuer }}
     {{- end }}
-    {{- if .Values.elbIp }}
-    kubernetes.io/elb.ip: {{ .Values.elbIp }}
-    {{- else }}
     kubernetes.io/ingress.class: nginx
-    {{- end }}
 spec:
   rules:
+  {{- if eq .Values.configMap.workingMode "PARTIAL" }}
+  - host: {{ printf "%s-pep.%s" .Values.context .Values.global.domain | quote }}
+  {{- else }}
   - host: {{ printf "%s.%s" .Values.context .Values.global.domain | quote }}
+  {{- end }}
     http:
       paths:
       - path: /
@@ -32,14 +31,9 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Values.context }}-resources
-  
+  name: {{ .Values.context }}-pepapi
   annotations:
-    {{- if .Values.elbIp }}
-    kubernetes.io/elb.ip: {{ .Values.elbIp }}
-    {{- else }}
     kubernetes.io/ingress.class: nginx
-    {{- end }}
 spec:
   rules:
   - host: {{ printf "%s-pepapi.%s" .Values.context .Values.global.domain | quote }}
@@ -49,3 +43,44 @@ spec:
         backend:
           serviceName: {{ .Values.global.pep }}
           servicePort: {{ .Values.global.resourcesServicePort }}
+---
+{{- if and (eq .Values.configMap.workingMode "PARTIAL") (.Values.nginxIntegration.enabled) }}
+{{- $defaultHostname := default (include "pep-engine.fullname" .) .Values.context }}
+{{- $hostname := default $defaultHostname .Values.nginxIntegration.hostname }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $hostname }}
+  annotations:
+    {{- if .Values.certManager.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.certManager.clusterIssuer }}
+    {{- end }}
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      auth_request /authcheck;
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location /authcheck {
+        internal;
+        set $pep_address {{ .Values.global.pep }}.{{ .Release.Namespace }}.{{ .Values.global.clusterDomain }}:{{ .Values.global.proxyServicePort }};
+        proxy_pass http://$pep_address/authorize;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+        proxy_set_header X-Original-URI $request_uri;
+        proxy_set_header X-Original-Method $request_method;
+      }
+spec:
+  rules:
+  - host: {{ printf "%s.%s" $hostname .Values.global.domain | quote }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Values.resourceServer.name }}
+          servicePort: {{ .Values.resourceServer.port }}
+  {{- if .Values.certManager.clusterIssuer }}
+  tls:
+    - hosts:
+        - {{ printf "%s.%s" $hostname .Values.global.domain | quote }}
+      secretName: {{ printf "%s-tls" $hostname | quote }}
+  {{- end }}
+{{- end }}

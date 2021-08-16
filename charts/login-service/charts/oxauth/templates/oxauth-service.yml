@@ -4,11 +4,6 @@ metadata:
   name: {{ .Values.global.oxAuthServiceName }}
   labels:
     app: {{ .Values.global.oxAuthServiceName }}
-  {{- if .Values.global.elbId }}
-  annotations: 
-    kubernetes.io/elb.class: union
-    kubernetes.io/elb.id: f4ba5972-e647-4715-9fb4-1e9926205fd3
-  {{- end }}
 spec:
   ports:
   - port: 8080
@@ -17,9 +12,3 @@ spec:
     protocol: TCP
   selector:
     app: {{ .Values.global.oxAuthServiceName }}
-  {{- if .Values.elbIp }}
-  type: NodePort
-  {{- end }}
-  {{- if .Values.global.elbId }}
-  type: LoadBalancer
-  {{- end }}

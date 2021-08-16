@@ -37,5 +37,5 @@ spec:
         - name: {{ .Values.persistence.coihClientID }}
           value: '{{ .Values.persistence.coihClientIDv }}'
         - name: {{ .Values.persistence.coihClientSecret }}
-          value: {{ .Values.persistence.coihClientSecretv }}
+          value: '{{ .Values.persistence.coihClientSecretv }}'
 {{ end }}

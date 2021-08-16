@@ -11,7 +11,7 @@ data:
   PEP_CHECK_SSL_CERTS: {{ .Values.configMap.sslCerts | quote }}
   PEP_USE_THREADS: {{ .Values.configMap.useThreads | quote }}
   PEP_DEBUG_MODE: {{ .Values.configMap.debugMode | quote }}
-  PEP_RESOURCE_SERVER_ENDPOINT: {{ .Values.configMap.resourceServer | quote }}
+  PEP_RESOURCE_SERVER_ENDPOINT: {{ .Values.resourceServer.url | default (printf "http://%v:%v/" .Values.resourceServer.name .Values.resourceServer.port) | quote }}
   PEP_API_RPT_UMA_VALIDATION: {{ .Values.configMap.umaValidation | quote }}
   PEP_RPT_LIMIT_USES: {{ .Values.configMap.limitUses | quote }}
   PEP_PDP_URL: http://{{ .Values.global.domain }}
@@ -21,6 +21,7 @@ data:
   PEP_PROXY_SERVICE_PORT: {{ .Values.global.proxyServicePort | quote }}
   PEP_RESOURCES_SERVICE_PORT: {{ .Values.global.resourcesServicePort | quote }}
   PEP_DEFAULT_RESOURCE_PATH: {{ .Values.configMap.defaultResourcePath | quote }}
+  PEP_WORKING_MODE: {{ .Values.configMap.workingMode | quote }}
 
 ---
 

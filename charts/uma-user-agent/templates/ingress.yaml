@@ -1,0 +1,39 @@
+{{- if .Values.nginxIntegration.enabled }}
+{{- $hostname := default (include "uma-user-agent.fullname" .) .Values.nginxIntegration.hostname }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "uma-user-agent.fullname" . }}
+  annotations:
+    {{- if .Values.certManager.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.certManager.clusterIssuer }}
+    {{- end }}
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      auth_request /authcheck;
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location /authcheck {
+        internal;
+        set $uma_user_agent {{ include "uma-user-agent.fullname" . }}.{{ .Release.Namespace }}.{{ .Values.system.clusterDomain }}:{{ .Values.service.port }};
+        proxy_pass http://$uma_user_agent/;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+        proxy_set_header X-Original-URI $request_uri;
+        proxy_set_header X-Original-Method $request_method;
+      }
+spec:
+  rules:
+  - host: {{ printf "%s.%s" $hostname .Values.system.dnsDomain | quote }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Values.resourceServer.name }}
+          servicePort: {{ .Values.resourceServer.port }}
+  {{- if .Values.certManager.clusterIssuer }}
+  tls:
+    - hosts:
+        - {{ printf "%s.%s" $hostname .Values.system.dnsDomain | quote }}
+      secretName: {{ printf "%s-tls" $hostname | quote }}
+  {{- end }}
+{{- end }}

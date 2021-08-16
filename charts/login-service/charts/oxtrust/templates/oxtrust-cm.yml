@@ -9,6 +9,3 @@ data:
   GLUU_MAX_RAM_FRACTION: {{ .Values.gluuMaxRamFraction | quote }}
   DOMAIN: {{ .Values.global.domain | quote }}
   GLUU_OXAUTH_BACKEND: {{ .Values.gluuOxauthBackend | quote }}
-  {{- if .Values.elbIp }}
-  GLUU_SSL_CERT_FROM_SECRETS: "true"
-  {{- end }}

@@ -1,0 +1,107 @@
+# Default values for uma-user-agent.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: eoepca/uma-user-agent
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+system:
+  # Domain of the Kubernetes cluster
+  clusterDomain: svc.cluster.local
+  # DNS domain of the deployment
+  dnsDomain: demo.eoepca.org
+
+service:
+  type: ClusterIP
+  port: 80
+
+resourceServer:
+  name: myservice
+  port: 80
+  # resourceServer.url is derived from the name and port, but can be overriden here
+  # url: http://<name>:<port>/
+
+nginxIntegration:
+  # Flag to create ingress with config for nginx auth_request
+  enabled: false
+  # First part of the hostname - system.dnsDomain will be appended
+  hostname: ""
+
+# OIDC/UMA Client credentials
+client:
+  id: ""
+  secret: ""
+
+# Timeout (as client) for http requests
+httpTimeout: 10
+
+logging:
+  # One of: trace, debug, info, warn, error, fatal
+  level: "info"
+
+# URL for the 'auth_request' endpoint of the PEP
+pepUrl: "http://pep/"
+
+# Name of the cookie that will carry the User ID Token
+userIdCookieName: "auth_user_id"
+
+# Add TLS certs.
+# Empty value for `clusterIssuer` disables
+certManager:
+  clusterIssuer: ""
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

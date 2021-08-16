@@ -14,6 +14,3 @@ spec:
     {{- end }}
   selector:
     app: {{ .Values.global.user }}
-  {{- if .Values.elbIp }}
-  type: NodePort
-  {{- end }}

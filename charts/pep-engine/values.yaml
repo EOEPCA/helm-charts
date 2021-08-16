@@ -1,4 +1,4 @@
-# Default values for login-service.
+# Default values for pep-engine.
 
 global:
   namespace: default
@@ -9,6 +9,7 @@ global:
   proxyServicePort: 5566
   resourcesServicePort: 5576
   nginxIp: 10.0.2.15
+  clusterDomain: svc.cluster.local
 
 ports:
   proxy-pep:
@@ -25,13 +26,25 @@ configMap:
   sslCerts: "'false'"
   useThreads: "'true'"
   debugMode: "'true'"
-  resourceServer: http://ades/
   umaValidation: "'true'"
   limitUses: 1
   pdpPort: 5567
   pdpPolicy: /pdp/policy/
   verifySignature: "'false'"
   defaultResourcePath: /data/default-resources.json
+  workingMode: "FULL"
+
+resourceServer:
+  name: myservice
+  port: 80
+  # resourceServer.url is derived from the name and port, but can be overriden here
+  # url: http://<name>:<port>/
+
+nginxIntegration:
+  # Flag to create ingress with config for nginx auth_request
+  enabled: false
+  # First part of the hostname - global.domain will be appended
+  hostname: ""
 
 readinessProbe:
   initialDelaySeconds: 1

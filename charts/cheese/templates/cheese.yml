@@ -74,9 +74,6 @@ spec:
     targetPort: 80
   selector:
     app: cheddar
-  {{- if .Values.elbIp }}
-  type: NodePort
-  {{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -91,9 +88,6 @@ spec:
     targetPort: 80
   selector:
     app: stilton
-  {{- if .Values.elbIp }}
-  type: NodePort
-  {{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -108,6 +102,3 @@ spec:
     targetPort: 80
   selector:
     app: wensleydale
-  {{- if .Values.elbIp }}
-  type: NodePort
-  {{- end }}

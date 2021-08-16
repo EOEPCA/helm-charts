@@ -8,11 +8,7 @@ metadata:
   labels:
     service: oxtrust
   annotations:
-    {{- if .Values.elbIp }}
-    kubernetes.io/elb.ip: {{ .Values.elbIp }}
-    {{- else }}
     kubernetes.io/ingress.class: nginx
-    {{- end }}
     nginx.ingress.kubernetes.io/app-root: "/identity"
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/session-cookie-name: "route"
@@ -53,11 +49,7 @@ metadata:
   labels: 
     service: oxauth
   annotations:
-    {{- if .Values.elbIp }}
-    kubernetes.io/elb.ip: {{ .Values.elbIp }}
-    {{- else }}
     kubernetes.io/ingress.class: nginx
-    {{- end }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/configuration-snippet: "rewrite /.well-known/openid-configuration /oxauth/.well-known/openid-configuration$1 break;"
@@ -95,11 +87,7 @@ metadata:
   labels: 
     service: oxauth
   annotations:
-    {{- if .Values.elbIp }}
-    kubernetes.io/elb.ip: {{ .Values.elbIp }}
-    {{- else }}
     kubernetes.io/ingress.class: nginx
-    {{- end }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/configuration-snippet: "rewrite /.well-known/uma2-configuration /oxauth/restv1/uma2-configuration$1 break;"
@@ -137,11 +125,7 @@ metadata:
   labels: 
     service: oxauth
   annotations:
-    {{- if .Values.elbIp }}
-    kubernetes.io/elb.ip: {{ .Values.elbIp }}
-    {{- else }}
     kubernetes.io/ingress.class: nginx
-    {{- end }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/configuration-snippet: "rewrite /.well-known/webfinger /oxauth/.well-known/webfinger$1 break;"
@@ -180,11 +164,7 @@ metadata:
   labels: 
     service: oxauth
   annotations:
-    {{- if .Values.elbIp }}
-    kubernetes.io/elb.ip: {{ .Values.elbIp }}
-    {{- else }}
     kubernetes.io/ingress.class: nginx
-    {{- end }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/configuration-snippet: "rewrite /.well-known/simple-web-discovery /oxauth/.well-known/simple-web-discovery$1 break;"
@@ -223,11 +203,7 @@ metadata:
   labels: 
     service: oxtrust
   annotations:
-    {{- if .Values.elbIp }}
-    kubernetes.io/elb.ip: {{ .Values.elbIp }}
-    {{- else }}
     kubernetes.io/ingress.class: nginx
-    {{- end }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/configuration-snippet: "rewrite /.well-known/scim-configuration /identity/restv1/scim-configuration$1 break;"
@@ -266,11 +242,7 @@ metadata:
   labels: 
     service: oxauth
   annotations:
-    {{- if .Values.elbIp }}
-    kubernetes.io/elb.ip: {{ .Values.elbIp }}
-    {{- else }}
     kubernetes.io/ingress.class: nginx
-    {{- end }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/configuration-snippet: "rewrite /.well-known/fido-u2f-configuration /oxauth/restv1/fido-u2f-configuration$1 break;"
@@ -309,11 +281,7 @@ metadata:
   labels: 
     service: oxauth
   annotations:
-    {{- if .Values.elbIp }}
-    kubernetes.io/elb.ip: {{ .Values.elbIp }}
-    {{- else }}
     kubernetes.io/ingress.class: nginx
-    {{- end }}
     nginx.org/ssl-services: "oxauth"
     nginx.ingress.kubernetes.io/proxy-next-upstream: "error timeout invalid_header http_500 http_502 http_503 http_504"
 spec:
@@ -350,11 +318,7 @@ metadata:
   labels: 
     service: oxtrust
   annotations:    
-    {{- if .Values.elbIp }}
-    kubernetes.io/elb.ip: {{ .Values.elbIp }}
-    {{- else }}
     kubernetes.io/ingress.class: nginx
-    {{- end }}
     nginx.org/ssl-services: "oxtrust"
     nginx.ingress.kubernetes.io/app-root: "/identity"
     nginx.ingress.kubernetes.io/affinity: "cookie"
