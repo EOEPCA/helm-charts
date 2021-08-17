@@ -60,8 +60,7 @@ nginxIntegration:
 
 # OIDC/UMA Client credentials
 client:
-  id: ""
-  secret: ""
+  credentialsSecretName: ""
 
 # Timeout (as client) for http requests
 httpTimeout: 10
