@@ -15,7 +15,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.0.1
+version: 0.0.2
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -25,10 +25,10 @@ appVersion: "0.0.1"
 
 dependencies:
   - name: "pep-engine"
-    version: 0.9.20
-    # repository: "https://eoepca.github.io/helm-charts-dev/"
-    repository: "file://../pep-engine/"
-  # - name: "uma-user-agent"
-  #   version: 0.0.13
-  #   # repository: "https://eoepca.github.io/helm-charts-dev/"
-  #   repository: "file://../uma-user-agent/"
+    version: 0.9.21
+    repository: "https://eoepca.github.io/helm-charts/"
+    # repository: "file://../pep-engine/"
+  - name: "uma-user-agent"
+    version: 0.0.14
+    repository: "https://eoepca.github.io/helm-charts/"
+    # repository: "file://../uma-user-agent/"
