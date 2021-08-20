@@ -22,6 +22,8 @@ jobs:
       - name: Add helm repos
         run: |
           helm repo add eox https://charts-public.hub.eox.at/
+          helm repo add eoepca-dev https://eoepca.github.io/helm-charts-dev/
+          helm repo add eoepca https://eoepca.github.io/helm-charts/
           helm repo list
 
       - name: Run chart-releaser
