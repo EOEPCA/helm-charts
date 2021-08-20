@@ -17,6 +17,10 @@ global:
     port: 80
     # resourceServer.url is derived from the name and port, but can be overriden here
     # url: http://<name>:<port>/
+  # Add TLS certs.
+  # Empty value for `clusterIssuer` disables
+  certManager:
+    clusterIssuer: ""
 
 ports:
   proxy-pep:
@@ -75,11 +79,6 @@ persistence:
 # The PEP context is used to distinguish PEP instances,
 # e.g. PEP for ADES vs PEP for Catalogue etc.
 context: generic
-
-# Add TLS certs.
-# Empty value for `clusterIssuer` disables
-certManager:
-  clusterIssuer: ""
 
 # VolumeClaim values
 volumeClaim:

@@ -12,6 +12,10 @@ global:
     port: 80
     # resourceServer.url is derived from the name and port, but can be overriden here
     # url: http://<name>:<port>/
+  # Add TLS certs.
+  # Empty value for `clusterIssuer` disables
+  certManager:
+    clusterIssuer: ""
 
 replicaCount: 1
 
@@ -79,11 +83,6 @@ userIdCookieName: "auth_user_id"
 # E.g.
 # unauthorizedResponse: 'Basic realm="Access to the platform", charset="UTF-8"'
 unauthorizedResponse: ''
-
-# Add TLS certs.
-# Empty value for `clusterIssuer` disables
-certManager:
-  clusterIssuer: ""
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

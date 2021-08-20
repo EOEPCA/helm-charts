@@ -4,8 +4,8 @@ kind: Ingress
 metadata:
   name: {{ .Values.context }}-pep
   annotations:
-    {{- if .Values.certManager.clusterIssuer }}
-    cert-manager.io/cluster-issuer: {{ .Values.certManager.clusterIssuer }}
+    {{- if .Values.global.certManager.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.global.certManager.clusterIssuer }}
     {{- end }}
     kubernetes.io/ingress.class: nginx
 spec:
@@ -21,7 +21,7 @@ spec:
         backend:
           serviceName: {{ .Values.global.pep }}
           servicePort: {{ .Values.global.proxyServicePort }}
-  {{- if .Values.certManager.clusterIssuer }}
+  {{- if .Values.global.certManager.clusterIssuer }}
   tls:
     - hosts:
         - {{ printf "%s.%s" .Values.context .Values.global.domain | quote }}
@@ -52,8 +52,8 @@ kind: Ingress
 metadata:
   name: {{ $hostname }}
   annotations:
-    {{- if .Values.certManager.clusterIssuer }}
-    cert-manager.io/cluster-issuer: {{ .Values.certManager.clusterIssuer }}
+    {{- if .Values.global.certManager.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.global.certManager.clusterIssuer }}
     {{- end }}
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -77,7 +77,7 @@ spec:
         backend:
           serviceName: {{ .Values.global.resourceServer.name }}
           servicePort: {{ .Values.global.resourceServer.port }}
-  {{- if .Values.certManager.clusterIssuer }}
+  {{- if .Values.global.certManager.clusterIssuer }}
   tls:
     - hosts:
         - {{ printf "%s.%s" $hostname .Values.global.domain | quote }}
