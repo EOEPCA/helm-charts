@@ -75,8 +75,8 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: {{ .Values.resourceServer.name }}
-          servicePort: {{ .Values.resourceServer.port }}
+          serviceName: {{ .Values.global.resourceServer.name }}
+          servicePort: {{ .Values.global.resourceServer.port }}
   {{- if .Values.certManager.clusterIssuer }}
   tls:
     - hosts:

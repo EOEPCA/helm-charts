@@ -2,14 +2,21 @@
 
 global:
   namespace: default
-  domain: demoexample.gluu.org
   pep: pep-engine
+  # Domain of the Kubernetes cluster
+  clusterDomain: svc.cluster.local
+  # DNS domain of the deployment
+  domain: myplatform.eoepca.org
   realm: eoepca
   serviceHost: 0.0.0.0
   proxyServicePort: 5566
   resourcesServicePort: 5576
   nginxIp: 10.0.2.15
-  clusterDomain: svc.cluster.local
+  resourceServer:
+    name: myservice
+    port: 80
+    # resourceServer.url is derived from the name and port, but can be overriden here
+    # url: http://<name>:<port>/
 
 ports:
   proxy-pep:
@@ -33,12 +40,6 @@ configMap:
   verifySignature: "'false'"
   defaultResourcePath: /data/default-resources.json
   workingMode: "FULL"
-
-resourceServer:
-  name: myservice
-  port: 80
-  # resourceServer.url is derived from the name and port, but can be overriden here
-  # url: http://<name>:<port>/
 
 nginxIntegration:
   # Flag to create ingress with config for nginx auth_request

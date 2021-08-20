@@ -1,0 +1,6 @@
+dependencies:
+- name: pep-engine
+  repository: file://../pep-engine/
+  version: 0.9.20
+digest: sha256:5ad6906927ddc35e82da56906d345a8ee7bd71ce0f4cc1451b0de7a5c4700819
+generated: "2021-08-20T14:01:04.598294933+01:00"

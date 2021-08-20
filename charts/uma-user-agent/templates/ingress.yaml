@@ -16,7 +16,7 @@ metadata:
     nginx.ingress.kubernetes.io/server-snippet: |
       location /authcheck {
         internal;
-        set $uma_user_agent {{ include "uma-user-agent.fullname" . }}.{{ .Release.Namespace }}.{{ .Values.system.clusterDomain }}:{{ .Values.service.port }};
+        set $uma_user_agent {{ include "uma-user-agent.fullname" . }}.{{ .Release.Namespace }}.{{ .Values.global.clusterDomain }}:{{ .Values.service.port }};
         proxy_pass http://$uma_user_agent/;
         proxy_pass_request_body off;
         proxy_set_header Content-Length "";
@@ -25,17 +25,17 @@ metadata:
       }
 spec:
   rules:
-  - host: {{ printf "%s.%s" $hostname .Values.system.dnsDomain | quote }}
+  - host: {{ printf "%s.%s" $hostname .Values.global.domain | quote }}
     http:
       paths:
       - path: /
         backend:
-          serviceName: {{ .Values.resourceServer.name }}
-          servicePort: {{ .Values.resourceServer.port }}
+          serviceName: {{ .Values.global.resourceServer.name }}
+          servicePort: {{ .Values.global.resourceServer.port }}
   {{- if .Values.certManager.clusterIssuer }}
   tls:
     - hosts:
-        - {{ printf "%s.%s" $hostname .Values.system.dnsDomain | quote }}
+        - {{ printf "%s.%s" $hostname .Values.global.domain | quote }}
       secretName: {{ printf "%s-tls" $hostname | quote }}
   {{- end }}
 {{- end }}

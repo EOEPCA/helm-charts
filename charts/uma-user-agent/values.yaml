@@ -2,6 +2,17 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  # Domain of the Kubernetes cluster
+  clusterDomain: svc.cluster.local
+  # DNS domain of the deployment
+  domain: myplatform.eoepca.org
+  resourceServer:
+    name: myservice
+    port: 80
+    # resourceServer.url is derived from the name and port, but can be overriden here
+    # url: http://<name>:<port>/
+
 replicaCount: 1
 
 image:
@@ -13,6 +24,9 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+
+# URL for the 'auth_request' endpoint of the PEP
+pepUrl: "http://pep/"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -36,21 +50,9 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-system:
-  # Domain of the Kubernetes cluster
-  clusterDomain: svc.cluster.local
-  # DNS domain of the deployment
-  dnsDomain: demo.eoepca.org
-
 service:
   type: ClusterIP
   port: 80
-
-resourceServer:
-  name: myservice
-  port: 80
-  # resourceServer.url is derived from the name and port, but can be overriden here
-  # url: http://<name>:<port>/
 
 nginxIntegration:
   # Flag to create ingress with config for nginx auth_request
@@ -68,9 +70,6 @@ httpTimeout: 10
 logging:
   # One of: trace, debug, info, warn, error, fatal
   level: "info"
-
-# URL for the 'auth_request' endpoint of the PEP
-pepUrl: "http://pep/"
 
 # Name of the cookie that will carry the User ID Token
 userIdCookieName: "auth_user_id"
