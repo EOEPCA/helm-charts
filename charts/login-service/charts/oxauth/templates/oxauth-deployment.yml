@@ -22,8 +22,9 @@ spec:
           requests:
             memory: {{ .Values.requests.memory }}
             cpu: {{ .Values.requests.cpu }}
-          # limits:
-          #   memory: {{ .Values.limits.memory }} 
+          limits:
+            memory: {{ .Values.limits.memory }}
+            cpu: {{ .Values.limits.cpu }}
         ports:
         - name: oxauth
           containerPort: 8080

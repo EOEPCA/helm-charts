@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.config.configMapName | default (include "uma-user-agent.fullname" .) }}
+data:
+  config.yaml: |
+    logging:
+      level: {{ .Values.logging.level }}
+    network:
+      httpTimeout: {{ .Values.httpTimeout }}
+      listenPort: {{ .Values.service.port }}
+    pep:
+      url: {{ printf "http://%s:%d/authorize" .Values.global.pep (index .Values "global" "ports" "proxy-pep" "port" | int) }}
+    userIdCookieName: {{ .Values.userIdCookieName }}
+    unauthorizedResponse: {{ .Values.unauthorizedResponse }}

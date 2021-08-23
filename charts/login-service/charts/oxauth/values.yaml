@@ -18,7 +18,7 @@ requests:
   cpu: 200m
   memory: 1.2Gi
 limits:
-  cpu: 200m
+  cpu: 300m
   memory: 1.5Gi
 
 #hostAliases

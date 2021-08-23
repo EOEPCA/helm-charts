@@ -65,6 +65,9 @@ nginxIntegration:
   # First part of the hostname - system.dnsDomain will be appended
   hostname: ""
 
+config:
+  configMapName: ""
+
 # OIDC/UMA Client credentials
 client:
   credentialsSecretName: ""
