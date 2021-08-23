@@ -253,6 +253,18 @@ entries:
   login-service:
   - apiVersion: v1
     appVersion: 0.9.0
+    created: "2021-08-23T12:10:43.064923255Z"
+    description: A Helm chart for Login Service
+    digest: dba653b527910a15c49e2213e560952b50eb211d54f132e465e2f27b43eceb2c
+    maintainers:
+    - name: eoepca
+    name: login-service
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/login-service-0.9.30/login-service-0.9.30.tgz
+    version: 0.9.30
+  - apiVersion: v1
+    appVersion: 0.9.0
     created: "2021-08-16T08:35:55.768131747Z"
     description: A Helm chart for Login Service
     digest: b798655b484f9b50b6a92cf00aa63cdc60025e363bdc88f4adf82da77865bc48
@@ -872,6 +884,16 @@ entries:
   uma-user-agent:
   - apiVersion: v2
     appVersion: 0.0.7
+    created: "2021-08-23T12:10:43.190717236Z"
+    description: A Helm chart for Kubernetes
+    digest: 7efab64ab38ed532482c9951bdb2236334b7b61241337fa72f884c70b9ae9bf8
+    name: uma-user-agent
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/uma-user-agent-0.0.16/uma-user-agent-0.0.16.tgz
+    version: 0.0.16
+  - apiVersion: v2
+    appVersion: 0.0.7
     created: "2021-08-23T09:58:47.444161273Z"
     description: A Helm chart for Kubernetes
     digest: c5bb0dd640b86c232a84a6ae05b635b1a7cb12a5e771e6ebbc613d3e5252f0c5
@@ -1055,4 +1077,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2021-08-23T10:19:11.855273089Z"
+generated: "2021-08-23T12:10:43.191687803Z"
