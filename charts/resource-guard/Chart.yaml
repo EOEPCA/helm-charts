@@ -35,6 +35,6 @@ dependencies:
   # UMA User Agent chart
   #-----------------------------------------------------------------------------
   - name: "uma-user-agent"
-    version: 0.0.15
+    version: 0.0.16
     repository: "https://eoepca.github.io/helm-charts/"
     # repository: "file://../uma-user-agent/"
