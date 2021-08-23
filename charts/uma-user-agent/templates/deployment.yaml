@@ -49,7 +49,7 @@ spec:
             - name: LOG_LEVEL
               value: {{ .Values.logging.level | quote }}
             - name: PEP_URL
-              value: {{ .Values.pepUrl | quote }}
+              value: {{ printf "http://%s:%d/authorize" .Values.global.pep (index .Values "global" "ports" "proxy-pep" "port" | int) | quote }}
             - name: PORT
               value: {{ .Values.service.port | quote }}
             - name: USER_ID_COOKIE_NAME

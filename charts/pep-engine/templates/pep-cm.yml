@@ -6,7 +6,7 @@ data:
   PEP_REALM: {{ .Values.global.realm | quote }}
   PEP_AUTH_SERVER_URL: https://{{ .Values.global.domain }}
   PEP_SERVICE_HOST: {{ .Values.global.serviceHost | quote }}
-  PEP_SERVICE_PORT: {{ .Values.global.proxyServicePort | quote }}
+  PEP_SERVICE_PORT: {{ index .Values "global" "ports" "proxy-pep" "port" | quote }}
   PEP_S_MARGIN_RPT_VALID: {{ .Values.configMap.margin | quote }}
   PEP_CHECK_SSL_CERTS: {{ .Values.configMap.sslCerts | quote }}
   PEP_USE_THREADS: {{ .Values.configMap.useThreads | quote }}
@@ -18,8 +18,8 @@ data:
   PEP_PDP_PORT: {{ .Values.configMap.pdpPort | quote }}
   PEP_PDP_POLICY_ENDPOINT: {{ .Values.configMap.pdpPolicy | quote }}
   PEP_VERIFY_SIGNATURE: {{ .Values.configMap.verifySignature | quote }}
-  PEP_PROXY_SERVICE_PORT: {{ .Values.global.proxyServicePort | quote }}
-  PEP_RESOURCES_SERVICE_PORT: {{ .Values.global.resourcesServicePort | quote }}
+  PEP_PROXY_SERVICE_PORT: {{ index .Values "global" "ports" "proxy-pep" "port" | quote }}
+  PEP_RESOURCES_SERVICE_PORT: {{ index .Values "global" "ports" "resources-pep" "port" | quote }}
   PEP_DEFAULT_RESOURCE_PATH: {{ .Values.configMap.defaultResourcePath | quote }}
   PEP_WORKING_MODE: {{ .Values.configMap.workingMode | quote }}
 

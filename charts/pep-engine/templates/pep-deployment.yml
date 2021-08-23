@@ -24,16 +24,16 @@ spec:
             cpu: {{ .Values.requests.serviceCpu }}
         livenessProbe:
           tcpSocket:
-            port: {{ .Values.global.proxyServicePort }}
+            port: {{ index .Values "global" "ports" "proxy-pep" "port" }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
         readinessProbe:
           tcpSocket:
-            port: {{ .Values.global.proxyServicePort }}
+            port: {{ index .Values "global" "ports" "proxy-pep" "port" }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
         ports:
-        {{- range $key, $value := .Values.ports }}
+        {{- range $key, $value := .Values.global.ports }}
         - containerPort: {{ $value.targetPort }}
           name: {{ $key }}
           protocol: {{ $value.type }}

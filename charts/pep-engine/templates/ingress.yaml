@@ -20,7 +20,7 @@ spec:
       - path: /
         backend:
           serviceName: {{ .Values.global.pep }}
-          servicePort: {{ .Values.global.proxyServicePort }}
+          servicePort: {{ index .Values "global" "ports" "proxy-pep" "port" }}
   {{- if .Values.global.certManager.clusterIssuer }}
   tls:
     - hosts:
@@ -42,7 +42,7 @@ spec:
       - path: /
         backend:
           serviceName: {{ .Values.global.pep }}
-          servicePort: {{ .Values.global.resourcesServicePort }}
+          servicePort: {{ index .Values "global" "ports" "resources-pep" "port" }}
 ---
 {{- if and (eq .Values.configMap.workingMode "PARTIAL") (.Values.nginxIntegration.enabled) }}
 {{- $defaultHostname := default (include "pep-engine.fullname" .) .Values.context }}
@@ -61,7 +61,7 @@ metadata:
     nginx.ingress.kubernetes.io/server-snippet: |
       location /authcheck {
         internal;
-        set $pep_address {{ .Values.global.pep }}.{{ .Release.Namespace }}.{{ .Values.global.clusterDomain }}:{{ .Values.global.proxyServicePort }};
+        set $pep_address {{ .Values.global.pep }}.{{ .Release.Namespace }}.{{ .Values.global.clusterDomain }}:{{ index .Values "global" "ports" "proxy-pep" "port" }};
         proxy_pass http://$pep_address/authorize;
         proxy_pass_request_body off;
         proxy_set_header Content-Length "";

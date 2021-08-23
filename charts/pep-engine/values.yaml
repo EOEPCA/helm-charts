@@ -9,8 +9,15 @@ global:
   domain: myplatform.eoepca.org
   realm: eoepca
   serviceHost: 0.0.0.0
-  proxyServicePort: 5566
-  resourcesServicePort: 5576
+  ports:
+    proxy-pep:
+      port: 5566
+      targetPort: 5566
+      type: TCP
+    resources-pep:
+      port: 5576
+      targetPort: 5576
+      type: TCP
   nginxIp: 10.0.2.15
   resourceServer:
     name: myservice
@@ -21,16 +28,6 @@ global:
   # Empty value for `clusterIssuer` disables
   certManager:
     clusterIssuer: ""
-
-ports:
-  proxy-pep:
-    port: 5566
-    targetPort: 5566
-    type: TCP
-  resources-pep:
-    port: 5576
-    targetPort: 5576
-    type: TCP
 
 configMap:
   margin: 5

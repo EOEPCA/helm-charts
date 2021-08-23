@@ -7,6 +7,10 @@ global:
   clusterDomain: svc.cluster.local
   # DNS domain of the deployment
   domain: myplatform.eoepca.org
+  pep: pep-engine
+  ports:
+    proxy-pep:
+      port: 5566
   resourceServer:
     name: myservice
     port: 80
@@ -28,9 +32,6 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-
-# URL for the 'auth_request' endpoint of the PEP
-pepUrl: "http://pep/"
 
 serviceAccount:
   # Specifies whether a service account should be created

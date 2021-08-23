@@ -6,7 +6,7 @@ metadata:
     app: {{ .Values.global.pep }}
 spec:
   ports:
-    {{- range $key, $value := .Values.ports }}
+    {{- range $key, $value := .Values.global.ports }}
     - port: {{ $value.port }}
       targetPort: {{ $value.targetPort }}
       protocol: {{ $value.type }}
