@@ -80,7 +80,8 @@ spec:
               - configMap:
                   name: {{ .Values.config.configMapName | default (include "uma-user-agent.fullname" .) }}
               - secret:
-                  name: {{ .Values.client.credentialsSecretName | default (include "uma-user-agent.fullname" .) }}
+                  # name: {{ .Values.client.credentialsSecretName | default (include "uma-user-agent.fullname" .) }}
+                  name: {{ printf "%s-new" (.Values.client.credentialsSecretName | default (include "uma-user-agent.fullname" .)) }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
