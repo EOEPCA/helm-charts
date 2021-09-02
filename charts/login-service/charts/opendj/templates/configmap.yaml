@@ -23,19 +23,6 @@ data:
   PDP_EP: {{ .Values.persistence.pdpEp | quote}}
 
 
-
-GLUU_LDAP_AUTO_REPLICATE: 'false'
-GLUU_LDAP_INIT_PORT: 1636
-GLUU_OXTRUST_CONFIG_GENERATION: true
-GLUU_CACHE_TYPE: NATIVE_PERSISTENCE
-GLUU_CERT_ALT_NAME: opendj
-GLUU_CONFIG_ADAPTER: kubernetes
-GLUU_LDAP_ADVERTISE_ADRR: opendj
-GLUU_LDAP_INIT: true
-GLUU_LDAP_INIT_HOST: opendj
-GLUU_SECRET_ADAPTER: kubernetes
-
-
 ---
 
 apiVersion: v1

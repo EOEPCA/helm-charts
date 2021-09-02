@@ -5,10 +5,10 @@ metadata:
 data:
   OIDC_RP_SIGN_ALGO: {{ .Values.configmap.sign_algo }}
 
-  OIDC_OP_AUTHORIZATION_ENDPOINT: "https://portal.{{ .Values.hostname }}/oxauth/restv1/authorize"
-  OIDC_OP_TOKEN_ENDPOINT: "https://portal.{{ .Values.hostname }}/oxauth/restv1/token"
-  OIDC_OP_USER_ENDPOINT: "https://portal.{{ .Values.hostname }}/oxauth/restv1/userinfo"
-  OIDC_OP_JWKS_ENDPOINT: "https://portal.{{ .Values.hostname }}/oxauth/restv1/jwks"
+  OIDC_OP_AUTHORIZATION_ENDPOINT: "https://test.{{ .Values.hostname }}/oxauth/restv1/authorize"
+  OIDC_OP_TOKEN_ENDPOINT: "https://test.{{ .Values.hostname }}/oxauth/restv1/token"
+  OIDC_OP_USER_ENDPOINT: "https://test.{{ .Values.hostname }}/oxauth/restv1/userinfo"
+  OIDC_OP_JWKS_ENDPOINT: "https://test.{{ .Values.hostname }}/oxauth/restv1/jwks"
 
   OIDC_TOKEN_USE_BASIC_AUTH: {{ .Values.configmap.use_basic_auth | quote }}
   TOKEN_ID_COOKIE: {{ .Values.configmap.token_id_cookie }}
