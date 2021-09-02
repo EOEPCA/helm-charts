@@ -158,6 +158,16 @@ entries:
   django-portal:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2021-09-02T16:18:29.804528239Z"
+    description: A Helm chart for Kubernetes
+    digest: a6cb48267dc1ed1e0e17a9833ea29c2fb9a12b6700389f7e85a3b2d05206b576
+    name: django-portal
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/django-portal-0.1.7/django-portal-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-09-02T09:55:12.979091911Z"
     description: A Helm chart for Kubernetes
     digest: a021212003959b868ddee4a39f6690d5bdbe16873870783f4f6310775c60c118
@@ -262,6 +272,18 @@ entries:
     - https://github.com/EOEPCA/helm-charts/releases/download/license-manager-0.1.0/license-manager-0.1.0.tgz
     version: 0.1.0
   login-service:
+  - apiVersion: v1
+    appVersion: 0.9.0
+    created: "2021-09-02T16:18:30.00201163Z"
+    description: A Helm chart for Login Service
+    digest: dda097876125d866c3136f8e7958d453bbfbddb7a4318938336a3d2d7250fedd
+    maintainers:
+    - name: eoepca
+    name: login-service
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/login-service-0.9.39/login-service-0.9.39.tgz
+    version: 0.9.39
   - apiVersion: v1
     appVersion: 0.9.0
     created: "2021-09-02T09:55:13.398236429Z"
@@ -1144,4 +1166,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2021-09-02T09:55:13.398460033Z"
+generated: "2021-09-02T16:18:30.00284673Z"
