@@ -35,7 +35,9 @@ spec:
         - name: {{ .Values.persistence.clientSecret }}
           value: {{ .Values.persistence.clientSecretv }}
         - name: {{ .Values.persistence.coihClientID }}
-          value: '{{ .Values.persistence.coihClientIDv }}'
+          value: {{ .Values.persistence.coihClientIDv | quote }}
         - name: {{ .Values.persistence.coihClientSecret }}
-          value: '{{ .Values.persistence.coihClientSecretv }}'
+          value: {{ .Values.persistence.coihClientSecretv | quote }}
+        - name: PDP_EP
+          value: {{ .Values.persistence.pdpEp }}
 {{ end }}

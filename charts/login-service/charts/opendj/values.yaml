@@ -29,7 +29,7 @@ opendj:
   add: opendj
   repLdap: "'false'"
 persistence:
-  enabled: true
+  enabled: false
   size: 100M
   pvcSize: 3Gi
   name: persistence
@@ -62,9 +62,9 @@ persistence:
   pdpEp: /pdp
 #COIH Provider values needs to be configured after deployment for security issues
   coihClientID: COIH_CLIENT_ID
-  coihClientIDv: ""
+  coihClientIDv: "1234"
   coihClientSecret: COIH_CLIENT_SECRET
-  coihClientSecretv: ""
+  coihClientSecretv: "1234"
 #container specific values declared here
 tcpSocket:
   port: 1636
@@ -76,8 +76,8 @@ livenessProbe:
   periodSeconds: 90
 
 limits:
-  memory: 600Mi
-  cpu: 900m
+  memory: 900Mi
+  cpu: 2900m
 requests:
   cpu: 700m
   memory: 500Mi

@@ -25,8 +25,8 @@ volumeClaim:
   name: um-login-service-config-pvc
 
 limits:
-  cpu: 200m
-  memory: 600Mi
+  cpu: 600m
+  memory: 800Mi
 requests:
   cpu: 100m
   memory: 500Mi

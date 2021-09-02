@@ -1,0 +1,30 @@
+{{- $fullName := include "django-portal.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: portal
+  labels:
+    {{- include "django-portal.labels" . | nindent 4 }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    {{- if .Values.elbIp }}
+    kubernetes.io/elb.ip: {{ .Values.elbIp }}
+    {{- end }}
+spec:
+  tls:
+    - hosts:
+        - portal.{{ .Values.hostname }}
+      secretName: portal-tls        
+  rules:
+  - host: portal.{{ .Values.hostname }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: portal
+          servicePort: {{ .Values.service.port }}
