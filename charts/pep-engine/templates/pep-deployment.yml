@@ -72,4 +72,4 @@ spec:
             claimName: {{ .Values.volumeClaim.name }}
         - name: default-resources
           configMap:
-            name: custom-resources
+            name: {{ .Values.global.pep }}-custom-resources

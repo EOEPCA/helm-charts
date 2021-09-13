@@ -28,7 +28,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: custom-resources  
+  name: {{ .Values.global.pep }}-custom-resources
 data:
   {{ if .Files.Get "scripts/default-resources.json" }}
   default-resources.json: {{ .Files.Get "scripts/default-resources.json" | quote  }}
