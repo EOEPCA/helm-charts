@@ -65,7 +65,10 @@ spec:
       hostAliases:
       - ip: {{ .Values.global.nginxIp }}
         hostnames:
-        - {{ .Values.global.domain }}
+        - {{ printf "%s.%s" .Values.configMap.asHostname .Values.global.domain }}
+        {{- if not (eq .Values.configMap.asHostname .Values.configMap.pdpHostname) }}
+        - {{ printf "%s.%s" .Values.configMap.pdpHostname .Values.global.domain }}
+        {{- end }}
       volumes:
         - name: {{ .Values.volumeClaim.name }}
           persistentVolumeClaim:

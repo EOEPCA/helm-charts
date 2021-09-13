@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.global.pep }}-cm
 data:
   PEP_REALM: {{ .Values.global.realm | quote }}
-  PEP_AUTH_SERVER_URL: https://{{ .Values.global.domain }}
+  PEP_AUTH_SERVER_URL: {{ printf "https://%s.%s" .Values.configMap.asHostname .Values.global.domain }}
   PEP_SERVICE_HOST: {{ .Values.global.serviceHost | quote }}
   PEP_SERVICE_PORT: {{ index .Values "global" "ports" "proxy-pep" "port" | quote }}
   PEP_S_MARGIN_RPT_VALID: {{ .Values.configMap.margin | quote }}
@@ -14,7 +14,7 @@ data:
   PEP_RESOURCE_SERVER_ENDPOINT: {{ .Values.global.resourceServer.url | default (printf "http://%v:%v/" .Values.global.resourceServer.name .Values.global.resourceServer.port) | quote }}
   PEP_API_RPT_UMA_VALIDATION: {{ .Values.configMap.umaValidation | quote }}
   PEP_RPT_LIMIT_USES: {{ .Values.configMap.limitUses | quote }}
-  PEP_PDP_URL: http://{{ .Values.global.domain }}
+  PEP_PDP_URL: {{ printf "http://%s.%s" .Values.configMap.pdpHostname .Values.global.domain }}
   PEP_PDP_PORT: {{ .Values.configMap.pdpPort | quote }}
   PEP_PDP_POLICY_ENDPOINT: {{ .Values.configMap.pdpPolicy | quote }}
   PEP_VERIFY_SIGNATURE: {{ .Values.configMap.verifySignature | quote }}
