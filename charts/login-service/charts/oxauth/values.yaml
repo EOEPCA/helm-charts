@@ -57,3 +57,8 @@ volumeMounts:
   pages:
     mountPath: /opt/gluu/jetty/oxauth/custom/pages
     subPath: oxauth/custom/pages
+
+persistence: 
+  accessModes: ReadWriteMany
+  dbStorageSize: 5Gi
+  type: DirectoryOrCreate

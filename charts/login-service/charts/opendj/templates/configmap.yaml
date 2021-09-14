@@ -18,7 +18,7 @@ data:
   {{- else }}
   GLUU_CACHE_TYPE: {{ .Values.gluuCacheType | quote }}
   {{- end }}
-  # # must the same as the opendj service name
+  # must the same as the opendj service name
   GLUU_CERT_ALT_NAME: {{ .Values.global.serviceName }} #{{ template "login-service.fullname" . }}-service
   PDP_EP: {{ .Values.persistence.pdpEp | quote}}
 

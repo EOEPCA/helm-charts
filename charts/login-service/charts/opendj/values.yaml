@@ -29,7 +29,7 @@ opendj:
   add: opendj
   repLdap: "'false'"
 persistence:
-  enabled: false
+  enabled: true
   size: 100M
   pvcSize: 3Gi
   name: persistence
@@ -38,10 +38,6 @@ persistence:
   dbStorageSize: 5Gi
   statefulSetReplicas: 1
   restartPolicy: Never
-  # image:
-  #   repository: eoepca/um-login-persistence
-  #   pullPolicy: IfNotPresent
-  #   tag: ""
   configAdapter: GLUU_CONFIG_ADAPTER
   adapter: "kubernetes"
   secretAdapter: GLUU_SECRET_ADAPTER
@@ -76,8 +72,8 @@ livenessProbe:
   periodSeconds: 90
 
 limits:
-  memory: 900Mi
-  cpu: 2900m
+  memory: 600Mi
+  cpu: 700m
 requests:
   cpu: 700m
   memory: 500Mi
