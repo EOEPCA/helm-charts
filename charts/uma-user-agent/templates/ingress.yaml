@@ -17,7 +17,7 @@ metadata:
       auth_request_set $x_user_id $upstream_http_x_user_id;
       proxy_set_header "X-User-Id" $x_user_id;
     nginx.ingress.kubernetes.io/server-snippet: |
-      location /authcheck {
+      location ^~ /authcheck {
         internal;
         set $uma_user_agent {{ include "uma-user-agent.fullname" . }}.{{ .Release.Namespace }}.{{ .Values.global.clusterDomain }}:{{ .Values.service.port }};
         proxy_pass http://$uma_user_agent/;
