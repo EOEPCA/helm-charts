@@ -11,11 +11,6 @@ global:
   ports:
     proxy-pep:
       port: 5566
-  resourceServer:
-    name: myservice
-    port: 80
-    # resourceServer.url is derived from the name and port, but can be overriden here
-    # url: http://<name>:<port>/
   # Add TLS certs.
   # Empty value for `clusterIssuer` disables
   certManager:
