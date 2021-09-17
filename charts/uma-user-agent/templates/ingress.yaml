@@ -28,10 +28,12 @@ spec:
   - host: {{ printf "%s.%s" $hostname .Values.global.domain | quote }}
     http:
       paths:
-      - path: /
-        backend:
-          serviceName: {{ .Values.global.resourceServer.name }}
-          servicePort: {{ .Values.global.resourceServer.port }}
+        {{- range .Values.nginxIntegration.paths }}
+        - path: {{ .path }}
+          backend:
+            serviceName: {{ .service.name }}
+            servicePort: {{ .service.port }}
+        {{- end }}
   {{- if .Values.global.certManager.clusterIssuer }}
   tls:
     - hosts:
