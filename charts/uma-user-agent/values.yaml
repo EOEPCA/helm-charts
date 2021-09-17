@@ -64,6 +64,7 @@ nginxIntegration:
       service:
         name: myservice
         port: 80
+  annotations: {}
 
 config:
   configMapName: ""
