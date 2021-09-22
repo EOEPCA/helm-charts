@@ -44,6 +44,14 @@ configMap:
   defaultResourcePath: /data/default-resources.json
   workingMode: "FULL"
 
+defaultResources:
+  - name: "Base Path"
+    description: "Base path for Open Access to service"
+    resource_uri: "/"
+    scopes:
+      - "public_access"
+    default_owner: "0000000000000"
+
 nginxIntegration:
   # Flag to create ingress with config for nginx auth_request
   enabled: false

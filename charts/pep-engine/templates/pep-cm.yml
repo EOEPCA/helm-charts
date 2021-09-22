@@ -30,8 +30,12 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.global.pep }}-custom-resources
 data:
-  {{ if .Files.Get "scripts/default-resources.json" }}
-  default-resources.json: {{ .Files.Get "scripts/default-resources.json" | quote  }}
-  {{ else }}
-  {{ fail "you need to supply a default resource JSON file! add 'default-resources.json' to your chart 'scripts' directory." }}
-  {{ end }}
+  {{- if .Values.defaultResources }}
+  default-resources.json: |
+    {
+      "default_resources":
+        {{- .Values.defaultResources | toPrettyJson | nindent 8 }}
+    }
+  {{- else }}
+  {{ fail "default resources must be supplied" }}
+  {{- end }}
