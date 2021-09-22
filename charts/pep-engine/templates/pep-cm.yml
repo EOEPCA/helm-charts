@@ -30,11 +30,22 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.global.pep }}-custom-resources
 data:
-  {{- if .Values.defaultResources }}
+  {{- if or .Values.defaultResources .Values.customDefaultResources }}
+  {{- $resources := list }}
+  {{- range .Values.defaultResources }}
+    {{- $resources = append $resources . }}
+  {{- end}}
+  {{- range .Values.customDefaultResources }}
+    {{- $resources = append $resources . }}
+  {{- end}}
   default-resources.json: |
     {
-      "default_resources":
-        {{- .Values.defaultResources | toPrettyJson | nindent 8 }}
+      "default_resources": [
+        {{- range $i, $v := $resources }}
+          {{- if not (eq $i 0) }},{{- end }}
+          {{- $v | toPrettyJson | nindent 8 }}
+        {{- end }}
+      ]
     }
   {{- else }}
   {{ fail "default resources must be supplied" }}
