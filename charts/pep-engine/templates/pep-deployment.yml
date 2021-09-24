@@ -60,7 +60,7 @@ spec:
             name: {{ .Values.global.pep }}-cm
         volumeMounts:
         - mountPath: /data/db/
-          subPath: {{ .Values.global.pep }}/{{ .Values.context }}/data/db
+          subPath: {{ .Values.global.pep }}/{{ .Values.global.context }}/data/db
           name: {{ .Values.volumeClaim.name }}
       hostAliases:
       - ip: {{ .Values.global.nginxIp }}

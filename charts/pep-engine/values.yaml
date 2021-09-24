@@ -1,6 +1,9 @@
 # Default values for pep-engine.
 
 global:
+  # The context is used to distinguish PEP instances,
+  # e.g. PEP for ADES vs PEP for Catalogue etc.
+  context: generic
   namespace: default
   pep: pep-engine
   # Domain of the Kubernetes cluster
@@ -91,10 +94,6 @@ persistence:
   accessModes: ReadWriteMany
   dbStorageSize: 5Gi
   type: DirectoryOrCreate
-
-# The PEP context is used to distinguish PEP instances,
-# e.g. PEP for ADES vs PEP for Catalogue etc.
-context: generic
 
 # VolumeClaim values
 volumeClaim:

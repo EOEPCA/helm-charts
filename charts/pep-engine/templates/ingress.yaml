@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Values.context }}-pep
+  name: {{ .Values.global.context }}-pep
   annotations:
     {{- if .Values.global.certManager.clusterIssuer }}
     cert-manager.io/cluster-issuer: {{ .Values.global.certManager.clusterIssuer }}
@@ -11,9 +11,9 @@ metadata:
 spec:
   rules:
   {{- if eq .Values.configMap.workingMode "PARTIAL" }}
-  - host: {{ printf "%s-pep.%s" .Values.context .Values.global.domain | quote }}
+  - host: {{ printf "%s-pep.%s" .Values.global.context .Values.global.domain | quote }}
   {{- else }}
-  - host: {{ printf "%s.%s" .Values.context .Values.global.domain | quote }}
+  - host: {{ printf "%s.%s" .Values.global.context .Values.global.domain | quote }}
   {{- end }}
     http:
       paths:
@@ -24,19 +24,19 @@ spec:
   {{- if .Values.global.certManager.clusterIssuer }}
   tls:
     - hosts:
-        - {{ printf "%s.%s" .Values.context .Values.global.domain | quote }}
-      secretName: {{ printf "%s-pep-tls" .Values.context | quote }}
+        - {{ printf "%s.%s" .Values.global.context .Values.global.domain | quote }}
+      secretName: {{ printf "%s-pep-tls" .Values.global.context | quote }}
   {{- end }}
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Values.context }}-pepapi
+  name: {{ .Values.global.context }}-pepapi
   annotations:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: {{ printf "%s-pepapi.%s" .Values.context .Values.global.domain | quote }}
+  - host: {{ printf "%s-pepapi.%s" .Values.global.context .Values.global.domain | quote }}
     http:
       paths:
       - path: /
@@ -45,7 +45,7 @@ spec:
           servicePort: {{ index .Values "global" "ports" "resources-pep" "port" }}
 ---
 {{- if and (eq .Values.configMap.workingMode "PARTIAL") (.Values.nginxIntegration.enabled) }}
-{{- $defaultHostname := default (include "pep-engine.fullname" .) .Values.context }}
+{{- $defaultHostname := default (include "pep-engine.fullname" .) .Values.global.context }}
 {{- $hostname := default $defaultHostname .Values.nginxIntegration.hostname }}
 apiVersion: extensions/v1beta1
 kind: Ingress
