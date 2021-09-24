@@ -12,5 +12,6 @@ data:
     pep:
       url: {{ printf "http://%s:%d/authorize" .Values.global.pep (index .Values "global" "ports" "proxy-pep" "port" | int) }}
     userIdCookieName: {{ .Values.userIdCookieName }}
+    authRptCookieName: {{ printf "%s-%s" .Values.authRptCookieName .Values.global.context }}
     unauthorizedResponse: {{ .Values.unauthorizedResponse }}
     openAccess: {{ .Values.openAccess }}

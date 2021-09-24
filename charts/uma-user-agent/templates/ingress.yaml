@@ -15,7 +15,9 @@ metadata:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       auth_request /authcheck;
       auth_request_set $x_user_id $upstream_http_x_user_id;
+      auth_request_set $x_auth_rpt $upstream_http_x_auth_rpt;
       proxy_set_header "X-User-Id" $x_user_id;
+      add_header "Set-Cookie" "{{ printf "%s-%s" .Values.authRptCookieName .Values.global.context }}=$x_auth_rpt; Secure; HttpOnly";
     nginx.ingress.kubernetes.io/server-snippet: |
       location ^~ /authcheck {
         internal;

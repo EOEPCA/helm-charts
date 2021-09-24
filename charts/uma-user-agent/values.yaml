@@ -3,6 +3,9 @@
 # Declare variables to be passed into your templates.
 
 global:
+  # The context is used to distinguish instances,
+  # e.g. protection for ADES vs protection for Catalogue etc.
+  context: generic
   # Domain of the Kubernetes cluster
   clusterDomain: svc.cluster.local
   # DNS domain of the deployment
@@ -82,6 +85,9 @@ logging:
 
 # Name of the cookie that will carry the User ID Token
 userIdCookieName: "auth_user_id"
+
+# Name of the cookie that will carry the RPT Token
+authRptCookieName: "auth_rpt"
 
 # Content of the header Www-Authenticate for an Unauthorized (401) response.
 # Ref. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate
