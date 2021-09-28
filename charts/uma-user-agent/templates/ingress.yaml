@@ -1,5 +1,5 @@
 {{- if .Values.nginxIntegration.enabled }}
-{{- $hostname := default (include "uma-user-agent.fullname" .) .Values.nginxIntegration.hostname }}
+{{- $domain := .Values.global.domain -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -30,19 +30,23 @@ metadata:
       }
 spec:
   rules:
-  - host: {{ printf "%s.%s" $hostname .Values.global.domain | quote }}
-    http:
-      paths:
-        {{- range .Values.nginxIntegration.paths }}
-        - path: {{ .path }}
-          backend:
-            serviceName: {{ .service.name }}
-            servicePort: {{ .service.port }}
-        {{- end }}
+    {{- range .Values.nginxIntegration.hosts }}
+    - host: {{ printf "%s.%s" .host $domain | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            backend:
+              serviceName: {{ .service.name }}
+              servicePort: {{ .service.port }}
+          {{- end }}
+    {{- end }}
   {{- if .Values.global.certManager.clusterIssuer }}
   tls:
-    - hosts:
-        - {{ printf "%s.%s" $hostname .Values.global.domain | quote }}
-      secretName: {{ printf "%s-tls" $hostname | quote }}
+    - secretName: {{ printf "%s-tls" (include "uma-user-agent.fullname" .) | quote }}
+      hosts:
+        {{- range .Values.nginxIntegration.hosts }}
+        - {{ printf "%s.%s" .host $domain | quote }}
+        {{- end }}
   {{- end }}
 {{- end }}

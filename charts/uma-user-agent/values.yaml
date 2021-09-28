@@ -60,13 +60,14 @@ service:
 nginxIntegration:
   # Flag to create ingress with config for nginx auth_request
   enabled: false
-  # First part of the hostname - global.dnsDomain will be appended
-  hostname: ""
-  paths:
-    - path: /
-      service:
-        name: myservice
-        port: 80
+  hosts:
+    # First part of the hostname - global.domain will be appended
+    - host: ""
+      paths:
+        - path: /
+          service:
+            name: myservice
+            port: 80
   annotations: {}
 
 config:
