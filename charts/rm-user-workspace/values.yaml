@@ -291,5 +291,3 @@ rm-resource-catalogue:
       server:
         url: https://resource-catalogue.user.185.52.193.87.nip.io/
         federatedcatalogues: https://resource-catalogue.185.52.193.87.nip.io/
-
-resource-guard:
