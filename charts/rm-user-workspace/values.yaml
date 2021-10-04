@@ -183,7 +183,7 @@ vs:
     initdbScripts:
       enablePostgis.sh: |
         echo "Enabling postgis - workspace"
-        PGPASSWORD="dbpgpw" psql -U postgres -d "${POSTGRES_DB}" -c "CREATE EXTENSION postgis;"
+        PGPASSWORD="dbpw" psql -U postgres -d "${POSTGRES_DB}" -c "CREATE EXTENSION postgis;"
     replicaCount: 1
     resources:
       limits:
