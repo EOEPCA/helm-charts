@@ -1,3 +1,5 @@
+{{ if .Values.persistence.enabled }}
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -38,3 +40,4 @@ spec:
           value: {{ .Values.persistence.coihClientSecretv | quote }}
         - name: PDP_EP
           value: {{ .Values.persistence.pdpEp }}
+{{ end }}

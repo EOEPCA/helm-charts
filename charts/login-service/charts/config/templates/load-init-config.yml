@@ -12,7 +12,7 @@ spec:
       volumes:
         - name: vol-userman
           persistentVolumeClaim:
-            claimName: {{ include "config.fullname" . }}
+            claimName: {{ .Values.volumeClaim.name }}
         - name: {{ include "config.fullname" . }}-mount-gen-file
           configMap:
             name: {{ include "config.fullname" . }}-gen-json-file
@@ -23,12 +23,7 @@ spec:
       - name: {{ template "login-service.name" . }}-load
         image: gluufederation/config-init:4.1.1_02
         resources:
-          requests:
-            memory: {{ .Values.requests.memory }}
-            cpu: {{ .Values.requests.cpu }}
-          limits:
-            memory: {{ .Values.limits.memory }}
-            cpu: {{ .Values.limits.cpu }}
+          {{- toYaml .Values.resources | nindent 10 }}
         volumeMounts:
           - mountPath: /opt/config-init/db/
             subPath: config-init/db

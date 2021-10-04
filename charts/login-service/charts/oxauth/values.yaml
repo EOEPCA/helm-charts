@@ -14,12 +14,11 @@ gluuLdapUrl: opendj:1636
 gluuMaxRamFraction: 1
 
 #Resources for the deployment
-requests:
-  cpu: 200m
-  memory: 1.2Gi
-limits:
-  cpu: 200m
-  memory: 1.5Gi
+resources:
+  requests:
+    cpu: 200m
+    memory: 1.2Gi
+  limits: {}
 
 #hostAliases
 nginxIp: 10.0.2.15

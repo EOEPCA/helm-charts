@@ -35,7 +35,7 @@ persistence:
 
 volumeClaim:
   name: um-login-service-pvc
-#   create: true
+  create: false
 
 config:
   enabled: true
@@ -70,7 +70,7 @@ config:
   azureStorageAccountType: Standard_LRS
   azureStorageKind: Shared
   volumeClaim:
-    name: um-login-service-config-pvc
+    name: um-login-service-pvc
 
 opendj:
   enabled: true
@@ -79,8 +79,9 @@ opendj:
   # options true/false : must be enabled if cache type is REDIS
   gluuRedisEnabled: false
   volumeClaim:
-    name: um-login-service-opendj-pvc
+    name: um-login-service-pvc
   persistence:
+    enabled: true
     image:
       repository: "{{ .Values.global.images.persistence.repository }}"
       pullPolicy: "{{ .Values.global.images.persistence.pullPolicy }}"
@@ -97,13 +98,13 @@ oxauth:
   enabled: true
   dynamicStorage: true
   volumeClaim:
-    name: um-login-service-oxauth-pvc
+    name: um-login-service-pvc
 
 oxtrust:
   enabled: true
   dynamicStorage: true
   volumeClaim:
-    name: um-login-service-oxtrust-pvc
+    name: um-login-service-pvc
 
 nginx:
   enabled: true

@@ -20,13 +20,11 @@ service:
   type: ClusterIP
   port: 80
 
-#resources: 
-limits:
-  memory: 900Mi
-  cpu: 900m
-requests:
-  cpu: 200m
-  memory: 500Mi
+resources: 
+  requests:
+    cpu: 200m
+    memory: 500Mi
+  limits: {}
 
 #containerPOrt ot connect the container with
 containerPort: 8080

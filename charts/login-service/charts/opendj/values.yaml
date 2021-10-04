@@ -71,12 +71,12 @@ livenessProbe:
   initialDelaySeconds: 150
   periodSeconds: 90
 
-limits:
-  memory: 600Mi
-  cpu: 700m
-requests:
-  cpu: 700m
-  memory: 500Mi
+resources:
+  requests:
+    cpu: 700m
+    memory: 500Mi
+  limits: {}
+
 #servicePorts values used in StatefulSet container
 ports:
   ldaps:
