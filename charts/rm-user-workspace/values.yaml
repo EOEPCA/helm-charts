@@ -178,12 +178,6 @@ vs:
     postgresqlPassword: dbpw
     postgresqlDatabase: dbname
     postgresqlPostgresPassword: dbpgpw
-    # overriding here to circumvent this issue:
-    # https://github.com/bitnami/charts/issues/4474
-    initdbScripts:
-      enablePostgis.sh: |
-        echo "Enabling postgis - workspace"
-        PGPASSWORD="dbpw" psql -U postgres -d "${POSTGRES_DB}" -c "CREATE EXTENSION postgis;"
     replicaCount: 1
     resources:
       limits:
