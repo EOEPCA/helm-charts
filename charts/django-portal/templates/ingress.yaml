@@ -18,10 +18,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - portal.{{ .Values.hostname }}
+        - {{ printf "%s.%s" .Values.portalHost .Values.domain }}
       secretName: portal-tls        
   rules:
-  - host: portal.{{ .Values.hostname }}
+  - host: {{ printf "%s.%s" .Values.portalHost .Values.domain }}
     http:
       paths:
       - path: /
