@@ -158,6 +158,16 @@ entries:
   django-portal:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2021-10-11T08:48:56.235224597Z"
+    description: A Helm chart for Kubernetes
+    digest: 9dc9bf82f9f45e6b3c2ed8c7ba09cacfcf9f3e651b0dd7f2ec0dad3c8340b4a2
+    name: django-portal
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/django-portal-0.1.10/django-portal-0.1.10.tgz
+    version: 0.1.10
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-09-02T16:18:29.804528239Z"
     description: A Helm chart for Kubernetes
     digest: a6cb48267dc1ed1e0e17a9833ea29c2fb9a12b6700389f7e85a3b2d05206b576
@@ -1655,6 +1665,16 @@ entries:
     version: 0.1.4
   uma-user-agent:
   - apiVersion: v2
+    appVersion: 0.0.21
+    created: "2021-10-11T08:48:56.438104455Z"
+    description: A Helm chart for Kubernetes
+    digest: 82ddf02cf840fd0fced46459939c2ba621d99dae74f897ed2c0b6924cdb7a0be
+    name: uma-user-agent
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/uma-user-agent-0.0.36/uma-user-agent-0.0.36.tgz
+    version: 0.0.36
+  - apiVersion: v2
     appVersion: 0.0.20
     created: "2021-09-28T09:17:48.274995305Z"
     description: A Helm chart for Kubernetes
@@ -2039,4 +2059,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2021-10-04T15:11:11.178917152Z"
+generated: "2021-10-11T08:48:56.43899385Z"
