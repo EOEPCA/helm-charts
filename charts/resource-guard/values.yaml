@@ -1,0 +1,188 @@
+# Default values for resource-guard.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+#-------------------------------------------------------------------------------
+# global
+#-------------------------------------------------------------------------------
+
+global:
+  # Textual identifier that is used to distinguish between instances
+  context: generic
+  # The name of the PEP instance
+  pep: pep-engine
+  # The fully-qualified domain of the Kubernetes cluster
+  clusterDomain: svc.cluster.local
+  # DNS domain of the deployment
+  domain: myplatform.eoepca.org
+  # Authorization realm
+  realm: eoepca
+  # PEP host IP for service
+  serviceHost: 0.0.0.0
+  # PEP service listening ports
+  ports:
+    # PEP authorization/proxy port
+    proxy-pep:
+      port: 5566
+      targetPort: 5566
+      type: TCP
+    # PEP resources API port
+    resources-pep:
+      port: 5576
+      targetPort: 5576
+      type: TCP
+  # IP address of the Nginx ingress controller
+  nginxIp: 10.0.2.15
+  # Connection details for target Resource Server
+  resourceServer:
+    name: myservice
+    port: 80
+    # resourceServer.url is derived from the name and port, but can be overriden here
+    # url: http://<name>:<port>/
+  # Add TLS certs.
+  # Empty value for `clusterIssuer` disables
+  certManager:
+    clusterIssuer: ""
+
+#-------------------------------------------------------------------------------
+# PEP
+#-------------------------------------------------------------------------------
+
+# Specific values for the pep-engine
+# For full specification of values see:
+# * PEP chart values: https://github.com/EOEPCA/helm-charts/blob/main/charts/pep-engine/values.yaml
+# * PEP chart README: https://github.com/EOEPCA/helm-charts/blob/main/charts/pep-engine/README.md
+pep-engine:
+  configMap:
+    # Authorization Server: Just the hostname part. Will be pre-pended to the `global.domain` for the FQDN
+    asHostname: "auth"
+    # PDP: Just the hostname part. Will be pre-pended to the `global.domain` for the FQDN
+    pdpHostname: "pdp"
+    # PEP mode: FULL (PEP will proxy), PARTIAL (PEP is nginx `auth_request` helper)
+    workingMode: "FULL"
+
+  # Default resources to apply for initial protection
+  # This protects the base path with `public_access` under the
+  # ownership of an operator
+  defaultResources:
+    - name: "Base Path"
+      description: "Base path for Open Access to service"
+      resource_uri: "/"
+      scopes:
+        - "public_access"
+      default_owner: "0000000000000"
+
+  # Additional (custom) default resources - designed to be supplied
+  # for specific deployment policies.
+  # A separate value from `defaultResources` is used to avoid inadvertently
+  # overwriting the default policy.
+  customDefaultResources: []
+
+  nginxIntegration:
+    # Flag to create ingress with config for nginx auth_request
+    # Not relevant for 'workingMode' `FULL`
+    # Should not be needed in the case the PEP is used in combination with
+    # a `uma-user-agent` which takes responsibility for the nginx integration
+    enabled: false
+    # First part of the hostname - global.domain will be appended
+    hostname: ""
+
+  # PEP container image overrides
+  image:
+    statefulSetReplicas: 1
+    repository: eoepca/um-pep-engine
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+  # VolumeClaim values
+  volumeClaim:
+    name: um-pep-engine-pvc
+    create: true # `false` assumes the PVC already exists
+
+#-------------------------------------------------------------------------------
+# UMA User Agent
+#-------------------------------------------------------------------------------
+
+# Specific values for the uma-user-agent
+# For full specification of values see:
+# * UMA User Agent chart values: https://github.com/EOEPCA/helm-charts/blob/main/charts/uma-user-agent/values.yaml
+# * UMA User Agent chart README: https://github.com/EOEPCA/helm-charts/blob/main/charts/uma-user-agent/README.md
+uma-user-agent:
+  # Instance naming
+  # Defaults to `<release-name>-<chart-name>`
+  # Fully qualified application name. Trumps `nameOverride`
+  fullnameOverride: ""
+  # Suffix used to create fully-qualified application name,
+  # in combination with the helm release name
+  nameOverride: ""
+
+  # uma-user-agent image overrides
+  image:
+    repository: eoepca/uma-user-agent
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+  # service details for uma-user-agent
+  service:
+    type: ClusterIP
+    port: 80
+
+  # Integration with Nginx ingress controller
+  # When enabled will create ingress resources with annotations as described by
+  # https://github.com/EOEPCA/uma-user-agent/blob/develop/README.md#nginx-configuration
+  nginxIntegration:
+    # Flag to create ingress with config for nginx auth_request
+    enabled: false
+    # Array of hosts to specify for ingress configuration, typically to configure
+    # nginx to proxy requests (after authorization) to the resource server
+    hosts:
+      # First part of the hostname - global.domain will be appended
+      - host: ""
+        # Array of paths to backend services
+        paths:
+          - path: /
+            service:
+              name: myservice
+              port: 80
+    # Additional annotations for the ingress
+    annotations: {}
+
+  # uma-user-agent application configuration
+  config:
+    # Name of the ConfigMap that is used to pass the config.yaml file
+    # Defaults to an auto-generated name that is based on the app release name
+    configMapName: ""
+
+  # OIDC/UMA Client credentials
+  client:
+    # Name of the Secret that is used to pass the client.yaml file
+    # Defaults to an auto-generated name that is based on the app release name
+    credentialsSecretName: ""
+
+  # Timeout (as client) for http requests
+  httpTimeout: 10
+
+  logging:
+    # One of: trace, debug, info, warn, error, fatal
+    level: "info"
+
+  # Name of the cookie that will carry the User ID Token
+  userIdCookieName: "auth_user_id"
+
+  # Name of the cookie that will carry the RPT Token
+  # Note that this is a prefix for the name that is appended with `-<endpoint-name>`
+  authRptCookieName: "auth_rpt"
+
+  # Content of the header Www-Authenticate for an Unauthorized (401) response.
+  # Ref. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate
+  # E.g.
+  # unauthorizedResponse: 'Bearer realm="https://auth.myplatform.eoepca.org/oidc/authenticate/"'
+  unauthorizedResponse: ''
+
+  # Switch to turn on OPEN access - i.e. all requests AUTHORIZED with 200 (OK)
+  # Mostly useful for debugging
+  openAccess: false
+
+#-------------------------------------------------------------------------------
