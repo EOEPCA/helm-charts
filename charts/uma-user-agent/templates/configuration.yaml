@@ -14,4 +14,5 @@ data:
     userIdCookieName: {{ .Values.userIdCookieName }}
     authRptCookieName: {{ printf "%s-%s" .Values.authRptCookieName .Values.global.context }}
     unauthorizedResponse: {{ .Values.unauthorizedResponse }}
+    retries: {{ .Values.retries }}
     openAccess: {{ .Values.openAccess }}
