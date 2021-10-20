@@ -60,6 +60,8 @@ pep-engine:
     pdpHostname: "pdp"
     # PEP mode: FULL (PEP will proxy), PARTIAL (PEP is nginx `auth_request` helper)
     workingMode: "FULL"
+    # Number of times an RPT can be reused
+    limitUses: 100
 
   # Default resources to apply for initial protection
   # This protects the base path with `public_access` under the
@@ -180,6 +182,12 @@ uma-user-agent:
   # E.g.
   # unauthorizedResponse: 'Bearer realm="https://auth.myplatform.eoepca.org/oidc/authenticate/"'
   unauthorizedResponse: ''
+
+  # Number of retries - in the case of an 'unexpected' Unauthorized response.
+  # 'unexpected' meaning that the UMA flow has been successfully followed to obtain a fresh
+  # RPT, but the request is still rejected. Can be caused by 'gitches' in the Authorization
+  # Server - hence a retry facility can be useful, to avoid false negative outcomes.
+  retries: 1
 
   # Switch to turn on OPEN access - i.e. all requests AUTHORIZED with 200 (OK)
   # Mostly useful for debugging
