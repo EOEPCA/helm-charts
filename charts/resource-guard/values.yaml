@@ -183,11 +183,18 @@ uma-user-agent:
   # unauthorizedResponse: 'Bearer realm="https://auth.myplatform.eoepca.org/oidc/authenticate/"'
   unauthorizedResponse: ''
 
-  # Number of retries - in the case of an 'unexpected' Unauthorized response.
-  # 'unexpected' meaning that the UMA flow has been successfully followed to obtain a fresh
-  # RPT, but the request is still rejected. Can be caused by 'gitches' in the Authorization
-  # Server - hence a retry facility can be useful, to avoid false negative outcomes.
-  retries: 1
+  # Various retry scenarios. A zero `0` value means no retries.
+  retries:
+    # Number of retry attempts in the case of an 'unexpected' unauthorized response.
+    # 'unexpected' meaning that the UMA flow has been successfully followed to obtain a fresh
+    # RPT, but the request is still rejected. Can be caused by 'gitches' in the Authorization
+    # Server - hence a retry facility can be useful, to avoid false negative outcomes.
+    authorizationAttempt: 1
+    # Number of retry attempts in the case of an http request that fails due to
+    # specific conditions:
+    # * 5xx status code (i.e. server-side error)
+    # * Request timeout (i.e. unresponsive server)
+    httpRequest: 1
 
   # Switch to turn on OPEN access - i.e. all requests AUTHORIZED with 200 (OK)
   # Mostly useful for debugging
