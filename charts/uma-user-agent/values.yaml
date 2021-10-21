@@ -96,9 +96,15 @@ authRptCookieName: "auth_rpt"
 # unauthorizedResponse: 'Basic realm="Access to the platform", charset="UTF-8"'
 unauthorizedResponse: ''
 
-# Number of retry attempts in the case of an unexpected unauthorized response.
-# A zero `0` value means no retries.
-retries: 1
+# Various retry scenarios. A zero `0` value means no retries.
+retries:
+  # Number of retry attempts in the case of an unexpected unauthorized response.
+  authorizationAttempt: 1
+  # Number of retry attempts in the case of an http request that fails due to
+  # specific conditions:
+  # * 5xx status code (i.e. server-side error)
+  # * Request timeout (i.e. unresponsive server)
+  httpRequest: 1
 
 # Switch to turn on OPEN access - i.e. all requests AUTHORIZED with 200 (OK)
 # Mostly useful for debugging
