@@ -1,5 +1,6 @@
 {{- if .Values.nginxIntegration.enabled }}
 {{- $domain := .Values.global.domain -}}
+{{- $authRptCookieName := (printf "%s-%s" .Values.authRptCookieName .Values.global.context) -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -18,6 +19,17 @@ metadata:
       auth_request_set $x_auth_rpt $upstream_http_x_auth_rpt;
       proxy_set_header X-User-Id $x_user_id;
       add_header Set-Cookie $x_auth_rpt;
+      # save original "Cookie" header value
+      set $altered_cookie $http_cookie;
+      # remove the `{{ $authRptCookieName }}` cookie if present
+      if ($http_cookie ~ '(.*)(^|;\s){{ $authRptCookieName }}=("[^"]*"|[^\s]*[^;]?)(\2|$|;$)(?:;\s)?(.*)') {
+          # cut `{{ $authRptCookieName }}` cookie from the string
+          set $altered_cookie $1$4$5;
+      }
+      # hide original "Cookie" header
+      proxy_hide_header Cookie;
+      # set "Cookie" header to the new value
+      proxy_set_header Cookie $altered_cookie;
     nginx.ingress.kubernetes.io/server-snippet: |
       location ^~ /authcheck {
         internal;
