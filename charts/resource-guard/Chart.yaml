@@ -15,20 +15,20 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.0.43
+version: 0.0.44
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "u0.0.43:p0.9.34"
+appVersion: "u0.0.43:p0.9.35"
 
 dependencies:
   #-----------------------------------------------------------------------------
   # PEP chart
   #-----------------------------------------------------------------------------
   - name: "pep-engine"
-    version: 0.9.34
+    version: 0.9.35
     repository: "https://eoepca.github.io/helm-charts/"
     # repository: "file://../pep-engine/"
   #-----------------------------------------------------------------------------
