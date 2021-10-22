@@ -38,7 +38,7 @@ configMap:
   useThreads: "'true'"
   debugMode: "'true'"
   umaValidation: "'true'"
-  limitUses: 100
+  limitUses: 10
   asHostname: "auth" # Authorization Server: Just the hostname part. Will be pre-pended to the `global.domain` for the FQDN
   pdpHostname: "pdp" # PDP: Just the hostname part. Will be pre-pended to the `global.domain` for the FQDN
   pdpPort: 5567
