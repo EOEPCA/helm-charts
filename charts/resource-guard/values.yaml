@@ -61,7 +61,7 @@ pep-engine:
     # PEP mode: FULL (PEP will proxy), PARTIAL (PEP is nginx `auth_request` helper)
     workingMode: "FULL"
     # Number of times an RPT can be reused
-    limitUses: 100
+    limitUses: 10
 
   # Default resources to apply for initial protection
   # This protects the base path with `public_access` under the
