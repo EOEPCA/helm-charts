@@ -10,7 +10,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
   proxyRepository: eoepca/kubectl-proxy
-  proxyTag: "0.9.7"
+  proxyTag: "0.9.0"
 
 imagePullSecrets: []
 nameOverride: ""
