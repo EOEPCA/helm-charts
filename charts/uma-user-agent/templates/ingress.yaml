@@ -23,7 +23,7 @@ metadata:
       proxy_set_header X-User-Id $x_user_id;
       proxy_set_header Authorization "Bearer: $x_auth_rpt";
       # Set headers in the response
-      add_header Set-Cookie "$authRptCookieName=$x_auth_rpt;$x_auth_rpt_options";
+      add_header Set-Cookie "{{ $authRptCookieName }}=$x_auth_rpt;$x_auth_rpt_options";
 
       # ---
       # Remove the 'RPT cookie' from the proxied request that is passed through to the resource server
