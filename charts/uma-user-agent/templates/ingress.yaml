@@ -15,10 +15,20 @@ metadata:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/configuration-snippet: |
       auth_request /authcheck;
+      # Unpick the auth_request response
       auth_request_set $x_user_id $upstream_http_x_user_id;
       auth_request_set $x_auth_rpt $upstream_http_x_auth_rpt;
+      auth_request_set $x_auth_rpt_options $upstream_http_x_auth_rpt_options;
+      # Set headers on the proxied request
       proxy_set_header X-User-Id $x_user_id;
-      add_header Set-Cookie $x_auth_rpt;
+      proxy_set_header Authorization "Bearer: $x_auth_rpt";
+      # Set headers in the response
+      add_header Set-Cookie "$authRptCookieName=$x_auth_rpt;$x_auth_rpt_options";
+
+      # ---
+      # Remove the 'RPT cookie' from the proxied request that is passed through to the resource server
+      # (unnecessary baggage in the header)
+      # ---
       # save original "Cookie" header value
       set $altered_cookie $http_cookie;
       # remove the `{{ $authRptCookieName }}` cookie if present
@@ -30,6 +40,7 @@ metadata:
       proxy_hide_header Cookie;
       # set "Cookie" header to the new value
       proxy_set_header Cookie $altered_cookie;
+      # ---
     nginx.ingress.kubernetes.io/server-snippet: |
       location ^~ /authcheck {
         internal;
