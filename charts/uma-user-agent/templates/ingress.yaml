@@ -26,14 +26,19 @@ metadata:
       add_header Set-Cookie "{{ $authRptCookieName }}=$x_auth_rpt;$x_auth_rpt_options";
 
       # ---
-      # Remove the 'RPT cookie' from the proxied request that is passed through to the resource server
-      # (unnecessary baggage in the header)
+      # Some cookies are targeted to the `uma-user-agent` and should not be of interest to the
+      # resource server. So we remove them from the proxied request to avoid unnecessary baggage.
       # ---
       # save original "Cookie" header value
       set $altered_cookie $http_cookie;
       # remove the `{{ $authRptCookieName }}` cookie if present
-      if ($http_cookie ~ '(.*)(^|;\s){{ $authRptCookieName }}=("[^"]*"|[^\s]*[^;]?)(\2|$|;$)(?:;\s)?(.*)') {
+      if ($altered_cookie ~ '(.*)(^|;\s){{ $authRptCookieName }}=("[^"]*"|[^\s]*[^;]?)(\2|$|;$)(?:;\s)?(.*)') {
           # cut `{{ $authRptCookieName }}` cookie from the string
+          set $altered_cookie $1$4$5;
+      }
+      # remove the `{{ .Values.userIdCookieName }}` cookie if present
+      if ($altered_cookie ~ '(.*)(^|;\s){{ .Values.userIdCookieName }}=("[^"]*"|[^\s]*[^;]?)(\2|$|;$)(?:;\s)?(.*)') {
+          # cut `{{ .Values.userIdCookieName }}` cookie from the string
           set $altered_cookie $1$4$5;
       }
       # hide original "Cookie" header
