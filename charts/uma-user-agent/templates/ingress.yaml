@@ -21,7 +21,7 @@ metadata:
       auth_request_set $x_auth_rpt_options $upstream_http_x_auth_rpt_options;
       # Set headers on the proxied request
       proxy_set_header X-User-Id $x_user_id;
-      proxy_set_header Authorization "Bearer: $x_auth_rpt";
+      proxy_set_header Authorization "Bearer $x_auth_rpt";
       # Set headers in the response
       add_header Set-Cookie "{{ $authRptCookieName }}=$x_auth_rpt;$x_auth_rpt_options";
 
