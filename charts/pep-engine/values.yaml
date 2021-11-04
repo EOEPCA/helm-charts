@@ -45,7 +45,7 @@ configMap:
   pdpPolicy: /pdp/policy/
   verifySignature: "'false'"
   defaultResourcePath: /data/default-resources.json
-  workingMode: "FULL"
+  workingMode: "PARTIAL"
 
 # Default resources to apply for initial protection
 # This protects the base path with `public_access` under the
