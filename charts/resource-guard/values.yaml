@@ -59,7 +59,7 @@ pep-engine:
     # PDP: Just the hostname part. Will be pre-pended to the `global.domain` for the FQDN
     pdpHostname: "pdp"
     # PEP mode: FULL (PEP will proxy), PARTIAL (PEP is nginx `auth_request` helper)
-    workingMode: "FULL"
+    workingMode: "PARTIAL"
     # Number of times an RPT can be reused
     limitUses: 10
 
