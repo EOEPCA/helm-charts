@@ -18,3 +18,4 @@ data:
       authorizationAttempt: {{ .Values.retries.authorizationAttempt }}
       httpRequest: {{ .Values.retries.httpRequest }}
     openAccess: {{ .Values.openAccess }}
+    insecureTlsSkipVerify: {{ .Values.insecureTlsSkipVerify }}
