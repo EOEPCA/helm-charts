@@ -200,4 +200,13 @@ uma-user-agent:
   # Mostly useful for debugging
   openAccess: false
 
+  # TLS certificate checks
+  # `insecureTlsSkipVerify` controls whether the `uma-user-agent` client verifies the
+  # server's (e.g. Authorization Server for UMA flows) certificate chain and host name.
+  # If `insecureTlsSkipVerify` is true, then the `uma-user-agent` accepts any certificate
+  # presented by the server and any host name in that certificate.
+  # In this mode, TLS is susceptible to machine-in-the-middle attacks, and should only be
+  # used for testing.
+  insecureTlsSkipVerify: false
+
 #-------------------------------------------------------------------------------
