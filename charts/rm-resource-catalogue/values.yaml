@@ -14,6 +14,7 @@ db:
   volume_access_modes: ReadWriteMany
   volume_storage_type: managed-nfs-storage
 ingress:
+  enabled: true
   name: resource-catalogue
   class: nginx
   host: resource-catalogue.demo.eoepca.org
