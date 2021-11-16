@@ -1,4 +1,5 @@
 # Default values for pdp-engine.
+imagePullSecrets: []
 
 global:
   namespace: default
