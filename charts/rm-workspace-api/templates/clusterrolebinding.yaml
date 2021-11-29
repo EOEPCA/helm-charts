@@ -1,0 +1,12 @@
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "rm-workspace-api.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "rm-workspace-api.serviceAccountName" . }}
+    namespace: rm
+roleRef:
+  kind: ClusterRole
+  name: {{ include "rm-workspace-api.fullname" . }}
+  apiGroup: rbac.authorization.k8s.io

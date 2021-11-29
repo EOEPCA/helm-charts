@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "rm-workspace-api.fullname" . }}
+  labels:
+    {{- include "rm-workspace-api.labels" . | nindent 4 }}
+spec:
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      {{- include "rm-workspace-api.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "rm-workspace-api.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "rm-workspace-api.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /probe
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 3
+            failureThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /probe
+              port: 8080
+            initialDelaySeconds: 20
+            timeoutSeconds: 2
+            periodSeconds: 8
+            failureThreshold: 1
+          env:
+            - name: PREFIX_FOR_NAME
+              value: "{{ .Values.prefixForName }}"
+            - name: WORKSPACE_SECRET_NAME
+              value: "{{ .Values.workspaceSecretName }}"
+            - name: NAMESPACE_FOR_BUCKET_RESOURCE
+              value: "{{ .Values.namespaceForBucketResource }}"
+            - name: WORKSPACE_CONFIG_MAP_NAME
+              value: "{{ .Values.workspaceConfigMapName }}"
+            - name: GIT_REPO_RESOURCE_FOR_HELM_CHART_NAME
+              value: "{{ .Values.gitRepoResourceForHelmChartName }}"
+            - name: GIT_REPO_RESOURCE_FOR_HELM_CHART_NAMESPACE
+              value: "{{ .Values.gitRepoResourceForHelmChartNamespace }}"
+            - name: HELM_CHART_NAME
+              value: "{{ .Values.helmChartName }}"
+            - name: HELM_CHART_VERSION
+              value: "{{ .Values.helmChartVersion }}"
+            - name: S3_ENDPOINT
+              value: "{{ .Values.s3Endpoint }}"
+            - name: S3_REGION
+              value: "{{ .Values.s3Region }}"
+            - name: WORKSPACE_DOMAIN
+              value: "{{ .Values.workspaceDomain }}"
+            - name: UMA_CLIENT_SECRET_NAME
+              value: "{{ .Values.umaClientSecretName }}"
+            - name: UMA_CLIENT_SECRET_NAMESPACE
+              value: "{{ .Values.umaClientSecretNamespace }}"
+            - name: HARBOR_URL
+              value: "{{ .Values.harborUrl }}"
+            - name: HARBOR_ADMIN_USERNAME
+              value: "{{ .Values.harborUsername }}"
+            - name: HARBOR_ADMIN_PASSWORD
+              value: "{{ .Values.harborPassword }}"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

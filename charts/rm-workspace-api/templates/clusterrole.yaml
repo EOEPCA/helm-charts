@@ -1,0 +1,29 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "rm-workspace-api.fullname" . }}
+rules:
+  - apiGroups: [""]
+    verbs: ["get", "watch", "create"]
+    resources:
+      - secrets
+  - apiGroups: [""]
+    verbs: ["get", "patch"]
+    resources:
+      - configmaps
+  - apiGroups: ["extensions"]
+    verbs: ["get", "list"]
+    resources:
+      - ingresses
+  - apiGroups: [""]
+    verbs: ["create", "get", "delete"]
+    resources:
+      - namespaces
+  - apiGroups: ["helm.toolkit.fluxcd.io"]
+    verbs: ["create", "patch", "list"]
+    resources:
+      - helmreleases
+  - apiGroups: ["epca.eo"]
+    verbs: ["create"]
+    resources:
+      - buckets
