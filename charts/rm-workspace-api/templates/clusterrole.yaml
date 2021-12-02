@@ -4,7 +4,7 @@ metadata:
   name: {{ include "rm-workspace-api.fullname" . }}
 rules:
   - apiGroups: [""]
-    verbs: ["get", "watch", "create"]
+    verbs: ["get", "watch", "create", "list"]
     resources:
       - secrets
   - apiGroups: [""]
