@@ -14,6 +14,10 @@ spec:
       labels:
         app: {{ .Values.global.user }}
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}    
       containers:
       - name: {{ .Values.global.user }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"

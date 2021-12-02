@@ -19,6 +19,10 @@ spec:
       labels:
         app: nfs-client-provisioner
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}    
       serviceAccountName: nfs-client-provisioner
       containers:
         - name: nfs-client-provisioner

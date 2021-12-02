@@ -1,4 +1,5 @@
 # Default values for pep-engine.
+imagePullSecrets: []
 
 global:
   # The context is used to distinguish PEP instances,

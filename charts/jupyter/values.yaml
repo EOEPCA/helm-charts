@@ -1,5 +1,6 @@
 
 hostname: 192.168.49.2.nip.io
+imagePullSecrets: []
 
 image:
   repository: eoepca/jupyterlab

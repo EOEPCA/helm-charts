@@ -14,6 +14,10 @@ spec:
       labels:
         app: {{ .Values.global.pep }}
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - name: {{ .Values.global.pep }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
