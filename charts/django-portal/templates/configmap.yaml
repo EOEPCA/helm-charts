@@ -11,6 +11,7 @@ data:
   OIDC_OP_JWKS_ENDPOINT: {{ printf "https://%s.%s/oxauth/restv1/jwks" .Values.authHost .Values.domain }}
 
   OIDC_TOKEN_USE_BASIC_AUTH: {{ .Values.configmap.use_basic_auth | quote }}
+  OIDC_VERIFY_SSL: {{ .Values.configmap.oidc_verify_ssl | quote }}
   TOKEN_ID_COOKIE: {{ .Values.configmap.token_id_cookie }}
   USER_PREFIX: {{ .Values.configmap.user_prefix }}
   HOSTNAME: {{ .Values.domain }}
