@@ -14,3 +14,5 @@ data:
   TOKEN_ID_COOKIE: {{ .Values.configmap.token_id_cookie }}
   USER_PREFIX: {{ .Values.configmap.user_prefix }}
   HOSTNAME: {{ .Values.domain }}
+  AUTHHOST: {{ .Values.authHost }}
+  PORTALHOST: {{ .Values.portalHost }}
