@@ -4,9 +4,9 @@ dependencies:
   version: 1.3.3
 - name: rm-resource-catalogue
   repository: https://eoepca.github.io/helm-charts/
-  version: 1.0.0
+  version: 1.0.5
 - name: resource-guard
   repository: https://eoepca.github.io/helm-charts/
   version: 0.0.29
-digest: sha256:4ed1662711293271b8b148938c429f19d0e3b9b9808eb8a07cce05a770dd91f9
-generated: "2021-11-04T13:53:56.659899848+02:00"
+digest: sha256:7ca1d6ff0cafba113c34fbd5c95817acd37147b63656ada42b34d008b70e716a
+generated: "2021-12-06T17:04:07.118041985+02:00"
