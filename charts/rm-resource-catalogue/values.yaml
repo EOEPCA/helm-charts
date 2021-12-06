@@ -8,11 +8,11 @@ db:
   database: pycsw
   user: postgres
   pass: mypass
-  volume_name: resource-catalogue-db-data
+  volume_name: db-data
   volume_path: /var/lib/postgresql/data/pgdata
   volume_size: 500Mi
   volume_access_modes: ReadWriteMany
-  volume_storage_type: managed-nfs-storage
+  volume_storage_type: managed-nfs-storage-retain
 ingress:
   enabled: true
   name: resource-catalogue

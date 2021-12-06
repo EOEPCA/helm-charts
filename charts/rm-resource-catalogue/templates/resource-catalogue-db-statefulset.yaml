@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   namespace: {{ .Values.global.namespace }}
   labels:
@@ -10,13 +10,19 @@ spec:
   selector:
     matchLabels:
       io.kompose.service: postgis
-  strategy:
-    type: Recreate
+  # strategy:
+  #   type: Recreate
+  serviceName: {{ .Values.db.name }}
   template:
     metadata:
       labels:
         io.kompose.service: postgis
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # terminationGracePeriodSeconds: 10
       containers:
       - env:
         - name: PGDATA
@@ -36,7 +42,13 @@ spec:
         - mountPath: {{ .Values.db.volume_path }}
           name: {{ .Values.db.volume_name }}
       restartPolicy: Always
-      volumes:
-      - name: {{ .Values.db.volume_name }}
-        persistentVolumeClaim:
-          claimName: {{ .Values.db.volume_name }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Values.db.volume_name }}
+      spec:
+        storageClassName: {{ .Values.db.volume_storage_type }}
+        accessModes:
+        - {{ .Values.db.volume_access_modes }}
+        resources:
+          requests:
+            storage: {{ .Values.db.volume_size }}
