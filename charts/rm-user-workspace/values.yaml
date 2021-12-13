@@ -1,50 +1,46 @@
 vs:
   global:
-    config:
-      env:
-        COLLECTION: COLLECTION
-        CPL_VSIL_CURL_ALLOWED_EXTENSIONS: .TIF,.tif,.xml,.jp2
-        GDAL_DISABLE_READDIR_ON_OPEN: "TRUE"
-        COLLECT_STATIC: "false"
-        AWS_VIRTUAL_HOSTING: "FALSE"
-        AWS_S3_ENDPOINT: cf2.cloudferro.com:8080
-        AWS_HTTPS: "YES"
-        REGISTRAR_REPLACE: "true"
-        REDIS_REGISTER_QUEUE_KEY: "register_queue"
-        REDIS_REGISTER_PATH_QUEUE_KEY: "register_path_queue"
-      storage:
+    env:
+      COLLECTION: COLLECTION
+      CPL_VSIL_CURL_ALLOWED_EXTENSIONS: .TIF,.tif,.xml,.jp2
+      GDAL_DISABLE_READDIR_ON_OPEN: "TRUE"
+      COLLECT_STATIC: "false"
+      AWS_VIRTUAL_HOSTING: "FALSE"
+      AWS_S3_ENDPOINT: cf2.cloudferro.com:8080
+      AWS_HTTPS: "YES"
+      REGISTRAR_REPLACE: "true"
+      REDIS_REGISTER_QUEUE_KEY: "register_queue"
+      REDIS_REGISTER_PATH_QUEUE_KEY: "register_path_queue"
+    storage:
+      data:
         data:
-          data:
-            type: S3
-            endpoint_url: https://cf2.cloudferro.com:8080
-            region: RegionOne
-            validate_bucket_name: False
-        cache:
-          type: local
-          # type: S3
-          # endpoint_url: "http://data.cloudferro.com"
-          # access_key_id: access
-          # secret_access_key: access
-          # region: RegionOne
-      metadata:
-        title: EOEPCA Data Access View Server Client
-        header: "EOEPCA Data Access View Server (VS) Client powered by <a href=\"//eox.at\"><img src=\"//eox.at/wp-content/uploads/2017/09/EOX_Logo.svg\" alt=\"EOX\" style=\"height:25px;margin-left:10px\"/></a>"
-      layers:
-        S2L2A:
-          display_color: '#eb3700'
-          title: Data
-          layer: DATA
-          sub_layers: []
+          type: S3
+          endpoint_url: https://cf2.cloudferro.com:8080
+          region: RegionOne
+          validate_bucket_name: False
+      cache:
+        type: local
+        # type: S3
+        # endpoint_url: "http://data.cloudferro.com"
+        # access_key_id: access
+        # secret_access_key: access
+        # region: RegionOne
+    metadata:
+      title: EOEPCA Data Access View Server Client
+      header: "EOEPCA Data Access View Server (VS) Client powered by <a href=\"//eox.at\"><img src=\"//eox.at/wp-content/uploads/2017/09/EOX_Logo.svg\" alt=\"EOX\" style=\"height:25px;margin-left:10px\"/></a>"
 
-        tilesets:
-          DATA:
-            title: Data
-            abstract: Data
-            grids:
-              - name: WGS84
-                zoom: 13
+    layers: []
 
-    registrar:
+  renderer:
+    image:
+      repository: eoepca/rm-data-access-core
+      tag: "0.9.12"
+
+  registrar:
+    image:
+      repository: eoepca/rm-data-access-core
+      tag: "0.9.12"
+    config:
       disable_default_eoxserver: true
       backends: []
         # will be filled by workspace API
@@ -71,21 +67,6 @@ vs:
   ingestor:
     replicaCount: 0
 
-  registrar:
-    image:
-      repository: eoepca/rm-data-access-core
-      tag: "0.9.10"
-      pullPolicy: Always
-    replicaCount: 1
-  renderer:
-    ingress:
-      enabled: false
-    image:
-      repository: eoepca/rm-data-access-core
-      tag: "0.9.10"
-      pullPolicy: Always
-    replicaCount: 1
-
   harvester:
     image:
       repository: eoepca/rm-harvester
@@ -102,12 +83,15 @@ vs:
             validate_bucket_name: False
             region_name: RegionOne
             public: False
+
   cache:
     ingress:
       enabled: false
+
   client:
     ingress:
       enabled: false
+
   redis:
     usePassword: false
     persistence:
