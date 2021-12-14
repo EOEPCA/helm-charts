@@ -34,12 +34,12 @@ vs:
   renderer:
     image:
       repository: eoepca/rm-data-access-core
-      tag: "0.9.12"
+      tag: "0.9.13"
 
   registrar:
     image:
       repository: eoepca/rm-data-access-core
-      tag: "0.9.12"
+      tag: "0.9.13"
     config:
       disableDefaultEoxserver: true
       backends: []
