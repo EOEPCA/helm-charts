@@ -1964,6 +1964,26 @@ entries:
   rm-user-workspace:
   - apiVersion: v2
     appVersion: 0.0.0
+    created: "2021-12-14T16:29:31.336148812Z"
+    dependencies:
+    - name: vs
+      repository: https://charts-public.hub.eox.at/
+      version: 2.0.4
+    - name: rm-resource-catalogue
+      repository: https://eoepca.github.io/helm-charts/
+      version: 1.0.5
+    - name: resource-guard
+      repository: https://eoepca.github.io/helm-charts/
+      version: 0.0.29
+    description: A Helm chart for Kubernetes
+    digest: d36c783aeac0b1b428ba996d92af01e748c4550591997ea2ea3b35fb31c23782
+    name: rm-user-workspace
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/rm-user-workspace-0.9.25/rm-user-workspace-0.9.25.tgz
+    version: 0.9.25
+  - apiVersion: v2
+    appVersion: 0.0.0
     created: "2021-12-14T15:30:39.211263415Z"
     dependencies:
     - name: vs
@@ -3021,4 +3041,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2021-12-14T15:30:39.213333901Z"
+generated: "2021-12-14T16:29:31.337656835Z"
