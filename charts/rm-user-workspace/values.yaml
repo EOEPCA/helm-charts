@@ -77,12 +77,13 @@ vs:
         port: 6379
       harvesters:
         - name: harvest-bucket-catalog
-          type: STACCatalog
-          source:
-            endpoint_url: https://cf2.cloudferro.com:8080
-            validate_bucket_name: False
-            region_name: RegionOne
-            public: False
+          resource:
+            type: STACCatalog
+            source:
+              endpoint_url: https://cf2.cloudferro.com:8080
+              validate_bucket_name: False
+              region_name: RegionOne
+              public: False
 
   cache:
     ingress:
