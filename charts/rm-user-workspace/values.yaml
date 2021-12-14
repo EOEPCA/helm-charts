@@ -41,7 +41,7 @@ vs:
       repository: eoepca/rm-data-access-core
       tag: "0.9.12"
     config:
-      disable_default_eoxserver: true
+      disableDefaultEoxserver: true
       backends: []
         # will be filled by workspace API
         # - path: registrar_pycsw.backend.PycswBackend
