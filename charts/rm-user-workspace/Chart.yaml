@@ -34,6 +34,6 @@ dependencies:
     # repository: "file://../rm-resource-catalogue"
 
   - name: "resource-guard"
-    version: 0.0.29
+    version: 0.9.0
     repository: "https://eoepca.github.io/helm-charts/"
     # repository: "file://../resource-guard"
