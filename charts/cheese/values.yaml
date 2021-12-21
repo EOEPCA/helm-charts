@@ -1,5 +1,5 @@
 baseHostname: 192.168.49.2.nip.io
-
+imagePullSecrets: []
 cheddar:
     image:
         repository: errm/cheese
