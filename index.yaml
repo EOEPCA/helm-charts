@@ -577,6 +577,16 @@ entries:
     version: 0.1.0
   nfs-provisioner:
   - apiVersion: v2
+    appVersion: v4.0.0
+    created: "2021-12-22T12:45:44.480733113Z"
+    description: Dynamic storage provisioner for NFS
+    digest: 478923b6d20f56aec7ca89c3228290e01690328f5b90cdac21437f5dd9a56485
+    name: nfs-provisioner
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/nfs-provisioner-1.0.0/nfs-provisioner-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
     appVersion: 0.2.0
     created: "2021-12-02T14:29:10.554315166Z"
     description: Dynamic storage provisioner for NFS
@@ -3224,4 +3234,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2021-12-22T12:37:18.078240887Z"
+generated: "2021-12-22T12:45:44.481980791Z"
