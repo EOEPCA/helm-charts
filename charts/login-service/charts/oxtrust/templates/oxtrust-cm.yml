@@ -9,3 +9,4 @@ data:
   GLUU_MAX_RAM_FRACTION: {{ .Values.gluuMaxRamFraction | quote }}
   DOMAIN: {{ .Values.global.domain | quote }}
   GLUU_OXAUTH_BACKEND: {{ .Values.gluuOxauthBackend | quote }}
+  GLUU_NAMESPACE: {{ .Values.global.namespace }}

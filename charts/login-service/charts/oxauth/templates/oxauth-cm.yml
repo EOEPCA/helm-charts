@@ -10,3 +10,4 @@ data:
   GLUU_MAX_RAM_FRACTION: {{ .Values.gluuMaxRamFraction | quote }}
   GLUU_SYNC_CASA_MANIFESTS: {{ .Values.falsure | quote }}
   GLUU_SSL_CERT_FROM_SECRETS: "true"
+  GLUU_NAMESPACE: {{ .Values.global.namespace }}

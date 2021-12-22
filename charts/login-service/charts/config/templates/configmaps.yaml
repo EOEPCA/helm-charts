@@ -14,6 +14,8 @@ data:
   LDAP_TYPE: {{ .Values.ldapType }}
   GLUU_CONFIG_ADAPTER: {{ .Values.global.configAdapterName }}
   GLUU_SECRET_ADAPTER: {{ .Values.global.configSecretAdapter }}
+  GLUU_NAMESPACE: {{ .Values.global.namespace }}
+
 
 ---
 

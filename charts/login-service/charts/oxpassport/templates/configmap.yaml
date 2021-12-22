@@ -8,4 +8,5 @@ data:
   DOMAIN: {{ .Values.global.domain | quote }}
   GLUU_LDAP_URL: {{ .Values.global.gluuLdapUrl | quote }}
   GLUU_MAX_RAM_FRACTION: {{ .Values.global.gluuMaxRamFraction | quote }}
+  GLUU_NAMESPACE: {{ .Values.global.namespace }}
   
