@@ -22,7 +22,7 @@ fullnameOverride: ""
 # values declaration
 statefulSetReplicas: 1
 imagePullPolicy: Always
-image: gluufederation/wrends:4.1.1_01
+
 opendj:
   configAdapter: kubernetes
   metadataName: opendj-init-cm
@@ -36,6 +36,10 @@ persistence:
   accessModes: ReadWriteMany
   type: DirectoryOrCreate
   dbStorageSize: 5Gi
+  image:
+      repository: "{{ .Values.global.images.persistence.repository }}"
+      pullPolicy: "{{ .Values.global.images.persistence.pullPolicy }}"
+      tag: "{{ .Values.global.images.persistence.tag }}"
   statefulSetReplicas: 1
   restartPolicy: Never
   configAdapter: GLUU_CONFIG_ADAPTER

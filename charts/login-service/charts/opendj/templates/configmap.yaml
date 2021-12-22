@@ -21,6 +21,7 @@ data:
   # must the same as the opendj service name
   GLUU_CERT_ALT_NAME: {{ .Values.global.serviceName }} #{{ template "login-service.fullname" . }}-service
   PDP_EP: {{ .Values.persistence.pdpEp | quote}}
+  GLUU_NAMESPACE: {{ .Values.global.namespace }}
 
 
 ---

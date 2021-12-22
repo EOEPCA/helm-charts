@@ -1,15 +1,15 @@
 # Default values for oxtrust.
 # Declare variables to be passed into your templates.
-
+enabled: true
 replicaCount: 1
 gluuMaxRamFraction: 1
 
 dynamicStorage: true
 
 image:
-  repository: oxtrust
-  tag: 4.1.1_02
-  pullPolicy: Always
+  repository: "{{ .Values.global.images.oxtrust.repository }}"
+  tag: "{{ .Values.global.images.oxtrust.tag }}"
+  pullPolicy: "{{ .Values.global.images.oxtrust.pullPolicy }}"
   
 persistence: 
   accessModes: ReadWriteMany

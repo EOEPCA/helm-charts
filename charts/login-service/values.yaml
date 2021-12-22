@@ -17,16 +17,31 @@ global:
   gcePdStorageType: pd-standard
   description: gluu-config-init-volume
   fsType: ext4
-
   images:
-    persistence:
-      repository: eoepca/um-login-persistence
-      pullPolicy: IfNotPresent
-      tag: "v0.9.0"
+    config:
+      repository: gluufederation/config-init
+      tag: 4.1.1_02
+    opendj:
+      repository: gluufederation/wrends
+      pullPolicy: Always
+      tag: 4.1.1_01
     passport:
       repository: eoepca/um-login-passport
       pullPolicy: IfNotPresent
       tag: "v0.1.1"
+    persistence:
+      repository: eoepca/um-login-persistence
+      pullPolicy: IfNotPresent
+      tag: "v0.9.0"
+    oxauth:
+      repository: oxauth
+      pullPolicy: Always
+      tag: 4.1.1_03
+    oxtrust:
+      repository: oxtrust
+      tag: 4.1.1_02
+      pullPolicy: Always
+      
   
 persistence: 
   accessModes: ReadWriteMany
@@ -71,7 +86,11 @@ config:
   azureStorageKind: Shared
   volumeClaim:
     name: um-login-service-pvc
-
+  resources:
+    requests:
+      cpu: 100m
+      memory: 500Mi
+    limits: {}
 opendj:
   enabled: true
   # options REDIS/NATIVE_PERSISTENCE
@@ -86,6 +105,19 @@ opendj:
       repository: "{{ .Values.global.images.persistence.repository }}"
       pullPolicy: "{{ .Values.global.images.persistence.pullPolicy }}"
       tag: "{{ .Values.global.images.persistence.tag }}"
+    coihClientIDv: "1234"
+    coihClientSecretv: "1234"
+  readinessProbe:
+    initialDelaySeconds: 150
+    periodSeconds: 90
+  livenessProbe:
+    initialDelaySeconds: 150
+    periodSeconds: 90
+  resources:
+    requests:
+      cpu: 700m
+      memory: 500Mi
+    limits: {}
 
 oxpassport:
   enabled: true  
@@ -93,18 +125,48 @@ oxpassport:
     repository: "{{ .Values.global.images.passport.repository }}"
     pullPolicy: "{{ .Values.global.images.passport.pullPolicy }}"
     tag: "{{ .Values.global.images.passport.tag }}"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 500Mi
+    limits: {}
 
 oxauth:
   enabled: true
   dynamicStorage: true
   volumeClaim:
     name: um-login-service-pvc
+  livenessProbe:
+    initialDelaySeconds: 100
+    periodSeconds: 60
+  readinessProbe:
+    initialDelaySeconds: 100
+    periodSeconds: 60
+  #Resources for the deployment
+  resources:
+    requests:
+      cpu: 200m
+      memory: 1.2Gi
+    limits: {}
 
 oxtrust:
   enabled: true
   dynamicStorage: true
+  gluuMaxRamFraction: 1
+
   volumeClaim:
     name: um-login-service-pvc
+  livenessProbe:
+    initialDelaySeconds: 100
+    periodSeconds: 60
+  readinessProbe:
+    initialDelaySeconds: 100
+    periodSeconds: 60
+  resources: 
+    requests:
+      cpu: 200m
+      memory: 500Mi
+    limits: {}
 
 nginx:
   enabled: true

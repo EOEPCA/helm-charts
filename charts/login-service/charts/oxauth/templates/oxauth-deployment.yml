@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: {{ template "login-service.fullname" . }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        image: gluufederation/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.global.images.oxauth.pullPolicy }}
+        image: gluufederation/{{ .Values.global.images.oxauth.repository }}:{{ .Values.global.images.oxauth.tag }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         ports:
@@ -53,3 +53,7 @@ spec:
         - name: vol-userman
           persistentVolumeClaim:
             claimName: {{ .Values.volumeClaim.name }}
+      {{- if .Values.pullSecret }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecret }}
+      {{- end }}

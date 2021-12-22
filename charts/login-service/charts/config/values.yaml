@@ -1,3 +1,4 @@
+enabled: true
 # Required environment variables for generating Gluu server initial config
 #values for environment variables
  # domain name where the Gluu Server resides
@@ -16,10 +17,18 @@ orgName: Deimos Space S.L.U.
 gluuConfAdapter: kubernetes
 redisPass: aaaa
 pdpEp: /pdp
-
 nameOverride: ""
 fullNameOverride: ""
-
+encrypted: true
+reclaimPolicy: Retain
+pool: default
+description: gluu-config-init-volume
+fsType: ext4
+provisioner: k8s.io/minikube-hostpath
+awsZones: us-west-2a
+gcePdStorageType: pd-standard
+azureStorageAccountType: Standard_LRS
+azureStorageKind: Shared
 # VolumeClaim values
 volumeClaim:
   name: um-login-service-config-pvc

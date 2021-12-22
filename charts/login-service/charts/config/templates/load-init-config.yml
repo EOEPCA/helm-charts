@@ -21,7 +21,7 @@ spec:
             name: {{ include "config.fullname" . }}-tls-script
       containers:
       - name: {{ template "login-service.name" . }}-load
-        image: gluufederation/config-init:4.1.1_02
+        image: {{ .Values.global.images.config.repository }}:{{ .Values.global.images.config.tag }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         volumeMounts:
@@ -40,4 +40,8 @@ spec:
         command: ["/bin/sh", "-c"]
         args: ["tini -g -- /app/scripts/entrypoint.sh load && /usr/bin/python /scripts/tls_generator.py"]
       restartPolicy: Never
+      {{- if .Values.pullSecret }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecret }}
+      {{- end }}
           

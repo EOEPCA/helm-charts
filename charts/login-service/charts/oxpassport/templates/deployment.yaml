@@ -25,8 +25,8 @@ spec:
         - {{ .Values.global.domain }}
       containers:
         - name:  {{ .Chart.Name }}
-          image: {{ tpl .Values.image.repository $ }}:{{ tpl .Values.image.tag $ | default .Chart.AppVersion }}
-          imagePullPolicy: {{ tpl .Values.image.pullPolicy $ }}
+          image: {{ tpl .Values.global.images.passport.repository $ }}:{{ tpl .Values.global.images.passport.tag $ | default .Chart.AppVersion }}
+          imagePullPolicy: {{ tpl .Values.global.images.passport.pullPolicy $ }}
           ports:
             - name: oxpassport
               containerPort: 8090
@@ -36,3 +36,7 @@ spec:
                 name: {{ template "oxpassport.fullname" . }}-cm
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.pullSecret }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecret }}
+      {{- end }}

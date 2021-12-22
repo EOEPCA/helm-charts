@@ -1,12 +1,12 @@
 # Declare variables to be passed into your templates.
-
+enabled: true
 replicaCount: 1
 dynamicStorage: true
 
 image:
-  repository: oxauth
-  tag: 4.1.1_03
-  pullPolicy: Always
+  repository: "{{ .Values.global.images.oxauth.repository }}"
+  tag: "{{ .Values.global.images.oxauth.tag }}"
+  pullPolicy: "{{ .Values.global.images.oxauth.pullPolicy }}"
 
 falsure: "'false'"
 #ConfigMap values

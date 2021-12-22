@@ -40,4 +40,8 @@ spec:
           value: {{ .Values.persistence.coihClientSecretv | quote }}
         - name: PDP_EP
           value: {{ .Values.persistence.pdpEp }}
+      {{- if .Values.pullSecret }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecret }}
+      {{- end }}
 {{ end }}

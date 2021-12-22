@@ -1,6 +1,12 @@
 # Default values for oxpassport.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+enabled: true
+
+image:
+  repository: "{{ .Values.global.images.passport.repository }}"
+  pullPolicy: "{{ .Values.global.images.passport.pullPolicy }}"
+  tag: "{{ .Values.global.images.passport.tag }}"
 
 replicaCount: 1
 
