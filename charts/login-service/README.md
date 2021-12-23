@@ -145,7 +145,7 @@ At the parent definition, the image for the login-persistence can be specified:
     image:
       repository: eoepca/um-login-persistence
       pullPolicy: IfNotPresent
-      tag: "v0.9.0"
+      tag: "v1.0"
   ```
 
 ### Child

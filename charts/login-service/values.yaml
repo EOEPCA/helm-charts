@@ -28,11 +28,11 @@ global:
     passport:
       repository: eoepca/um-login-passport
       pullPolicy: IfNotPresent
-      tag: "v0.1.1"
+      tag: "v1.0.0"
     persistence:
       repository: eoepca/um-login-persistence
       pullPolicy: IfNotPresent
-      tag: "v0.9.0"
+      tag: "v1.0"
     oxauth:
       repository: oxauth
       pullPolicy: Always
