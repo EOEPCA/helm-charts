@@ -90,7 +90,7 @@ workspaceConfigMapName: "workspace"
 gitRepoResourceForHelmChartName: "eoepca"
 gitRepoResourceForHelmChartNamespace: "common"
 helmChartName: "rm-user-workspace"
-helmChartVersion: "1.0.0"
+helmChartVersion: "1.0.1"
 s3Endpoint: "https://cf2.cloudferro.com:8080"
 s3Region: "RegionOne"
 workspaceDomain: develop.eoepca.org
