@@ -7,6 +7,6 @@ dependencies:
   version: 1.0.5
 - name: resource-guard
   repository: https://eoepca.github.io/helm-charts/
-  version: 1.0.0
-digest: sha256:312a1e20745a29b3cb1a84dc657ff00fbf7c892f5be9573cb782256604484a8b
-generated: "2021-12-22T13:16:00.502211833Z"
+  version: 1.0.1
+digest: sha256:3885cfb9aacf3072ffdc9331afaf29b4f17c788c2f3bf5ad8c4cd16be074f4ed
+generated: "2022-01-19T16:13:51.622588632+02:00"
