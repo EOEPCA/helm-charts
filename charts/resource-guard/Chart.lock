@@ -4,6 +4,6 @@ dependencies:
   version: 1.0.0
 - name: uma-user-agent
   repository: https://eoepca.github.io/helm-charts/
-  version: 1.0.1
-digest: sha256:6c764aca8c38dd7de076e6fa716ff78403281ce75760c4e08bb85a66bb419ad0
-generated: "2022-01-06T16:30:03.958711512Z"
+  version: 1.0.2
+digest: sha256:6bdcf62ef9046c49ffc0bada766714ca80275caaac75f5db4cf33eebfccc362a
+generated: "2022-01-31T14:24:14.372163244Z"
