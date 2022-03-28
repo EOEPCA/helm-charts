@@ -1,5 +1,11 @@
 {{- if .Values.ingress.enabled -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ .Values.ingress.name }}
@@ -10,13 +16,27 @@ metadata:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
 spec:
+  {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.ingress.class }}
+  {{- end }}
   rules:
   - host: {{ .Values.ingress.host }}
     http:
       paths:
-      - backend:
+      - path:
+        {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+        pathType: "ImplementationSpecific"
+        {{- end }}
+        backend:
+          {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+          service:
+            name: {{ .Values.pycsw.service_name }}
+            port:
+              number: {{ .Values.pycsw.service_port }}
+          {{- else }}
           serviceName: {{ .Values.pycsw.service_name }}
-          servicePort: {{ .Values.pycsw.service_port_name }}
+          servicePort: {{ .Values.pycsw.service_port }}
+          {{- end }}
   tls:
     - hosts:
       - {{ .Values.ingress.tls_host }}
