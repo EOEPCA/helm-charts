@@ -1,7 +1,18 @@
 {{- if .Values.nginxIntegration.enabled }}
 {{- $domain := .Values.global.domain -}}
 {{- $authRptCookieName := (printf "%s-%s" .Values.authRptCookieName .Values.global.context) -}}
+{{- if and .Values.nginxIntegration.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.nginxIntegration.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.nginxIntegration.annotations "kubernetes.io/ingress.class" .Values.nginxIntegration.className}}
+  {{- end }}
+{{- end }}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ include "uma-user-agent.fullname" . }}
@@ -12,7 +23,6 @@ metadata:
     {{- if .Values.global.certManager.clusterIssuer }}
     cert-manager.io/cluster-issuer: {{ .Values.global.certManager.clusterIssuer }}
     {{- end }}
-    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/configuration-snippet: |
       auth_request /authcheck;
       # Unpick the auth_request response
@@ -57,6 +67,9 @@ metadata:
         proxy_set_header X-Original-Method $request_method;
       }
 spec:
+  {{- if and .Values.nginxIntegration.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.nginxIntegration.className }}
+  {{- end }}
   rules:
     {{- range .Values.nginxIntegration.hosts }}
     - host: {{ printf "%s.%s" .host $domain | quote }}
@@ -64,9 +77,19 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: {{ default "ImplementationSpecific" .pathType }}
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ .service.name }}
+                port:
+                  number: {{ .service.port }}
+              {{- else }}
               serviceName: {{ .service.name }}
               servicePort: {{ .service.port }}
+              {{- end }}
           {{- end }}
     {{- end }}
   {{- if .Values.global.certManager.clusterIssuer }}

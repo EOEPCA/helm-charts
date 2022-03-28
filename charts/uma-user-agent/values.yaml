@@ -60,6 +60,8 @@ service:
 nginxIntegration:
   # Flag to create ingress with config for nginx auth_request
   enabled: false
+  # class-name for selection rules of ingress-controller
+  className: nginx
   hosts:
     # First part of the hostname - global.domain will be appended
     - host: ""
