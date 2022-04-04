@@ -1,5 +1,10 @@
-
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ .Values.context }}-service-static
@@ -13,16 +18,31 @@ spec:
     http:
       paths:
       - path: /static
+        {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+        pathType: "ImplementationSpecific"
+        {{- end }}
         backend:
+          {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+          service:
+            name: {{ .Values.global.user }}
+            port:
+              number: {{ .Values.global.servicePort }}
+          {{- else }}
           serviceName: {{ .Values.global.user }}
           servicePort: {{ .Values.global.servicePort }}
+          {{- end }}
 
 
 
 ---
 
-
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ .Values.context }}-service
@@ -36,6 +56,16 @@ spec:
     http:
       paths:
       - path: {{ .Values.global.baseUri }}
+        {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+        pathType: "ImplementationSpecific"
+        {{- end }}
         backend:
+          {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+          service:
+            name: {{ .Values.global.user }}
+            port:
+              number: {{ .Values.global.servicePort }}
+          {{- else }}
           serviceName: {{ .Values.global.user }}
           servicePort: {{ .Values.global.servicePort }}
+          {{- end }}
