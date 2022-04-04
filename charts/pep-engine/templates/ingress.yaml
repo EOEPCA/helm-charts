@@ -1,5 +1,11 @@
 ---
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ .Values.global.context }}-pep
@@ -19,8 +25,15 @@ spec:
       paths:
       - path: /
         backend:
+          {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+          service:
+            name: {{ .Values.global.pep }}
+            port:
+              number: {{ index .Values "global" "ports" "proxy-pep" "port" }}
+          {{- else }}
           serviceName: {{ .Values.global.pep }}
           servicePort: {{ index .Values "global" "ports" "proxy-pep" "port" }}
+          {{- end }}
   {{- if .Values.global.certManager.clusterIssuer }}
   tls:
     - hosts:
@@ -28,7 +41,13 @@ spec:
       secretName: {{ printf "%s-pep-tls" .Values.global.context | quote }}
   {{- end }}
 ---
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ .Values.global.context }}-pepapi
@@ -41,13 +60,26 @@ spec:
       paths:
       - path: /
         backend:
+          {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+          service:
+            name: {{ .Values.global.pep }}
+            port:
+              number: {{ index .Values "global" "ports" "resources-pep" "port" }}
+          {{- else }}
           serviceName: {{ .Values.global.pep }}
           servicePort: {{ index .Values "global" "ports" "resources-pep" "port" }}
+          {{- end }}
 ---
 {{- if and (eq .Values.configMap.workingMode "PARTIAL") (.Values.nginxIntegration.enabled) }}
 {{- $defaultHostname := default (include "pep-engine.fullname" .) .Values.global.context }}
 {{- $hostname := default $defaultHostname .Values.nginxIntegration.hostname }}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $hostname }}
@@ -69,14 +101,27 @@ metadata:
         proxy_set_header X-Original-Method $request_method;
       }
 spec:
+  {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
   rules:
   - host: {{ printf "%s.%s" $hostname .Values.global.domain | quote }}
     http:
       paths:
       - path: /
+        {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+        pathType: "ImplementationSpecific"
+        {{- end }}
         backend:
+          {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+          service:
+            name: {{ .Values.global.resourceServer.name }}
+            port:
+              number: {{ .Values.global.resourceServer.port }}
+          {{- else }}
           serviceName: {{ .Values.global.resourceServer.name }}
           servicePort: {{ .Values.global.resourceServer.port }}
+          {{- end }}
   {{- if .Values.global.certManager.clusterIssuer }}
   tls:
     - hosts:
