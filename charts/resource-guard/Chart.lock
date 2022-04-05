@@ -1,9 +1,9 @@
 dependencies:
 - name: pep-engine
   repository: https://eoepca.github.io/helm-charts/
-  version: 1.0.0
+  version: 1.0.1
 - name: uma-user-agent
   repository: https://eoepca.github.io/helm-charts/
   version: 1.0.3
-digest: sha256:08b35cfe2b54b09bcf97242883b0ab9d56b9752e788c9d78e41a3d35059d50d8
-generated: "2022-03-29T08:50:28.561647589+01:00"
+digest: sha256:521bc926a63c3dfde5fa6ef962c51eb0e1d107701b5a3fd9fb05bf5df1dcf014
+generated: "2022-04-05T16:18:37.540386939+01:00"
