@@ -64,6 +64,8 @@ spec:
               value: /var/etc/ades/wfinputs.yaml
             - name: ADES_POD_ENV_VARS
               value: /var/etc/ades/pod_env_vars.yaml
+            - name: ADES_POD_NODESELECTORS
+              value: /var/etc/ades/pod_nodeselectors.yaml
             - name: STORAGE_CLASS
               value: {{ .Values.workflowExecutor.processingStorageClass | quote }}
             - name: VOLUME_TMP_SIZE
@@ -102,9 +104,15 @@ spec:
             - name: ADES_BACKOFF_LIMIT
               value: {{ .Values.workflowExecutor.backofflimit| quote }}
             {{- end }}
-            {{- if .Values.nodeSelector }}
+            {{- if .Values.workflowExecutor.processingNodeSelector }}
+            - name: ADES_NODE_SELECTOR
+              value: {{ toJson .Values.workflowExecutor.processingNodeSelector| quote }}
+            {{- else if .Values.nodeSelector }}
             - name: ADES_NODE_SELECTOR
               value: {{ toJson .Values.nodeSelector| quote }}
+            {{- else }}
+            - name: ADES_NODE_SELECTOR
+              value: {}
             {{- end }}
             {{- if .Values.workflowExecutor.platformDomain }}
             - name: ADES_PLATFORM_DOMAIN
@@ -114,13 +122,20 @@ spec:
             - name: PEP_CLIENT_STATE_PATH
               value: {{ .Values.wps.pepClientStatePath| quote }}
             {{- end }}
+            {{- if .Values.workflowExecutor.jobNamespaceLabels }}
+            - name: ADES_JOB_NAMESPACE_LABELS
+              value: {{ toJson .Values.workflowExecutor.jobNamespaceLabels| quote }}
+            {{- end }}
+            {{- if .Values.workflowExecutor.calrissianImage }}
+            - name: CALRISSIAN_IMAGE
+              value: {{ .Values.workflowExecutor.calrissianImage | quote }}
+            {{- end }}
 
-  
           volumeMounts:
             - name: ades-config
               mountPath: /var/etc/ades
             - name: ades-user-data
-              mountPath: /var/www/html/res
+              mountPath: /var/www/_run/res
             - name: ades-processing-services
               mountPath: /opt/zooservices_user
             - name: ades-config
