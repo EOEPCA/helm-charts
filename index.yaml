@@ -3,6 +3,16 @@ entries:
   ades:
   - apiVersion: v2
     appVersion: 1.1.2
+    created: "2022-04-13T15:10:07.471996209Z"
+    description: A Helm chart for the ADES
+    digest: 0a101dafc3fb22e87a2997f6d90887ad6af90cc36f2a0b01d9426b167753bf52
+    name: ades
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/ades-1.1.7/ades-1.1.7.tgz
+    version: 1.1.7
+  - apiVersion: v2
+    appVersion: 1.1.2
     created: "2022-04-12T09:46:43.00927521Z"
     description: A Helm chart for the ADES
     digest: 4a8adfd0eb9aef4827673489c02c96b3018421e66f67b47773aa1003987bc7bc
@@ -247,6 +257,16 @@ entries:
     version: 0.2.2
   django-portal:
   - apiVersion: v2
+    appVersion: 2022.02.24.08.20
+    created: "2022-04-13T15:10:07.64000696Z"
+    description: A Helm chart for Kubernetes
+    digest: 6a9b84b6624a5802c24822082d6be12ec3f32a48c7ccd7b8e7efca528b7b7d65
+    name: django-portal
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/django-portal-1.0.4/django-portal-1.0.4.tgz
+    version: 1.0.4
+  - apiVersion: v2
     appVersion: 1.0.0
     created: "2021-12-22T13:36:15.267459451Z"
     description: A Helm chart for Kubernetes
@@ -428,6 +448,30 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/jupyter-0.1.3/jupyter-0.1.3.tgz
     version: 0.1.3
+  jupyterhub:
+  - apiVersion: v2
+    appVersion: 2.0.2
+    created: "2022-04-13T15:10:07.812232866Z"
+    description: Multi-user Jupyter installation
+    digest: 9ca48d3d80012d9850f7613bb1cacc1fea38bdfc8d5e72623d4865dcb936600a
+    home: https://z2jh.jupyter.org
+    icon: https://jupyter.org/assets/hublogo.svg
+    keywords:
+    - jupyter
+    - jupyterhub
+    - z2jh
+    kubeVersion: '>=1.17.0-0'
+    maintainers:
+    - email: erik@sundellopensource.se
+      name: Erik Sundell
+    - name: Simon Li
+      url: https://github.com/manics/
+    name: jupyterhub
+    sources:
+    - https://github.com/jupyterhub/zero-to-jupyterhub-k8s
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/jupyterhub-1.1.11/jupyterhub-1.1.11.tgz
+    version: 1.1.11
   license-manager:
   - apiVersion: v1
     appVersion: "1"
@@ -2100,6 +2144,16 @@ entries:
   rm-resource-catalogue:
   - apiVersion: v2
     appVersion: 3.0.0
+    created: "2022-04-13T15:10:08.203678978Z"
+    description: A Helm chart for Resource Catalogue
+    digest: 8fb7dcee42021ba3aa49b65e70bebdf4874ddf9b9e67250585476aa28f0dfb4b
+    name: rm-resource-catalogue
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/rm-resource-catalogue-1.0.9/rm-resource-catalogue-1.0.9.tgz
+    version: 1.0.9
+  - apiVersion: v2
+    appVersion: 3.0.0
     created: "2021-12-06T14:24:04.958240954Z"
     description: A Helm chart for Resource Catalogue
     digest: bf1021332baee3bf17d479b8d513cc16b712b0007d70c979548480081877b613
@@ -3446,4 +3500,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2022-04-13T14:34:44.805717446Z"
+generated: "2022-04-13T15:10:08.2054087Z"
