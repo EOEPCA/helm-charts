@@ -1,3 +1,5 @@
+imagePullSecrets: []
+
 global:
   namespace: rm
 db:
@@ -13,6 +15,34 @@ db:
   volume_size: 500Mi
   volume_access_modes: ReadWriteMany
   volume_storage_type: managed-nfs-storage-retain
+  configmap_name: resource-catalogue-db-configmap
+  configmap_volume_name: resource-catalogue-db-config
+  configmap_volume_path: /etc/postgresql
+  config:
+    enabled: true
+    # port: 5432
+    # max_connections: 100
+    # shared_buffers: 32MB
+    # effective_cache_size: 4GB
+    # maintenance_work_mem: 64MB
+    # checkpoint_completion_target: 0.5
+    # wal_buffers: -1
+    # default_statistics_target: 100
+    # effective_io_concurrency: 1
+    # work_mem: 4MB
+    # min_wal_size: 80MB
+    # max_wal_size: 1GB
+    # max_worker_processes: 8
+    # max_parallel_workers_per_gather: 2
+    # max_parallel_workers: 8
+    # max_parallel_maintenance_workers: 2
+    # seq_page_cost: 1.0
+    # random_page_cost: 4.0
+    # cpu_tuple_cost: 0.01
+    # cpu_index_tuple_cost: 0.005
+    # cpu_operator_cost: 0.0025
+    # parallel_tuple_cost: 0.1
+    # parallel_setup_cost: 1000.0
 ingress:
   enabled: true
   name: resource-catalogue

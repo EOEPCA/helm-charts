@@ -41,7 +41,13 @@ spec:
         volumeMounts:
         - mountPath: {{ .Values.db.volume_path }}
           name: {{ .Values.db.volume_name }}
+        - mountPath: {{ .Values.db.configmap_volume_path }}
+          name: {{ .Values.db.configmap_volume_name }}
       restartPolicy: Always
+      volumes:
+      - name: {{ .Values.db.configmap_volume_name }}
+        configMap:
+          name: {{ .Values.db.configmap_name }}
   volumeClaimTemplates:
     - metadata:
         name: {{ .Values.db.volume_name }}

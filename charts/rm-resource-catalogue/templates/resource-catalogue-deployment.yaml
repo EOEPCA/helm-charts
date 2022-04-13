@@ -17,6 +17,10 @@ spec:
       labels:
         io.kompose.service: pycsw
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}    
       containers:
       - env:
         - name: PYCSW_SERVER_URL

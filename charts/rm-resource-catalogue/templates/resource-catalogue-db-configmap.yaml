@@ -1,0 +1,33 @@
+apiVersion: v1
+data:
+  postgresql.conf: |+
+    listen_addresses = '*'
+{{ if .Values.db.config.port }}    port = {{ .Values.db.config.port }}
+{{ end }}{{ if .Values.db.config.max_connections }}    max_connections = {{ .Values.db.config.max_connections }}
+{{ end }}{{ if .Values.db.config.shared_buffers }}    shared_buffers = {{ .Values.db.config.shared_buffers }}
+{{ end }}{{ if .Values.db.config.effective_cache_size }}    effective_cache_size = {{ .Values.db.config.effective_cache_size }}
+{{ end }}{{ if .Values.db.config.maintenance_work_mem }}    maintenance_work_mem = {{ .Values.db.config.maintenance_work_mem }}
+{{ end }}{{ if .Values.db.config.checkpoint_completion_target }}    checkpoint_completion_target = {{ .Values.db.config.checkpoint_completion_target }}
+{{ end }}{{ if .Values.db.config.wal_buffers }}    wal_buffers = {{ .Values.db.config.wal_buffers }}
+{{ end }}{{ if .Values.db.config.default_statistics_target }}    default_statistics_target = {{ .Values.db.config.default_statistics_target }}
+{{ end }}{{ if .Values.db.config.effective_io_concurrency }}    effective_io_concurrency = {{ .Values.db.config.effective_io_concurrency }}
+{{ end }}{{ if .Values.db.config.work_mem }}    work_mem = {{ .Values.db.config.work_mem }}
+{{ end }}{{ if .Values.db.config.min_wal_size }}    min_wal_size = {{ .Values.db.config.min_wal_size }}
+{{ end }}{{ if .Values.db.config.max_wal_size }}    max_wal_size = {{ .Values.db.config.max_wal_size }}
+{{ end }}{{ if .Values.db.config.max_worker_processes }}    max_worker_processes = {{ .Values.db.config.max_worker_processes }}
+{{ end }}{{ if .Values.db.config.max_parallel_workers_per_gather }}    max_parallel_workers_per_gather = {{ .Values.db.config.max_parallel_workers_per_gather }}
+{{ end }}{{ if .Values.db.config.max_parallel_workers }}    max_parallel_workers = {{ .Values.db.config.max_parallel_workers }}
+{{ end }}{{ if .Values.db.config.max_parallel_maintenance_workers }}    max_parallel_maintenance_workers = {{ .Values.db.config.max_parallel_maintenance_workers }}
+{{ end }}{{ if .Values.db.config.seq_page_cost }}    seq_page_cost = {{ .Values.db.config.seq_page_cost }}
+{{ end }}{{ if .Values.db.config.random_page_cost }}    random_page_cost = {{ .Values.db.config.random_page_cost }}
+{{ end }}{{ if .Values.db.config.cpu_tuple_cost }}    cpu_tuple_cost = {{ .Values.db.config.cpu_tuple_cost }}
+{{ end }}{{ if .Values.db.config.cpu_index_tuple_cost }}    cpu_index_tuple_cost = {{ .Values.db.config.cpu_index_tuple_cost }}
+{{ end }}{{ if .Values.db.config.cpu_operator_cost }}    cpu_operator_cost = {{ .Values.db.config.cpu_operator_cost }}
+{{ end }}{{ if .Values.db.config.parallel_tuple_cost }}    parallel_tuple_cost = {{ .Values.db.config.parallel_tuple_cost }}
+{{ end }}{{ if .Values.db.config.parallel_setup_cost }}    parallel_setup_cost = {{ .Values.db.config.parallel_setup_cost }}
+{{ end }}
+
+kind: ConfigMap
+metadata:
+  name: {{ .Values.db.configmap_name }}
+  namespace: {{ .Values.global.namespace }}
