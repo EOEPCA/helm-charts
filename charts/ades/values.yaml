@@ -94,7 +94,25 @@ workflowExecutor:
     APP: ades
 
   main:
-    cwl: ""
+    cwl: |
+      class: Workflow
+      doc: Main stage manager
+      id: main
+      label: macro-cwl
+      inputs: {}
+      outputs:
+        StacCatalogUri:
+          outputSource:
+            - node_stage_out/s3_catalog_output
+          type: string  
+      requirements:
+        SubworkflowFeatureRequirement: {}
+        ScatterFeatureRequirement: {}
+      steps:
+        node_stage_out:
+          in: {}
+          out: [s3_catalog_output]
+          run: ''      
 
   stagein:
     cwl: |
@@ -103,8 +121,8 @@ workflowExecutor:
       doc: "Run Stars for staging input data"
       class: CommandLineTool
       hints:
-        DockerRequirement:
-          dockerPull: terradue/stars:1.3.4
+        DockerRequiremeent:
+          dockerPull: terradue/stars:1.0.0-beta.11
       id: stars
       arguments:
       - copy
@@ -133,6 +151,7 @@ workflowExecutor:
             AWS_ACCESS_KEY_ID: $(inputs.ADES_STAGEIN_AWS_ACCESS_KEY_ID)
             AWS_SECRET_ACCESS_KEY: $(inputs.ADES_STAGEIN_AWS_SECRET_ACCESS_KEY)
         ResourceRequirement: {}
+
   stageout:
     cwl: |
       cwlVersion: v1.0
@@ -141,7 +160,7 @@ workflowExecutor:
       class: CommandLineTool
       hints:
         DockerRequirement:
-          dockerPull: terradue/stars:1.3.4
+          dockerPull: terradue/stars:1.0.0-beta.11
       id: stars
       arguments:
         - copy
@@ -182,7 +201,11 @@ workflowExecutor:
           type: string?
         process:
           type: string?
-      outputs: {}
+      outputs:
+        s3_catalog_output:
+          outputBinding:
+            outputEval: ${  return inputs.ADES_STAGEOUT_OUTPUT + "/" + inputs.process + "/catalog.json"; }
+          type: string
       requirements:
         InlineJavascriptRequirement: {}
         EnvVarRequirement:
