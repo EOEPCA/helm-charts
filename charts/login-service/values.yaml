@@ -105,8 +105,12 @@ opendj:
       repository: "{{ .Values.global.images.persistence.repository }}"
       pullPolicy: "{{ .Values.global.images.persistence.pullPolicy }}"
       tag: "{{ .Values.global.images.persistence.tag }}"
-    coihClientIDv: "1234"
-    coihClientSecretv: "1234"
+    #client credentials for the github provider  
+    clientIDv: ""
+    clientSecretv: ""
+    #client credentials for the coih provider
+    coihClientIDv: ""
+    coihClientSecretv: ""
   readinessProbe:
     initialDelaySeconds: 150
     periodSeconds: 90

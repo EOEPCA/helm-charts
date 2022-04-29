@@ -56,15 +56,15 @@ persistence:
   cacheType: GLUU_CACHE_TYPE
   cacheTypev: "NATIVE_PERSISTENCE"
   clientID: LP_CLIENT_ID
-  clientIDv: "59f1fed27153f631bc08"
+  clientIDv: ""
   clientSecret: LP_CLIENT_SECRET
-  clientSecretv: "640baffac0948454c48de2505726f53d11adc8a6"
+  clientSecretv: ""
   pdpEp: /pdp
 #COIH Provider values needs to be configured after deployment for security issues
   coihClientID: COIH_CLIENT_ID
-  coihClientIDv: "1234"
+  coihClientIDv: ""
   coihClientSecret: COIH_CLIENT_SECRET
-  coihClientSecretv: "1234"
+  coihClientSecretv: ""
 #container specific values declared here
 tcpSocket:
   port: 1636

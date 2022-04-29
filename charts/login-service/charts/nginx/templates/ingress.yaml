@@ -1,7 +1,13 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "nginx.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-base
@@ -34,15 +40,31 @@ spec:
       http:
         paths:
           - path: {{ $ingressPath }}
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: "ImplementationSpecific"
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: oxtrust
+                port:
+                  number: 8080
+              {{- else }}
               serviceName: oxtrust
               servicePort: 8080
+              {{- end }}
   {{- end }}
 ---
 
 {{ $fullName := include "nginx.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-openid-config
@@ -71,16 +93,32 @@ spec:
       http:
         paths:
           - path: /.well-known/openid-configuration
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: "ImplementationSpecific"
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: oxauth
+                port:
+                  number: 8080
+              {{- else }}
               serviceName: oxauth
               servicePort: 8080
+              {{- end }}
   {{- end }}
 
 ---
 
 {{ $fullName := include "nginx.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-uma2-config
@@ -109,16 +147,32 @@ spec:
       http:
         paths:
           - path: /.well-known/uma2-configuration
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: "ImplementationSpecific"
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: oxauth
+                port:
+                  number: 8080
+              {{- else }}
               serviceName: oxauth
               servicePort: 8080
+              {{- end }}
   {{- end }}
 
 ---
 
 {{ $fullName := include "nginx.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-webfinger
@@ -147,9 +201,19 @@ spec:
       http:
         paths:
           - path: /.well-known/webfinger
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: "ImplementationSpecific"
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: oxauth
+                port:
+                  number: 8080
+              {{- else }}
               serviceName: oxauth
               servicePort: 8080
+              {{- end }}
 
 {{- end }}
 
@@ -157,7 +221,13 @@ spec:
 
 {{ $fullName := include "nginx.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-webdiscovery
@@ -186,9 +256,19 @@ spec:
       http:
         paths:
           - path: /.well-known/simple-web-discovery
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: "ImplementationSpecific"
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: oxauth
+                port:
+                  number: 8080
+              {{- else }}
               serviceName: oxauth
               servicePort: 8080
+              {{- end }}
 
 {{- end }}
 
@@ -196,7 +276,13 @@ spec:
 
 {{ $fullName := include "nginx.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-scim-config
@@ -225,9 +311,19 @@ spec:
       http:
         paths:
           - path: /.well-known/scim-configuration
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: "ImplementationSpecific"
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: oxtrust
+                port:
+                  number: 8080
+              {{- else }}
               serviceName: oxtrust
               servicePort: 8080
+              {{- end }}
 
 {{- end }}
 
@@ -235,7 +331,13 @@ spec:
 
 {{ $fullName := include "nginx.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-u2f-config
@@ -264,9 +366,19 @@ spec:
       http:
         paths:
           - path: /.well-known/fido-u2f-configuration
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: "ImplementationSpecific"
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: oxauth
+                port:
+                  number: 8080
+              {{- else }}
               serviceName: oxauth
               servicePort: 8080
+              {{- end }}
 
 {{- end }}
 
@@ -274,7 +386,13 @@ spec:
 
 {{ $fullName := include "nginx.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-gluu
@@ -301,9 +419,19 @@ spec:
       http:
         paths:
           - path: /oxauth
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: "ImplementationSpecific"
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: oxauth
+                port:
+                  number: 8080
+              {{- else }}
               serviceName: oxauth
               servicePort: 8080
+              {{- end }}
 
 {{- end }}
 
@@ -311,7 +439,13 @@ spec:
 
 {{ $fullName := include "nginx.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-stateful
@@ -342,17 +476,47 @@ spec:
       http:
         paths:
           - path: /identity
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: "ImplementationSpecific"
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: oxtrust
+                port:
+                  number: 8080
+              {{- else }}
               serviceName: oxtrust
               servicePort: 8080
+              {{- end }}
           - path: /idp
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: "ImplementationSpecific"
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: oxshibboleth
+                port:
+                  number: 8080
+              {{- else }}
               serviceName: oxshibboleth
               servicePort: 8080
+              {{- end }}
           - path: /passport
+            {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+            pathType: "ImplementationSpecific"
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: oxpassport
+                port:
+                  number: 8090
+              {{- else }}
               serviceName: oxpassport
               servicePort: 8090
+              {{- end }}
 
 {{- end }}
 

@@ -18,6 +18,14 @@ data:
   {{- else }}
   GLUU_CACHE_TYPE: {{ .Values.gluuCacheType | quote }}
   {{- end }}
+  {{- if and (.Values.persistence.clientIDv) (.Values.persistence.clientSecretv) }}
+  LP_CLIENT_ID: {{ .Values.persistence.clientIDv }}
+  LP_CLIENT_SECRET: {{ .Values.persistence.clientSecretv }}
+  {{- end }}
+  {{- if and (.Values.persistence.coihClientIDv) (.Values.persistence.coihClientSecretv) }}
+  COIH_CLIENT_ID: {{ .Values.persistence.coihClientIDv }}
+  COIH_CLIENT_SECRET: {{ .Values.persistence.coihClientSecretv }}
+  {{- end }}
   # must the same as the opendj service name
   GLUU_CERT_ALT_NAME: {{ .Values.global.serviceName }} #{{ template "login-service.fullname" . }}-service
   PDP_EP: {{ .Values.persistence.pdpEp | quote}}
