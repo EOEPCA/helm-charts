@@ -8,7 +8,7 @@ image:
   repository: eoepca/proc-ades
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "dev1.2.0"
   proxyRepository: eoepca/kubectl-proxy
   proxyTag: "0.9.0"
 
@@ -49,7 +49,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: ades.eoepca.com
-      paths: 
+      paths:
         - path: /
           pathType: ImplementationSpecific
   tls: []
@@ -224,9 +224,8 @@ workflowExecutor:
             # AWS__Profile: $(inputs.ADES_STAGEOUT_AWS_PROFILE)
             # AWS__ProfilesLocation: $(inputs.aws_profiles_location.path)
         ResourceRequirement: {}
-
   rulez:
-    cwl: ""
+    cwl: ""   
     
   # kubernetes storage class to be used for provisioning volumes. Must be a persistent volume claim compliant (glusterfs-storage)
   processingStorageClass: glusterfs-storage

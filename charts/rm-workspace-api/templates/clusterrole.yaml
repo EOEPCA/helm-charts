@@ -11,7 +11,11 @@ rules:
     verbs: ["get", "patch"]
     resources:
       - configmaps
-  - apiGroups: ["extensions"]
+  - apiGroups: ["extensions"]  # older k8s versions
+    verbs: ["get", "list"]
+    resources:
+      - ingresses
+  - apiGroups: ["networking.k8s.io"]  # newer k8s versions
     verbs: ["get", "list"]
     resources:
       - ingresses

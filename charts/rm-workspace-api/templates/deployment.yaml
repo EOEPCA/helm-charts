@@ -71,6 +71,8 @@ spec:
               value: "{{ .Values.helmChartName }}"
             - name: HELM_CHART_VERSION
               value: "{{ .Values.helmChartVersion }}"
+            - name: HELM_CHART_STORAGE_CLASS_NAME
+              value: "{{ .Values.helmChartStorageClassName }}"
             - name: S3_ENDPOINT
               value: "{{ .Values.s3Endpoint }}"
             - name: S3_REGION
