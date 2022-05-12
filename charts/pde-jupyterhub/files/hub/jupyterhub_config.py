@@ -157,7 +157,7 @@ c.KubeSpawner.enable_user_namespaces = True
 
 # Volumes
 c.KubeSpawner.storage_capacity = "10Gi"
-c.KubeSpawner.storage_class = "managed-nfs-storage"
+c.KubeSpawner.storage_class = os.environ['STORAGE_CLASS']
 c.KubeSpawner.storage_pvc_ensure = True
 c.KubeSpawner.pvc_name_template = (
     "claim-{username}-" + os.environ["JUPYTERHUB_ENV"].lower()
