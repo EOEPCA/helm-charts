@@ -17,7 +17,7 @@ gluuMaxRamFraction: 1
 resources:
   requests:
     cpu: 200m
-    memory: 1.2Gi
+    memory: 1.2G
   limits: {}
 
 #hostAliases
