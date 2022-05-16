@@ -307,6 +307,16 @@ entries:
     version: 0.2.2
   django-portal:
   - apiVersion: v2
+    appVersion: 2022.05.05.08.25
+    created: "2022-05-16T13:57:05.552940271Z"
+    description: A Helm chart for Kubernetes
+    digest: af023bcb8f7a8da4842eb672b27dded469ce8a8b48dfd0ec1ca494a7b24d872b
+    name: django-portal
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/django-portal-1.0.6/django-portal-1.0.6.tgz
+    version: 1.0.6
+  - apiVersion: v2
     appVersion: 2022.04.27.12.34
     created: "2022-05-03T15:30:38.434462219Z"
     description: A Helm chart for Kubernetes
@@ -2340,6 +2350,16 @@ entries:
   rm-bucket-operator:
   - apiVersion: v2
     appVersion: 1.1.0
+    created: "2022-05-16T13:57:05.729936688Z"
+    description: A Helm chart for Kubernetes
+    digest: 07d415823b5b57a9d237fe41aa67b01f9aab0e24003a4f9602470b639d1401a8
+    name: rm-bucket-operator
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/rm-bucket-operator-0.9.9/rm-bucket-operator-0.9.9.tgz
+    version: 0.9.9
+  - apiVersion: v2
+    appVersion: 1.1.0
     created: "2022-05-05T08:25:49.38714183Z"
     description: A Helm chart for Kubernetes
     digest: 02634d3fac747c9521bf44ea6be43d16bacbdd428204d5df4db824da96e93fd5
@@ -3801,4 +3821,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2022-05-13T08:19:35.309535583Z"
+generated: "2022-05-16T13:57:05.732164717Z"
