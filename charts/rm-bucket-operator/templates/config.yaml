@@ -14,5 +14,5 @@ data:
           exposure:
             include: info, health, prometheus
     k8s:
-      namespace: rm
+      namespace: {{ .Release.Namespace }}
       cluster: eoepca

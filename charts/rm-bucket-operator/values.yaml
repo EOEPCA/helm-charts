@@ -81,4 +81,9 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-domain: 'develop.eoepca.org'
+domain: myplatform.eoepca.org
+data:
+  # SPRING_PROFILES_ACTIVE: 'rm'  # defaults to .Release.Namespace
+  OS_MEMBERROLEID: 'fff2ff9ee4384b1894a90878d3e92bab'
+  OS_SERVICEPROJECTID: 'fff467d0a0414252a79e29d38f03ff98'
+  USER_EMAIL_PATTERN: 'eoepca+<name>@eoepca.org'
