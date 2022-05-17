@@ -308,6 +308,16 @@ entries:
   django-portal:
   - apiVersion: v2
     appVersion: 2022.05.05.08.25
+    created: "2022-05-17T13:30:27.616632919Z"
+    description: A Helm chart for Kubernetes
+    digest: 7da27c31715de460bde84bbab6abc37cd646d79eae4bfb3d1cb35fb7089d8ead
+    name: django-portal
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/django-portal-1.0.7/django-portal-1.0.7.tgz
+    version: 1.0.7
+  - apiVersion: v2
+    appVersion: 2022.05.05.08.25
     created: "2022-05-16T13:57:05.552940271Z"
     description: A Helm chart for Kubernetes
     digest: af023bcb8f7a8da4842eb672b27dded469ce8a8b48dfd0ec1ca494a7b24d872b
@@ -2498,6 +2508,26 @@ entries:
   rm-user-workspace:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-05-17T13:30:27.816256666Z"
+    dependencies:
+    - name: vs
+      repository: https://charts-public.hub.eox.at/
+      version: 2.1.4
+    - name: rm-resource-catalogue
+      repository: https://eoepca.github.io/helm-charts/
+      version: 1.1.0
+    - name: resource-guard
+      repository: https://eoepca.github.io/helm-charts/
+      version: 1.0.5
+    description: A Helm chart for Kubernetes
+    digest: 54ae8eb5b9a7d512df4f108132225e9b0bb9fde7eaddb683d946b66e2ffedb9f
+    name: rm-user-workspace
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/rm-user-workspace-1.1.1/rm-user-workspace-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-05-03T15:30:39.149747887Z"
     dependencies:
     - name: vs
@@ -3076,6 +3106,16 @@ entries:
     - https://github.com/EOEPCA/helm-charts/releases/download/rm-user-workspace-0.0.13/rm-user-workspace-0.0.13.tgz
     version: 0.0.13
   rm-workspace-api:
+  - apiVersion: v2
+    appVersion: 1.0.2
+    created: "2022-05-17T13:30:27.969952322Z"
+    description: A Helm chart for Kubernetes
+    digest: 3c856680320daa8588de59f7bb2735aba4c5f848d8b2882f9bc805a6b7afeccf
+    name: rm-workspace-api
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/rm-workspace-api-1.1.2/rm-workspace-api-1.1.2.tgz
+    version: 1.1.2
   - apiVersion: v2
     appVersion: 1.0.2
     created: "2022-05-13T08:19:35.307623556Z"
@@ -3821,4 +3861,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2022-05-16T13:57:05.732164717Z"
+generated: "2022-05-17T13:30:27.971497191Z"
