@@ -20,7 +20,6 @@ metadata:
     {{- include "django-portal.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
