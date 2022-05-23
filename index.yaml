@@ -207,6 +207,16 @@ entries:
   cheese:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-05-23T11:46:10.261982363Z"
+    description: Cheese web pages used for testing ingress
+    digest: 7c3119ac757acf78729c4cfd960d00cb0c64bf30ec2ae7a2eb5fd0075a797c44
+    name: cheese
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/cheese-1.0.3/cheese-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-04-26T09:28:11.001482791Z"
     description: Cheese web pages used for testing ingress
     digest: 21f2a35a4c98f28fe4fa67924332d90f8788df5b07b53216d4e1b86b10cf07a9
@@ -3107,6 +3117,16 @@ entries:
     version: 0.0.13
   rm-workspace-api:
   - apiVersion: v2
+    appVersion: 1.0.3
+    created: "2022-05-23T11:46:10.385589069Z"
+    description: A Helm chart for Kubernetes
+    digest: 3cf2d91044db1ef523eb580daad205f1ed8b8a6db89c9c1467285cadc098469e
+    name: rm-workspace-api
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/rm-workspace-api-1.1.3/rm-workspace-api-1.1.3.tgz
+    version: 1.1.3
+  - apiVersion: v2
     appVersion: 1.0.2
     created: "2022-05-17T13:30:27.969952322Z"
     description: A Helm chart for Kubernetes
@@ -3861,4 +3881,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2022-05-17T13:30:27.971497191Z"
+generated: "2022-05-23T11:46:10.386989086Z"
