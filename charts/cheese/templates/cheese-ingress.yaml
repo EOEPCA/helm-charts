@@ -1,9 +1,12 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: cheddar
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
 spec:
   tls:
     - hosts:
@@ -14,16 +17,22 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: cheddar
-          servicePort: {{ .Values.service.port }}
+          service:
+            name: cheddar
+            port:
+              number: {{ .Values.service.port }}
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: stilton
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
 spec:
   tls:
     - hosts:
@@ -34,16 +43,22 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: stilton
-          servicePort: {{ .Values.service.port }}
+          service:
+            name: stilton
+            port:
+              number: {{ .Values.service.port }}
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: wensleydale
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
 spec:
   tls:
     - hosts:
@@ -54,7 +69,10 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: wensleydale
-          servicePort: {{ .Values.service.port }}
+          service:
+            name: wensleydale
+            port:
+              number: {{ .Values.service.port }}
 ---

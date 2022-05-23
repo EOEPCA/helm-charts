@@ -97,3 +97,6 @@ s3Region: "RegionOne"
 workspaceDomain: develop.eoepca.org
 umaClientSecretName: ""
 umaClientSecretNamespace: ""
+authServerIp: ""
+authServerHostname: ""
+clusterIssuer: ""

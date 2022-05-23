@@ -89,6 +89,12 @@ spec:
               value: "{{ .Values.harborUsername }}"
             - name: HARBOR_ADMIN_PASSWORD
               value: "{{ .Values.harborPassword }}"
+            - name: AUTH_SERVER_IP
+              value: "{{ .Values.authServerIp }}"
+            - name: AUTH_SERVER_HOSTNAME
+              value: "{{ .Values.authServerHostname }}"
+            - name: CLUSTER_ISSUER
+              value: "{{ .Values.clusterIssuer }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
