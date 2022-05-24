@@ -3821,6 +3821,18 @@ entries:
     version: 0.0.6
   user-profile:
   - apiVersion: v1
+    appVersion: v1.1
+    created: "2022-05-24T09:10:51.268666296Z"
+    description: A Helm chart for the User Profile
+    digest: 37e3d04e51a3de2b1b4f202f9d6cbfd55c2b5a40de011e7204fd266501825d1f
+    maintainers:
+    - name: eoepca
+    name: user-profile
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-1.1.3/user-profile-1.1.3.tgz
+    version: 1.1.3
+  - apiVersion: v1
     appVersion: v1.1.1
     created: "2022-05-03T15:30:39.483383838Z"
     description: A Helm chart for the User Profile
@@ -3952,4 +3964,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2022-05-24T09:04:11.239505729Z"
+generated: "2022-05-24T09:10:51.270585112Z"
