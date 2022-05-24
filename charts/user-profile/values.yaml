@@ -44,7 +44,7 @@ image:
   repository: eoepca/um-user-profile
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v1.1"
+  tag: ""
 
 persistence: 
   accessModes: ReadWriteMany
