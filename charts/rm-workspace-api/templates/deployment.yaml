@@ -95,6 +95,8 @@ spec:
               value: "{{ .Values.authServerHostname }}"
             - name: CLUSTER_ISSUER
               value: "{{ .Values.clusterIssuer }}"
+            - name: RESOURCE_CATALOG_VOLUME_STORAGE_TYPE
+              value: "{{ .Values.resourceCatalogVolumeStorageType }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
