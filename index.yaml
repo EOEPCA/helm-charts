@@ -450,6 +450,16 @@ entries:
   jupyter:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-06-07T12:37:45.343923575Z"
+    description: Jupyter demo
+    digest: 94e6549182d0432bbab0f1510e888cb7c7bdc6eb411ff5f5f2196ca5b310c53d
+    name: jupyter
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/jupyter-1.0.2/jupyter-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-06-07T12:32:12.353901544Z"
     description: Jupyter demo
     digest: 3b4759d3ad06edd13dea74ef5b1be769889721fd535b2c700e9829c84624fa48
@@ -3984,4 +3994,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2022-06-07T12:32:12.355279067Z"
+generated: "2022-06-07T12:37:45.345273485Z"
