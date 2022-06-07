@@ -18,4 +18,5 @@ spec:
         backend:
           service:
             name: jupyter
-            port: {{ .Values.service.port }}
+            port:
+              number: {{ .Values.service.port }}
