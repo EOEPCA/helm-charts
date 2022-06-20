@@ -10,7 +10,7 @@ global:
   # Textual identifier that is used to distinguish between instances
   context: generic
   # The name of the PEP instance
-  pep: pep-engine
+  pep: "{{ .Values.global.context }}-pep"
   # The fully-qualified domain of the Kubernetes cluster
   clusterDomain: svc.cluster.local
   # DNS domain of the deployment
@@ -35,7 +35,7 @@ global:
   nginxIp: 10.0.2.15
   # Connection details for target Resource Server
   resourceServer:
-    name: myservice
+    name: "{{ .Values.global.context }}-pep"
     port: 80
     # resourceServer.url is derived from the name and port, but can be overriden here
     # url: http://<name>:<port>/
@@ -112,9 +112,10 @@ pep-engine:
 # * UMA User Agent chart README: https://github.com/EOEPCA/helm-charts/blob/main/charts/uma-user-agent/README.md
 uma-user-agent:
   # Instance naming
-  # Defaults to `<release-name>-<chart-name>`
+  # Defaults to `<release-name>-<chart-name>` if these overrides are blank.
+  #
   # Fully qualified application name. Trumps `nameOverride`
-  fullnameOverride: ""
+  fullnameOverride: "{{ .Values.global.context }}-agent"
   # Suffix used to create fully-qualified application name,
   # in combination with the helm release name
   nameOverride: ""
@@ -141,12 +142,12 @@ uma-user-agent:
     # nginx to proxy requests (after authorization) to the resource server
     hosts:
       # First part of the hostname - global.domain will be appended
-      - host: ""
+      - host: "{{ .Values.global.context }}"
         # Array of paths to backend services
         paths:
           - path: /
             service:
-              name: myservice
+              name: "{{ .Values.global.context }}"
               port: 80
     # Additional annotations for the ingress
     annotations: {}
