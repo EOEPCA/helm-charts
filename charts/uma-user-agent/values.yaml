@@ -6,11 +6,12 @@ global:
   # The context is used to distinguish instances,
   # e.g. protection for ADES vs protection for Catalogue etc.
   context: generic
+  # The name of the PEP instance
+  pep: "{{ .Values.global.context }}-pep"
   # Domain of the Kubernetes cluster
   clusterDomain: svc.cluster.local
   # DNS domain of the deployment
   domain: myplatform.eoepca.org
-  pep: pep-engine
   ports:
     proxy-pep:
       port: 5566
@@ -29,7 +30,7 @@ image:
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: "{{ .Values.global.context }}-agent"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -64,11 +65,11 @@ nginxIntegration:
   className: nginx
   hosts:
     # First part of the hostname - global.domain will be appended
-    - host: ""
+    - host: "{{ .Values.global.context }}"
       paths:
         - path: /
           service:
-            name: myservice
+            name: "{{ .Values.global.context }}"
             port: 80
   annotations: {}
 

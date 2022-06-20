@@ -97,6 +97,8 @@ spec:
               value: "{{ .Values.clusterIssuer }}"
             - name: RESOURCE_CATALOG_VOLUME_STORAGE_TYPE
               value: "{{ .Values.resourceCatalogVolumeStorageType }}"
+            - name: WORKSPACE_CHARTS_CONFIG_MAP
+              value: "{{ .Values.workspaceChartsConfigMap }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

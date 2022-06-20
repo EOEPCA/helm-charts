@@ -72,7 +72,7 @@ spec:
   {{- end }}
   rules:
     {{- range .Values.nginxIntegration.hosts }}
-    - host: {{ printf "%s.%s" .host $domain | quote }}
+    - host: {{ printf "%s.%s" (tpl .host $) $domain | quote }}
       http:
         paths:
           {{- range .paths }}
@@ -83,11 +83,11 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ .service.name }}
+                name: {{ (tpl .service.name $) }}
                 port:
                   number: {{ .service.port }}
               {{- else }}
-              serviceName: {{ .service.name }}
+              serviceName: {{ (tpl .service.name $) }}
               servicePort: {{ .service.port }}
               {{- end }}
           {{- end }}
@@ -97,7 +97,7 @@ spec:
     - secretName: {{ printf "%s-tls" (include "uma-user-agent.fullname" .) | quote }}
       hosts:
         {{- range .Values.nginxIntegration.hosts }}
-        - {{ printf "%s.%s" .host $domain | quote }}
+        - {{ printf "%s.%s" (tpl .host $) $domain | quote }}
         {{- end }}
   {{- end }}
 {{- end }}

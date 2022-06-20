@@ -6,7 +6,7 @@ global:
   # e.g. PEP for ADES vs PEP for Catalogue etc.
   context: generic
   namespace: default
-  pep: pep-engine
+  pep: "{{ .Values.global.context }}-pep"
   # Domain of the Kubernetes cluster
   clusterDomain: svc.cluster.local
   # DNS domain of the deployment
@@ -24,7 +24,7 @@ global:
       type: TCP
   nginxIp: 10.0.2.15
   resourceServer:
-    name: myservice
+    name: "{{ .Values.global.context }}-pep"
     port: 80
     # resourceServer.url is derived from the name and port, but can be overriden here
     # url: http://<name>:<port>/

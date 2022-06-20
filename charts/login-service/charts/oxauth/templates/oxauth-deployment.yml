@@ -20,6 +20,10 @@ spec:
         image: gluufederation/{{ .Values.global.images.oxauth.repository }}:{{ .Values.global.images.oxauth.tag }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "mkdir -p /opt/gluu/jetty/oxauth/custom/pages/ && cp /data/*.xhtml /opt/gluu/jetty/oxauth/custom/pages && mkdir -p /opt/gluu/jetty/oxauth/custom/static/css/ && cp /data/*.css /opt/gluu/jetty/oxauth/custom/static/css/ && mkdir -p /opt/gluu/jetty/oxauth/custom/static/img/ && cp /data/*.png /opt/gluu/jetty/oxauth/custom/static/img/ && mkdir -p /opt/gluu/jetty/oxauth/custom/static/js/ && cp /data/*.js /opt/gluu/jetty/oxauth/custom/static/js/"]
         ports:
         - name: oxauth
           containerPort: 8080
@@ -33,6 +37,8 @@ spec:
             name: vol-userman
             subPath: {{ $value.subPath }}
         {{- end }}
+          - name: customizations
+            mountPath: /data/
         livenessProbe:
           httpGet:
             path: /oxauth/.well-known/openid-configuration
@@ -53,6 +59,9 @@ spec:
         - name: vol-userman
           persistentVolumeClaim:
             claimName: {{ .Values.volumeClaim.name }}
+        - name: customizations
+          configMap:
+            name: front-customizations
       {{- if .Values.pullSecret }}
       imagePullSecrets:
       - name: {{ .Values.pullSecret }}

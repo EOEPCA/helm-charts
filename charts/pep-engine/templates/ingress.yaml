@@ -30,11 +30,11 @@ spec:
         backend:
           {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
           service:
-            name: {{ .Values.global.pep }}
+            name: {{ (tpl .Values.global.pep $) }}
             port:
               number: {{ index .Values "global" "ports" "proxy-pep" "port" }}
           {{- else }}
-          serviceName: {{ .Values.global.pep }}
+          serviceName: {{ (tpl .Values.global.pep $) }}
           servicePort: {{ index .Values "global" "ports" "proxy-pep" "port" }}
           {{- end }}
   {{- if .Values.global.certManager.clusterIssuer }}
@@ -68,11 +68,11 @@ spec:
         backend:
           {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
           service:
-            name: {{ .Values.global.pep }}
+            name: {{ (tpl .Values.global.pep $) }}
             port:
               number: {{ index .Values "global" "ports" "resources-pep" "port" }}
           {{- else }}
-          serviceName: {{ .Values.global.pep }}
+          serviceName: {{ (tpl .Values.global.pep $) }}
           servicePort: {{ index .Values "global" "ports" "resources-pep" "port" }}
           {{- end }}
 ---
@@ -99,7 +99,7 @@ metadata:
     nginx.ingress.kubernetes.io/server-snippet: |
       location /authcheck {
         internal;
-        set $pep_address {{ .Values.global.pep }}.{{ .Release.Namespace }}.{{ .Values.global.clusterDomain }}:{{ index .Values "global" "ports" "proxy-pep" "port" }};
+        set $pep_address {{ (tpl .Values.global.pep $) }}.{{ .Release.Namespace }}.{{ .Values.global.clusterDomain }}:{{ index .Values "global" "ports" "proxy-pep" "port" }};
         proxy_pass http://$pep_address/authorize;
         proxy_pass_request_body off;
         proxy_set_header Content-Length "";
@@ -121,11 +121,11 @@ spec:
         backend:
           {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
           service:
-            name: {{ .Values.global.resourceServer.name }}
+            name: {{ (tpl .Values.global.resourceServer.name $) }}
             port:
               number: {{ .Values.global.resourceServer.port }}
           {{- else }}
-          serviceName: {{ .Values.global.resourceServer.name }}
+          serviceName: {{ (tpl .Values.global.resourceServer.name $) }}
           servicePort: {{ .Values.global.resourceServer.port }}
           {{- end }}
   {{- if .Values.global.certManager.clusterIssuer }}

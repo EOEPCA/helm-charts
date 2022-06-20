@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.global.pep }}
+  name: {{ (tpl .Values.global.pep $) }}
   labels:
-    app: {{ .Values.global.pep }}
+    app: {{ (tpl .Values.global.pep $) }}
 spec:
   ports:
     {{- range $key, $value := .Values.global.ports }}
@@ -13,4 +13,4 @@ spec:
       name: {{ $key }}
     {{- end }}
   selector:
-    app: {{ .Values.global.pep }}
+    app: {{ (tpl .Values.global.pep $) }}

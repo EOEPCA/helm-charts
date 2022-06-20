@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.global.pep }}
+  name: {{ (tpl .Values.global.pep $) }}
   labels:
-    app: {{ .Values.global.pep }}
+    app: {{ (tpl .Values.global.pep $) }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.global.pep }}
+      app: {{ (tpl .Values.global.pep $) }}
   template:
     metadata:
       labels:
-        app: {{ .Values.global.pep }}
+        app: {{ (tpl .Values.global.pep $) }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-      - name: {{ .Values.global.pep }}
+      - name: {{ (tpl .Values.global.pep $) }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         resources:
@@ -44,7 +44,7 @@ spec:
         {{- end }}
         envFrom:
         - configMapRef:
-            name: {{ .Values.global.pep }}-cm
+            name: {{ (tpl .Values.global.pep $) }}-cm
         volumeMounts:
         - name: default-resources
           mountPath: /data/
@@ -61,10 +61,10 @@ spec:
           protocol: TCP
         envFrom:
         - configMapRef:
-            name: {{ .Values.global.pep }}-cm
+            name: {{ (tpl .Values.global.pep $) }}-cm
         volumeMounts:
         - mountPath: /data/db/
-          subPath: {{ .Values.global.pep }}/{{ .Values.global.context }}/data/db
+          subPath: {{ (tpl .Values.global.pep $) }}/{{ .Values.global.context }}/data/db
           name: {{ .Values.volumeClaim.name }}
       hostAliases:
       - ip: {{ .Values.global.nginxIp }}
@@ -79,4 +79,4 @@ spec:
             claimName: {{ .Values.volumeClaim.name }}
         - name: default-resources
           configMap:
-            name: {{ .Values.global.pep }}-custom-resources
+            name: {{ (tpl .Values.global.pep $) }}-custom-resources
