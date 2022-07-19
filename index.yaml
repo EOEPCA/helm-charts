@@ -621,6 +621,18 @@ entries:
   login-service:
   - apiVersion: v1
     appVersion: v1.1.2
+    created: "2022-07-19T15:21:30.68923756Z"
+    description: A Helm chart for Login Service
+    digest: 75ac68582de0b11c89d3f869d85a12dfdb1286fa54e640a623427f786c0b4ad6
+    maintainers:
+    - name: eoepca
+    name: login-service
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/login-service-1.1.14/login-service-1.1.14.tgz
+    version: 1.1.14
+  - apiVersion: v1
+    appVersion: v1.1.2
     created: "2022-06-20T16:05:35.247682406Z"
     description: A Helm chart for Login Service
     digest: d89b2dd3b3a98af60b3cc7a5933525ead826e0e5a1f87d7fe07a66122348fcdb
@@ -906,6 +918,18 @@ entries:
   pdp-engine:
   - apiVersion: v1
     appVersion: v1.1
+    created: "2022-07-19T15:21:30.973158813Z"
+    description: A Helm chart for PDP Engine
+    digest: df5797fbdaad3d13497e78a4bf2f6545c7c0922555041c5434437a81a123a9c8
+    maintainers:
+    - name: eoepca
+    name: pdp-engine
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/pdp-engine-1.1.4/pdp-engine-1.1.4.tgz
+    version: 1.1.4
+  - apiVersion: v1
+    appVersion: v1.1
     created: "2022-05-24T09:04:11.237542047Z"
     description: A Helm chart for PDP Engine
     digest: 69a9f6270d2125bd5d97e569f1de93b9d439656b6fa4b1461f645bc599d4215e
@@ -1049,6 +1073,18 @@ entries:
     - https://github.com/EOEPCA/helm-charts/releases/download/pdp-engine-0.1.3/pdp-engine-0.1.3.tgz
     version: 0.1.3
   pep-engine:
+  - apiVersion: v1
+    appVersion: v1.1
+    created: "2022-07-19T15:21:31.240648685Z"
+    description: A Helm chart for PEP Engine
+    digest: 3caa0d68307fd2ccaefb176204944f2c657f16aeebd56b2060cd9d02077a4d60
+    maintainers:
+    - name: eoepca
+    name: pep-engine
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/pep-engine-1.1.5/pep-engine-1.1.5.tgz
+    version: 1.1.5
   - apiVersion: v1
     appVersion: v1.1
     created: "2022-06-20T16:05:35.401065013Z"
@@ -3371,6 +3407,16 @@ entries:
   storage:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-07-19T15:21:31.507341863Z"
+    description: Basic EOEPCA storage provision
+    digest: 791953b3973cdecd2dfe24aa4d50e83a32000ff5510c309a994080ee8dbced48
+    name: storage
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/storage-1.0.1/storage-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2021-12-21T17:14:20.417791144Z"
     description: Basic EOEPCA storage provision
     digest: 618805d12d3782315e928f40e8bf8e364f4c9616053813510cf237ade7813ded
@@ -3913,6 +3959,18 @@ entries:
   user-profile:
   - apiVersion: v1
     appVersion: v1.1
+    created: "2022-07-19T15:21:31.774079641Z"
+    description: A Helm chart for the User Profile
+    digest: 3f90e3905fb7bdb6c156d7b92a695e254638a3a8b0fcfdda853b04b41056ed85
+    maintainers:
+    - name: eoepca
+    name: user-profile
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-1.1.4/user-profile-1.1.4.tgz
+    version: 1.1.4
+  - apiVersion: v1
+    appVersion: v1.1
     created: "2022-05-24T09:10:51.268666296Z"
     description: A Helm chart for the User Profile
     digest: 37e3d04e51a3de2b1b4f202f9d6cbfd55c2b5a40de011e7204fd266501825d1f
@@ -4055,4 +4113,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2022-06-20T16:10:25.87764131Z"
+generated: "2022-07-19T15:21:31.776088226Z"
