@@ -40,7 +40,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: eoepca-userman-pvc
-  namespace: default
+  namespace: um
   labels:
     eoepca-type: userman
 spec:

@@ -2,7 +2,7 @@
 imagePullSecrets: []
 
 global:
-  namespace: default
+  namespace: um
   domain:  demoexample.gluu.org
   pdp: pdp-engine
   prefix: /

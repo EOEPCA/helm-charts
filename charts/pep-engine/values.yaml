@@ -5,7 +5,7 @@ global:
   # The context is used to distinguish PEP instances,
   # e.g. PEP for ADES vs PEP for Catalogue etc.
   context: generic
-  namespace: default
+  namespace: um
   pep: "{{ .Values.global.context }}-pep"
   # Domain of the Kubernetes cluster
   clusterDomain: svc.cluster.local

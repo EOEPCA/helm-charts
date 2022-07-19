@@ -4,7 +4,7 @@ metadata:
   name: {{ template "login-service.fullname" .}}-cluster-rolebinding
 subjects:
 - kind: User
-  name: system:serviceaccount:default:default # Name is case sensitive
+  name: system:serviceaccount:um:default # Name is case sensitive
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole # this must be Role or ClusterRole

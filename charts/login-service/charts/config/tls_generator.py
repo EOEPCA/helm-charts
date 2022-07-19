@@ -8,7 +8,7 @@ v1 = client.CoreV1Api()
 
 #global vars
 name = "tls-certificate"
-namespace = "default"
+namespace = "um"
 
 # check if gluu secret exists
 def get_certs():

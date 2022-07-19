@@ -21,7 +21,7 @@ nameOverride: ""
 fullNameOverride: ""
 encrypted: true
 reclaimPolicy: Retain
-pool: default
+pool: gluu
 description: gluu-config-init-volume
 fsType: ext4
 provisioner: k8s.io/minikube-hostpath
