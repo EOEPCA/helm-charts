@@ -47,7 +47,7 @@ data:
   tls_generator.py: "from pprint import pprint\nfrom kubernetes import config, client\nimport
     logging\n\n#use the serviceAccount k8s gives to pods\nconfig.load_incluster_config()
     \nv1 = client.CoreV1Api()\n\n#global vars\nname = \"tls-certificate\"\nnamespace
-    = \"um\"\n\n# check if gluu secret exists\ndef get_certs():\n    if ( v1.read_namespaced_secret(
+    = \"{{ .Values.global.namespace }}\"\n\n# check if gluu secret exists\ndef get_certs():\n    if ( v1.read_namespaced_secret(
     'gluu', 'default' ) ):\n        ssl_cert = v1.read_namespaced_secret( 'gluu',
     'default' ).data['ssl_cert']\n        ssl_key = v1.read_namespaced_secret( \"gluu\",
     \"default\" ).data['ssl_key']\n        \n        print('ssl_cert / {} \\n ssl_key:

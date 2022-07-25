@@ -56,22 +56,27 @@ The configuration parameters in this section control the resource catalogue conf
 | resources.limits.memory              | Memory Limits  | `512Mi`                              |
 | resources.requests.cpu              | CPU Requests  | `0.05`                              |
 | resources.requests.memory              | Memory Requests  | `128Mi`                              |
-
 | nodeSelector                        | Specify a node selector  | `{}`                              |
 | tolerations                        | Specify a tolerations  | `{}`                              |
 | affinity                        | Specify a affinity  | `{}`                              |
-
 | prefixForName                        | Specify a workspace prefix to be prepended before each workspace  | `develop-user`                              |
 | workspaceSecretName                        | Specify the name of the secret containing the workspace bucket credentials  | `bucket`                              |
 | namespaceForBucketResource                        | Specify the namespace for the created bucket resource  | `rm`                              |
-
 | workspaceConfigMapName                        | Specify the name of the ConfigMap to locate the | `workspace`                              |
-| gitRepoResourceForHelmChartName                        | The name of the git repository resource of the helm chart to use for creating new workspaces | `eoepca`                              |
-| gitRepoResourceForHelmChartNamespace                        | The namespace of the git repository resource of the helm chart to use for creating new workspaces | `common`                              |
-| helmChartName                        | The Helm Chart name to use to create new workspaces | `rm-user-workspace`                              |
-| helmChartVersion                        | The Helm Chart name to use to create new workspaces | `0.9.13`                              |
 | s3Endpoint                        | The S3 Endpoint for the users bucket | `https://cf2.cloudferro.com:8080`                              |
 | s3Region                        | The S3 Region for the users bucket | `RegionOne`                              |
-| workspaceDomain                        | The base domain for new Workspaces | `develop.eoepca.org`                              |
 | umaClientSecretName                        | The UMA Client Secret Name | `""`                             |
 | umaClientSecretNamespace                        | The UMA Client Secret Namespace | `""`                             |
+| workspaceChartsConfigMap          | Name of config map which features the helm chart templates which define the workspace | ""      |
+| fluxHelmOperator.enabled     | Whether to install the flux helm operator together with the workspace api (for cluster which don't use flux) | false | 
+
+
+## Defining the workspace
+
+The workspace-api deploys a workspace by rendering the contents of a config map (referenced by `workspaceChartsConfigMap`) as a jinja2 template and applying the resulting HelmRelease.
+
+The jinja2 template is rendered with the following template variables:
+
+* `workspace_name`
+* `default_owner`
+* Access data for the workspace bucket: `access_key_id`, `secret_access_key`, `bucket`, `projectid`

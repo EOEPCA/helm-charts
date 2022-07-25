@@ -63,22 +63,10 @@ spec:
               value: "{{ .Values.namespaceForBucketResource }}"
             - name: WORKSPACE_CONFIG_MAP_NAME
               value: "{{ .Values.workspaceConfigMapName }}"
-            - name: GIT_REPO_RESOURCE_FOR_HELM_CHART_NAME
-              value: "{{ .Values.gitRepoResourceForHelmChartName }}"
-            - name: GIT_REPO_RESOURCE_FOR_HELM_CHART_NAMESPACE
-              value: "{{ .Values.gitRepoResourceForHelmChartNamespace }}"
-            - name: HELM_CHART_NAME
-              value: "{{ .Values.helmChartName }}"
-            - name: HELM_CHART_VERSION
-              value: "{{ .Values.helmChartVersion }}"
-            - name: HELM_CHART_STORAGE_CLASS_NAME
-              value: "{{ .Values.helmChartStorageClassName }}"
             - name: S3_ENDPOINT
               value: "{{ .Values.s3Endpoint }}"
             - name: S3_REGION
               value: "{{ .Values.s3Region }}"
-            - name: WORKSPACE_DOMAIN
-              value: "{{ .Values.workspaceDomain }}"
             - name: UMA_CLIENT_SECRET_NAME
               value: "{{ .Values.umaClientSecretName }}"
             - name: UMA_CLIENT_SECRET_NAMESPACE
@@ -89,14 +77,6 @@ spec:
               value: "{{ .Values.harborUsername }}"
             - name: HARBOR_ADMIN_PASSWORD
               value: "{{ .Values.harborPassword }}"
-            - name: AUTH_SERVER_IP
-              value: "{{ .Values.authServerIp }}"
-            - name: AUTH_SERVER_HOSTNAME
-              value: "{{ .Values.authServerHostname }}"
-            - name: CLUSTER_ISSUER
-              value: "{{ .Values.clusterIssuer }}"
-            - name: RESOURCE_CATALOG_VOLUME_STORAGE_TYPE
-              value: "{{ .Values.resourceCatalogVolumeStorageType }}"
             - name: WORKSPACE_CHARTS_CONFIG_MAP
               value: "{{ .Values.workspaceChartsConfigMap }}"
           resources:

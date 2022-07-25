@@ -82,23 +82,18 @@ tolerations: []
 
 affinity: {}
 
+fluxHelmOperator:
+  # If you're cluster doesn't feature the flux helm-operator already,
+  # set this to true to enable it
+  enabled: false
+
 # some values for the workspace API
 prefixForName: "develop-user"
 workspaceSecretName: "bucket"
 namespaceForBucketResource: "rm"
 workspaceConfigMapName: "workspace"
-gitRepoResourceForHelmChartName: "eoepca"
-gitRepoResourceForHelmChartNamespace: "common"
-helmChartName: "rm-user-workspace"
-helmChartVersion: "1.1.2"
-helmChartStorageClassName: "managed-nfs-storage"
 s3Endpoint: "https://cf2.cloudferro.com:8080"
 s3Region: "RegionOne"
-workspaceDomain: develop.eoepca.org
 umaClientSecretName: ""
 umaClientSecretNamespace: ""
-authServerIp: ""
-authServerHostname: ""
-clusterIssuer: ""
-resourceCatalogVolumeStorageType: "managed-nfs-storage-retain"
 workspaceChartsConfigMap: ""

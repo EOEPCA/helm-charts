@@ -1,7 +1,7 @@
 # Default values for login-service.
 
 global:
-  namespace: default
+  namespace: um
   serviceName: opendj
   ep: demoexample.gluu.org
   domain:  https://demoexample.gluu.org
