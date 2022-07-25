@@ -621,6 +621,18 @@ entries:
   login-service:
   - apiVersion: v1
     appVersion: v1.1.2
+    created: "2022-07-25T09:18:42.420831468Z"
+    description: A Helm chart for Login Service
+    digest: 367f595a0317597587cd91a353ba7b098a9c2f79313b13516d243cb45c096025
+    maintainers:
+    - name: eoepca
+    name: login-service
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/login-service-1.1.16/login-service-1.1.16.tgz
+    version: 1.1.16
+  - apiVersion: v1
+    appVersion: v1.1.2
     created: "2022-07-21T14:14:32.241695036Z"
     description: A Helm chart for Login Service
     digest: 71b4a94b7acfb88c7033b3e83a78c11d492129a75e09d040c7957086548e0c10
@@ -3287,6 +3299,16 @@ entries:
     version: 0.0.13
   rm-workspace-api:
   - apiVersion: v2
+    appVersion: 1.1.1
+    created: "2022-07-25T09:18:42.74034895Z"
+    description: A Helm chart for Kubernetes
+    digest: 9995ff84073b3b23fd7138b350c0c9e90fbdb506d2452e1118e14c9f7f7a1708
+    name: rm-workspace-api
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/rm-workspace-api-1.1.9/rm-workspace-api-1.1.9.tgz
+    version: 1.1.9
+  - apiVersion: v2
     appVersion: 1.1.0
     created: "2022-06-20T16:05:35.51399682Z"
     description: A Helm chart for Kubernetes
@@ -4125,4 +4147,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2022-07-21T14:14:32.24329373Z"
+generated: "2022-07-25T09:18:42.741804811Z"
