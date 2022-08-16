@@ -79,6 +79,8 @@ spec:
               value: "{{ .Values.harborPassword }}"
             - name: WORKSPACE_CHARTS_CONFIG_MAP
               value: "{{ .Values.workspaceChartsConfigMap }}"
+            - name: REDIS_SERVICE_NAME
+              value: "{{ .Values.redisServiceName }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

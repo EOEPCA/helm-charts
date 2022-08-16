@@ -69,6 +69,7 @@ The configuration parameters in this section control the resource catalogue conf
 | umaClientSecretNamespace                        | The UMA Client Secret Namespace | `""`                             |
 | workspaceChartsConfigMap          | Name of config map which features the helm chart templates which define the workspace | ""      |
 | fluxHelmOperator.enabled     | Whether to install the flux helm operator together with the workspace api (for cluster which don't use flux) | false | 
+| redisServiceName           | Name of the redis service in the namespace | "vs-redis-master"      |
 
 
 ## Defining the workspace
