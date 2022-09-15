@@ -21,6 +21,11 @@ spec:
         image: gluufederation/{{ .Values.global.images.oxtrust.repository }}:{{ .Values.global.images.oxtrust.tag }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "if [ -f /data/customizations_oxtrust.tar.gz ]; then tar xvf /data/customizations_oxtrust.tar.gz -C /opt/gluu/jetty/identity/; fi"]
+        
         ports:
         - containerPort: 8080
           name: oxtrust
@@ -38,6 +43,8 @@ spec:
             name: vol-userman
             subPath: {{ $value.subPath }}
         {{- end }}
+          - name: customizations
+            mountPath: /data/
         livenessProbe:
           httpGet:
             path: /identity/restv1/scim-configuration
@@ -54,6 +61,9 @@ spec:
         - name: vol-userman
           persistentVolumeClaim:
             claimName: {{ .Values.volumeClaim.name }}
+        - name: customizations
+          configMap:
+            name: front-customizations
       hostAliases:
       - ip: {{ .Values.global.nginxIp }}
         hostnames:

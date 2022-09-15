@@ -11,3 +11,14 @@ data:
   GLUU_SYNC_CASA_MANIFESTS: {{ .Values.falsure | quote }}
   GLUU_SSL_CERT_FROM_SECRETS: "true"
   GLUU_NAMESPACE: {{ .Values.global.namespace }}
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: front-customizations  
+binaryData:
+  {{ if .Files.Get "customizations.tar.gz" }}
+  customizations.tar.gz: {{ .Files.Get "customizations.tar.gz" | b64enc  }}
+  {{ end }}

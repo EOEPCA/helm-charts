@@ -49,30 +49,11 @@ spec:
           timeoutSeconds: 2
           periodSeconds: 8
           failureThreshold: 1
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.data.SPRING_PROFILES_ACTIVE | default .Release.Namespace }}
-        - name: OS_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: openstack
-              key: username
-        - name: OS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: openstack
-              key: password
-        - name: OS_DOMAINNAME
-          valueFrom:
-            secretKeyRef:
-              name: openstack
-              key: domainname
-        - name: OS_MEMBERROLEID
-          value:  {{ .Values.data.OS_MEMBERROLEID }}
-        - name: OS_SERVICEPROJECTID
-          value:  {{ .Values.data.OS_SERVICEPROJECTID }}
-        - name: USER_EMAIL_PATTERN
-          value:  {{ .Values.data.USER_EMAIL_PATTERN }}
+        envFrom:
+        - configMapRef:
+            name: bucket-operator
+        - secretRef:
+            name: openstack       
         resources:
           limits:
             cpu: 0.5
@@ -81,8 +62,10 @@ spec:
             cpu: 0.2
             memory: 256Mi
         # imagePullPolicy: Always
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
-      - name: flux-bucket-operator
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst

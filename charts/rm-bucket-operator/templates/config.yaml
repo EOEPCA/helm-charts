@@ -3,6 +3,11 @@ kind: ConfigMap
 metadata:
   name: bucket-operator
 data:
+  OS_MEMBERROLEID: {{ .Values.data.OS_MEMBERROLEID }}
+  OS_SERVICEPROJECTID: {{ .Values.data.OS_SERVICEPROJECTID }}
+  USER_EMAIL_PATTERN: {{ .Values.data.USER_EMAIL_PATTERN }}
+  ENDPOINT: {{ .Values.data.ENDPOINT }}
+  SPRING_PROFILES_ACTIVE : {{ .Values.data.SPRING_PROFILES_ACTIVE | default .Release.Namespace }}
   application.yaml: |-
     logging:
       level:
