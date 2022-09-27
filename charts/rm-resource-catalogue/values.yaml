@@ -63,7 +63,7 @@ pycsw:
     repository: geopython/pycsw
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "eoepca-1.1.0"
+    tag: "eoepca-1.2.0"
   container_port: 8000
   service_name: resource-catalogue-service
   service_type: ClusterIP
@@ -84,7 +84,7 @@ pycsw:
       language: en-US
       maxrecords: 10
       loglevel: DEBUG
-      logfile: " "
+      # logfile: " "
       # ogc_schemas_base: http://foo
       # federatedcatalogues: http://catalog.data.gov/csw
       # pretty_print: true
