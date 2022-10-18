@@ -1,0 +1,98 @@
+# Default values for resource-guard.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+#-------------------------------------------------------------------------------
+# global
+#-------------------------------------------------------------------------------
+global:
+  env:
+    REGISTRAR_REPLACE: "true"
+    CPL_VSIL_CURL_ALLOWED_EXTENSIONS: .TIF,.tif,.xml,.jp2,.jpg
+    startup_scripts:
+      - /registrar_pycsw/registrar_pycsw/initialize-collections.sh
+
+#-------------------------------------------------------------------------------
+# vs
+#-------------------------------------------------------------------------------
+vs:
+  renderer:
+    replicaCount: 2
+    image:
+      repository: eoepca/rm-data-access-core
+      tag: 1.2.0
+    ingress:
+      enabled: false
+
+    resources:
+      limits:
+        cpu: 1.5
+        memory: 3Gi
+      requests:
+        cpu: 0.5
+        memory: 1Gi
+
+  registrar:
+    replicaCount: 1
+    image:
+      repository: eoepca/rm-data-access-core
+      tag: 1.2.0
+
+  harvester:
+    image:
+      repository: eoepca/rm-harvester
+      tag: 1.2.0
+
+  client:
+    image:
+      tag: release-2.0.33
+    ingress:
+      enabled: false
+
+    config:
+      eoxserverDownloadEnabled: true
+      timeDomain:
+        - "2002-01-01T00:00:00Z"
+        - "customClientDateFuture1"
+      displayTimeDomain:
+        - "customClientDatePast1"
+        - "customClientDateFuture1"
+      selectedTimeDomain:
+        - "customClientDatePast2"
+        - "today"
+      customClientDaysPast1: 90
+      customClientDaysPast2: 1
+      customClientDaysFuture1: 7
+
+  database:
+    persistence:
+      enabled: true
+      existingClaim: data-access-db
+
+  redis:
+    usePassword: false
+    persistence:
+      existingClaim: data-access-redis
+    master:
+      persistence:
+        enabled: true
+        storageClass: managed-nfs-storage
+    cluster:
+      enabled: false
+
+  ingestor:
+    replicaCount: 0
+    ingress:
+      enabled: false
+
+  preprocessor:
+    replicaCount: 0
+
+  cache:
+    ingress:
+      enabled: false
+
+  seeder:
+    config:
+      minzoom: 0
+      maxzoom: 6  # restrict to only 6 for testing for now
