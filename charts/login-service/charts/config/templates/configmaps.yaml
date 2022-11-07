@@ -14,7 +14,10 @@ data:
   LDAP_TYPE: {{ .Values.ldapType }}
   GLUU_CONFIG_ADAPTER: {{ .Values.global.configAdapterName }}
   GLUU_SECRET_ADAPTER: {{ .Values.global.configSecretAdapter }}
+  GLUU_CONFIG_KUBERNETES_NAMESPACE: {{ .Values.global.namespace }}
+  GLUU_SECRET_KUBERNETES_NAMESPACE: {{ .Values.global.namespace }}
   GLUU_NAMESPACE: {{ .Values.global.namespace }}
+  GLUU_OVERWRITE_ALL: {{ .Values.overwrite | quote }}
 
 
 ---
@@ -37,6 +40,9 @@ data:
       "gluu_config_adapter": {{.Values.gluuConfAdapter | quote }},
       "ldap_type": {{.Values.ldapType | quote }},
       "redis_pw": {{.Values.redisPass | quote }},
+      "gluu_config_kubernetes_namespace": {{ .Values.global.namespace | quote  }},
+      "gluu_secret_kubernetes_namespace": {{ .Values.global.namespace | quote  }},
+      "gluu_overwrite_all": "true",
       "pdp_ep": {{.Values.pdpEp | quote }}
     }
 
@@ -48,9 +54,9 @@ data:
     logging\n\n#use the serviceAccount k8s gives to pods\nconfig.load_incluster_config()
     \nv1 = client.CoreV1Api()\n\n#global vars\nname = \"tls-certificate\"\nnamespace
     = \"{{ .Values.global.namespace }}\"\n\n# check if gluu secret exists\ndef get_certs():\n    if ( v1.read_namespaced_secret(
-    'gluu', 'default' ) ):\n        ssl_cert = v1.read_namespaced_secret( 'gluu',
-    'default' ).data['ssl_cert']\n        ssl_key = v1.read_namespaced_secret( \"gluu\",
-    \"default\" ).data['ssl_key']\n        \n        print('ssl_cert / {} \\n ssl_key:
+    'gluu', namespace ) ):\n        ssl_cert = v1.read_namespaced_secret( 'gluu',
+    namespace ).data['ssl_cert']\n        ssl_key = v1.read_namespaced_secret( \"gluu\",
+    namespace ).data['ssl_key']\n        \n        print('ssl_cert / {} \\n ssl_key:
     {}'.format(ssl_cert, ssl_key) )\n\n    return ssl_cert, ssl_key\n\n\ndef create_tls(cert,
     key):\n\n    v1 = client.CoreV1Api()\n    try:\n        secret = v1.read_namespaced_secret(name,
     namespace)\n    except client.rest.ApiException as e:\n        if e.status ==

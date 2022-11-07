@@ -47,6 +47,8 @@ persistence:
   secretAdapter: GLUU_SECRET_ADAPTER
   passport: GLUU_PASSPORT_ENABLED
   passportv: "'true'"
+  gluuConfigNamespace: GLUU_CONFIG_KUBERNETES_NAMESPACE
+  gluuSecretNamespace: GLUU_SECRET_KUBERNETES_NAMESPACE
   ldapUrl: GLUU_LDAP_URL
   ldapUrlv: "opendj:1636"
   persistenceType: GLUU_PERSISTENCE_TYPE

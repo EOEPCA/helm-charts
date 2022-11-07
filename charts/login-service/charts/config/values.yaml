@@ -17,6 +17,7 @@ orgName: Deimos Space S.L.U.
 gluuConfAdapter: kubernetes
 redisPass: aaaa
 pdpEp: /pdp
+overwrite: true
 nameOverride: ""
 fullNameOverride: ""
 encrypted: true

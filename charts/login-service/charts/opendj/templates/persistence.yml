@@ -40,6 +40,10 @@ spec:
           value: {{ .Values.persistence.coihClientSecretv | quote }}
         - name: PDP_EP
           value: {{ .Values.persistence.pdpEp }}
+        - name: {{ .Values.persistence.gluuConfigNamespace }}
+          value: {{ .Values.global.namespace }}
+        - name: {{ .Values.persistence.gluuSecretNamespace }}
+          value: {{ .Values.global.namespace }}
       {{- if .Values.pullSecret }}
       imagePullSecrets:
       - name: {{ .Values.pullSecret }}

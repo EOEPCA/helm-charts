@@ -10,3 +10,5 @@ data:
   DOMAIN: {{ .Values.global.domain | quote }}
   GLUU_OXAUTH_BACKEND: {{ .Values.gluuOxauthBackend | quote }}
   GLUU_NAMESPACE: {{ .Values.global.namespace }}
+  GLUU_CONFIG_KUBERNETES_NAMESPACE: {{ .Values.global.namespace }}
+  GLUU_SECRET_KUBERNETES_NAMESPACE: {{ .Values.global.namespace }}
