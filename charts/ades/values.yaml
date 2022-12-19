@@ -8,7 +8,7 @@ image:
   repository: eoepca/proc-ades
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.0.7"
+  tag: "2.0.8"
   proxyRepository: eoepca/kubectl-proxy
   proxyTag: "0.9.0"
 
@@ -104,21 +104,28 @@ workflowExecutor:
       baseCommand: Stars
       doc: "Run Stars for staging input data"
       class: CommandLineTool
-      hints:
+      hints:  
         DockerRequirement:
-          dockerPull: terradue/stars:2.4.15
+          dockerPull: terradue/stars:2.9.2
       id: stars
       arguments:
       - copy
       - -v
+      - --harvest
       - -rel
       - -r
       - '4'
+      - valueFrom: ${ if (inputs.input.split("#").length == 2) 
+                    { return ["-af", inputs.input.split("#")[1]]; }
+                  else {return '--empty'}
+                }
       - -o
       - ./
-      - --harvest
-      inputs:
-        ADES_STAGEIN_AWS_SERVICEURL:
+      - valueFrom: ${ return inputs.input.split("#")[0]; }
+      inputs: 
+        ADES_STAGEIN_AWS_SERVICEURL: 
+          type: string?
+        ADES_STAGEIN_AWS_REGION:
           type: string?
         ADES_STAGEIN_AWS_ACCESS_KEY_ID:
           type: string?
@@ -132,9 +139,12 @@ workflowExecutor:
             # AWS__Profile: $(inputs.aws_profile)
             # AWS__ProfilesLocation: $(inputs.aws_profiles_location.path)
             AWS__ServiceURL: $(inputs.ADES_STAGEIN_AWS_SERVICEURL)
+            AWS__Region: $(inputs.ADES_STAGEIN_AWS_REGION)
+            AWS__AuthenticationRegion: $(inputs.ADES_STAGEIN_AWS_REGION)
             AWS_ACCESS_KEY_ID: $(inputs.ADES_STAGEIN_AWS_ACCESS_KEY_ID)
             AWS_SECRET_ACCESS_KEY: $(inputs.ADES_STAGEIN_AWS_SECRET_ACCESS_KEY)
         ResourceRequirement: {}
+        InlineJavascriptRequirement: {}
 
   stageout:
     cwl: |
