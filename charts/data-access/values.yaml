@@ -9,6 +9,7 @@ global:
   env:
     REGISTRAR_REPLACE: "true"
     CPL_VSIL_CURL_ALLOWED_EXTENSIONS: .TIF,.tif,.xml,.jp2,.jpg
+    AWS_HTTPS: "TRUE"
     startup_scripts:
       - /registrar_pycsw/registrar_pycsw/initialize-collections.sh
 
@@ -20,7 +21,7 @@ vs:
     replicaCount: 2
     image:
       repository: eoepca/rm-data-access-core
-      tag: 1.2.3
+      tag: 1.2.5
     ingress:
       enabled: false
 
@@ -36,7 +37,7 @@ vs:
     replicaCount: 1
     image:
       repository: eoepca/rm-data-access-core
-      tag: 1.2.3
+      tag: 1.2.5
 
   harvester:
     image:
