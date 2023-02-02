@@ -17,13 +17,23 @@ kind: Ingress
 metadata:
   name: {{ include "uma-user-agent.fullname" . }}
   annotations:
-    {{- with .Values.nginxIntegration.annotations }}
-    {{- toYaml . | nindent 4 }}
+    {{- range $k, $v := .Values.nginxIntegration.annotations }}
+    {{- if ne $k "nginx.ingress.kubernetes.io/configuration-snippet" }}
+      {{- dict $k $v | toYaml | nindent 4 }}
+    {{- end }}
     {{- end }}
     {{- if .Values.global.certManager.clusterIssuer }}
     cert-manager.io/cluster-issuer: {{ .Values.global.certManager.clusterIssuer }}
     {{- end }}
     nginx.ingress.kubernetes.io/configuration-snippet: |
+      #---
+      # snippet supplied in helm values
+      #---
+      {{- index .Values.nginxIntegration.annotations "nginx.ingress.kubernetes.io/configuration-snippet" | trim | nindent 6 }}
+
+      #---
+      # establish the auth request endpoint
+      #---
       auth_request /authcheck;
       # Unpick the auth_request response
       auth_request_set $x_user_id $upstream_http_x_user_id;
@@ -72,7 +82,11 @@ spec:
   {{- end }}
   rules:
     {{- range .Values.nginxIntegration.hosts }}
+    {{- if .host }}
     - host: {{ printf "%s.%s" (tpl .host $) $domain | quote }}
+    {{- else }}
+    - host: {{ $domain | quote }}
+    {{- end }}
       http:
         paths:
           {{- range .paths }}
