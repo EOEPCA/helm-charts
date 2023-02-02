@@ -26,11 +26,12 @@ metadata:
     cert-manager.io/cluster-issuer: {{ .Values.global.certManager.clusterIssuer }}
     {{- end }}
     nginx.ingress.kubernetes.io/configuration-snippet: |
+      {{- if hasKey .Values.nginxIntegration.annotations "nginx.ingress.kubernetes.io/configuration-snippet" }}
       #---
       # snippet supplied in helm values
       #---
       {{- index .Values.nginxIntegration.annotations "nginx.ingress.kubernetes.io/configuration-snippet" | trim | nindent 6 }}
-
+      {{- end }}
       #---
       # establish the auth request endpoint
       #---
