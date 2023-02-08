@@ -1,0 +1,24 @@
+{
+    "singleuser": {
+        "image": {
+            "name": "jupyter/minimal-notebook",
+            "tag": "2343e33dec46"
+        },
+        "profileList": [
+            {
+                "display_name": "Minimal environment",
+                "description": "To avoid too much bells and whistles: Python.",
+                "default": "True"
+            },
+            {
+                "display_name": "PDE version 0.8",
+                "slug": "pde_coder_slug",
+                "default": "False",
+                "kubespawner_override": {
+                    "cpu_limit": 4,
+                    "mem_limit": "8G"
+                }
+            }
+        ]
+    }
+}
