@@ -371,6 +371,17 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/ades-0.1.8/ades-0.1.8.tgz
     version: 0.1.8
+  application-hub:
+  - apiVersion: v2
+    appVersion: 2.0.0
+    created: "2023-02-08T15:43:25.227714451Z"
+    description: Application Hub Helm Chart
+    digest: b9e46d9fe3060623aa9181311762db067c086a80116bbd373ef0ae7da395cb1a
+    name: application-hub
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/application-hub-2.0.1/application-hub-2.0.1.tgz
+    version: 2.0.1
   billing-service:
   - apiVersion: v1
     appVersion: "1"
@@ -4662,4 +4673,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2023-02-02T16:32:56.902944107Z"
+generated: "2023-02-08T15:43:25.230276382Z"
