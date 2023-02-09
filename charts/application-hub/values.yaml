@@ -153,13 +153,15 @@ jupyterhub:
     - "--debug"
     - "--upgrade-db"
     extraConfig: {}
-    extraFiles: 
-      my_jupyterhub_config.py:
-        mountPath: /usr/local/etc/jupyterhub_config.py
+    extraFiles: {}
     extraEnv: {}
     extraContainers: []
     extraVolumes: []
-    extraVolumeMounts: []
+    extraConfigmapMounts:
+    - name: applicationhub-jupyter-config
+      configMap: applicationhub-jupyter-config
+      mountPath: /usr/local/etc
+      readOnly: true
     image:
       name: jupyterhub/k8s-hub
       tag: "2.0.0"
