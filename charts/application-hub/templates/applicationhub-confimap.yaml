@@ -2,7 +2,5 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: applicationhub-jupyter-config
-  labels:
-    {{- include "applicationhub.labels" . | nindent 4 }}
 data:
   {{- (.Files.Glob "files/hub/*").AsConfig | nindent 2 }}
