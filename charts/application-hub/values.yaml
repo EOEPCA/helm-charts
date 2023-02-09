@@ -162,7 +162,7 @@ jupyterhub:
           name: applicationhub-jupyter-config
     extraVolumeMounts:
       - name: applicationhub-jupyter-config
-        mountPath: /usr/local/etc/applicationhub
+        mountPath: /usr/local/etc/applicationhub/jupyterhub_config.py
         subPath: jupyterhub_config.py
     image:
       name: jupyterhub/k8s-hub
