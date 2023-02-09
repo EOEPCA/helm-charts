@@ -146,9 +146,16 @@ jupyterhub:
     labels: {}
     annotations: {}
     command: []
-    args: []
+    args:
+    - "jupyterhub"
+    - "--config"
+    - "/usr/local/etc/jupyterhub_config.py"
+    - "--debug"
+    - "--upgrade-db"
     extraConfig: {}
-    extraFiles: {}
+    extraFiles: 
+      my_jupyterhub_config.py:
+        mountPath: /usr/local/etc/jupyterhub_config.py
     extraEnv: {}
     extraContainers: []
     extraVolumes: []
