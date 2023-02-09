@@ -149,7 +149,7 @@ jupyterhub:
     args:
     - "jupyterhub"
     - "--config"
-    - "/usr/local/etc/applicationhub/jupyterhub_config.py"
+    - "/usr/local/etc/applicationhub/jupyter_config.py"
     - "--debug"
     - "--upgrade-db"
     extraConfig: {}
