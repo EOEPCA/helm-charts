@@ -96,12 +96,6 @@ jupyterhub:
   # Helm chart's pods can get credentials from to pull their images.
   imagePullSecrets: []
 
-  extraConfigmapMounts:
-    - name: applicationhub-jupyter-config
-      configMap: applicationhub-jupyter-config
-      mountPath: /usr/local/etc
-      readOnly: true
-
   # hub relates to the hub pod, responsible for running JupyterHub, its configured
   # Authenticator class KubeSpawner, and its configured Proxy class
   # ConfigurableHTTPProxy. KubeSpawner creates the user pods, and
@@ -155,15 +149,20 @@ jupyterhub:
     args:
     - "jupyterhub"
     - "--config"
-    - "/usr/local/etc/jupyterhub_config.py"
+    - "/usr/local/etc/jupyterhub/jupyterhub_config.py"
     - "--debug"
     - "--upgrade-db"
     extraConfig: {}
     extraFiles: {}
     extraEnv: {}
     extraContainers: []
-    extraVolumes: []
-    extraVolumeMounts: []
+    extraVolumes:
+      - name: applicationhub-jupyter-config
+        configMap:
+          name: applicationhub-jupyter-config
+    extraVolumeMounts:
+      - name: applicationhub-jupyter-config
+        mountPath: /usr/local/etc/jupyterhub
     image:
       name: jupyterhub/k8s-hub
       tag: "2.0.0"
