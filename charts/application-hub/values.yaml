@@ -157,11 +157,12 @@ jupyterhub:
     extraEnv: {}
     extraContainers: []
     extraVolumes:
-      - name: applicationhub-jupyter-config
+      - name: applicationhub-config
         configMap:
           name: applicationhub-jupyter-config
+          defaultMode: 0744
     extraVolumeMounts:
-      - name: applicationhub-jupyter-config
+      - name: applicationhub-config
         mountPath: /usr/local/etc/applicationhub
     image:
       name: jupyterhub/k8s-hub
