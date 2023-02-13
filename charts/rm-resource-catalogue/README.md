@@ -43,6 +43,9 @@ The configuration parameters in this section control the resource catalogue conf
 | db.volume_name                        | Volume name that stores the database data  | `resource-catalogue-db-data`                              |
 | db.volume_path                        | Volume path for the database data  | `/var/lib/postgresql/data/pgdata`                              |
 | db.volume_size                        | Volume size to store the database data  | `500Mi`                              |
+| ingress.enabled                     | Set true to enable the ingress controler, false to disable  | `true`                              |
+| ingress.subpath_enabled             | Set true to enable path based configuration of the ingress controler, false to disable  | `false`                              |
+| ingress.subpath                    | Subpath of the resource catalogue to be set to the ingress rules/rewrites. The pycsw.config.server.url value should be set accordingly  | `/resource-catalogue`                              |
 | ingress.name                        | Name of the Kubernetes ingress for the catalogue  | `resource-catalogue`                              |
 | ingress.class                        | Class of the Kubernetes ingress  | `nginx`                              |
 | ingress.host                        | Hostname to be used by the Kubernetes ingress controler  | `resource-catalogue.demo.eoepca.org`                              |

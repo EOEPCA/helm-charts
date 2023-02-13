@@ -17,6 +17,11 @@ metadata:
     {{- with .Values.ingress.annotations }}
       {{- tpl (toYaml .) $ | nindent 4 }}
     {{- end }}
+    {{- if .Values.ingress.subpath_enabled }}
+    {{- with .Values.ingress.subpath_annotations }}
+      {{- tpl (toYaml .) $ | nindent 4 }}
+    {{- end }}
+    {{- end }}
 spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.ingress.class }}
@@ -25,6 +30,36 @@ spec:
   - host: {{ .Values.ingress.host }}
     http:
       paths:
+      {{- if .Values.ingress.subpath_enabled }}
+      - path: {{ .Values.ingress.subpath }}/(.*)
+        {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+        pathType: Prefix
+        {{- end }}
+        backend:
+          {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+          service:
+            name: {{ .Values.pycsw.service_name }}
+            port:
+              number: {{ .Values.pycsw.service_port }}
+          {{- else }}
+          serviceName: {{ .Values.pycsw.service_name }}
+          servicePort: {{ .Values.pycsw.service_port }}
+          {{- end }}
+      - path: {{ .Values.ingress.subpath }}$
+        {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
+        pathType: Exact
+        {{- end }}
+        backend:
+          {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+          service:
+            name: {{ .Values.pycsw.service_name }}
+            port:
+              number: {{ .Values.pycsw.service_port }}
+          {{- else }}
+          serviceName: {{ .Values.pycsw.service_name }}
+          servicePort: {{ .Values.pycsw.service_port }}
+          {{- end }}
+      {{- else }}
       - path:
         {{- if semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion }}
         pathType: "ImplementationSpecific"
@@ -39,6 +74,7 @@ spec:
           serviceName: {{ .Values.pycsw.service_name }}
           servicePort: {{ .Values.pycsw.service_port }}
           {{- end }}
+      {{- end }}
   tls:
     - hosts:
       - {{ .Values.ingress.tls_host }}

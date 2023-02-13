@@ -50,10 +50,16 @@ ingress:
   host: resource-catalogue.demo.eoepca.org
   tls_host: resource-catalogue.demo.eoepca.org
   tls_secret_name: resource-catalogue-tls
+  subpath_enabled: false
+  subpath: "/resource-catalogue"
   default_annotations:
     kubernetes.io/ingress.class: "{{ .Values.ingress.class }}"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+  subpath_annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^({{ .Values.ingress.subpath }})$ $1/ redirect;
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
 
