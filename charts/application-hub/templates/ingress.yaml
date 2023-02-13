@@ -1,19 +1,35 @@
+{{- if .Values.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: application-hub-ingress
-  namespace: proc
+  name: {{ include "jupyterhub.ingress.fullname" . }}
+  labels:
+    {{- include "jupyterhub.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
   annotations:
-    kubernetes.io/ingress.class: nginx
+    {{- . | toYaml | nindent 4 }}
+  {{- end }}
 spec:
+  {{- with .Values.ingress.ingressClassName }}
+  ingressClassName: "{{ . }}"
+  {{- end }}
   rules:
-    - host: applicationhub.demo.eoepca.org
-      http:
+    {{- range $host := .Values.ingress.hosts | default (list "") }}
+    - http:
         paths:
-          - path: /
-            pathType: ImplementationSpecific
+          - path: {{ $.Values.hub.baseUrl | trimSuffix "/" }}/{{ $.Values.ingress.pathSuffix }}
+            pathType: {{ $.Values.ingress.pathType }}
             backend:
               service:
-                name: application-hub-proxy-public
+                name: {{ include "jupyterhub.proxy-public.fullname" $ }}
                 port:
-                  number: 80
+                  name: http
+      {{- if $host }}
+      host: {{ $host | quote }}
+      {{- end }}
+    {{- end }}
+  {{- with .Values.ingress.tls }}
+  tls:
+    {{- . | toYaml | nindent 4 }}
+  {{- end }}
+{{- end }}
