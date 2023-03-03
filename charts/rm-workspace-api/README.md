@@ -68,12 +68,14 @@ The configuration parameters in this section control the resource catalogue conf
 | umaClientSecretName                        | The UMA Client Secret Name | `""`                             |
 | umaClientSecretNamespace                        | The UMA Client Secret Namespace | `""`                             |
 | workspaceChartsConfigMap          | Name of config map which features the helm chart templates which define the workspace | ""      |
-| fluxHelmOperator.enabled     | Whether to install the flux helm operator together with the workspace api (for cluster which don't use flux) | false | 
+| fluxHelmOperator.enabled     | Whether to install the flux helm operator together with the workspace api (for cluster which don't use flux) | false |
 | redisServiceName           | Name of the redis service in the namespace | "vs-redis-master"      |
 | harborUrl | URL of harbor service | "" |
 | harborUsername | Username of harbor admin user | "" |
 | harborPassword | Password of harbor admin user | "" |
-
+| bucketEndpointUrl | The url of the bucket operator wrapper | "" |
+| pepBaseUrl | The url of the Resources endpoint of the PEP | "" |
+| autoProtectionEnabled | Whether to register register a PEP resource for the created workspace  | "True" |
 
 ## Defining the workspace
 

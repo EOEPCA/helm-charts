@@ -81,6 +81,12 @@ spec:
               value: "{{ .Values.workspaceChartsConfigMap }}"
             - name: REDIS_SERVICE_NAME
               value: "{{ .Values.redisServiceName }}"
+            - name: BUCKET_ENDPOINT_URL
+              value: "{{ .Values.bucketEndpointUrl }}"
+            - name: PEP_BASE_URL
+              value: "{{ .Values.pepBaseUrl }}"
+            - name: AUTO_PROTECTION_ENABLED
+              value: "{{ .Values.autoProtectionEnabled }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
