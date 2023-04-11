@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   ades:
   - apiVersion: v2
+    appVersion: 2.0.13
+    created: "2023-04-11T14:35:49.703213578Z"
+    description: A Helm chart for the ADES
+    digest: 6fe693071d3b655688be3ca287305f8b70cddf4384a1c24179628e758d06c2ff
+    name: ades
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/ades-2.0.11/ades-2.0.11.tgz
+    version: 2.0.11
+  - apiVersion: v2
     appVersion: 2.0.11
     created: "2023-01-16T15:04:17.711994138Z"
     description: A Helm chart for the ADES
@@ -745,6 +755,20 @@ entries:
     - https://github.com/EOEPCA/helm-charts/releases/download/cheese-0.2.2/cheese-0.2.2.tgz
     version: 0.2.2
   data-access:
+  - apiVersion: v2
+    appVersion: 2.3.3
+    created: "2023-04-11T14:35:49.989884072Z"
+    dependencies:
+    - name: vs
+      repository: https://charts-public.hub.eox.at/
+      version: 2.3.3
+    description: A Helm chart for Kubernetes
+    digest: c0fc1945c9d466a9428f10499201f4b6d5dc5dc5f1f0a05fa213faf7c552caf9
+    name: data-access
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/data-access-2.3.3/data-access-2.3.3.tgz
+    version: 2.3.3
   - apiVersion: v2
     appVersion: 2.2.8
     created: "2022-12-20T09:01:16.994489572Z"
@@ -4980,4 +5004,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2023-03-08T09:12:41.90570701Z"
+generated: "2023-04-11T14:35:49.992263811Z"
