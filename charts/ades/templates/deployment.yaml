@@ -127,6 +127,12 @@ spec:
             - name: CALRISSIAN_IMAGE
               value: {{ .Values.workflowExecutor.calrissianImage | quote }}
             {{- end }}
+            {{- if .Values.workflowExecutor.calrissianJobTemplatePath }}
+            - name: CALRISSIAN_JOB_TEMPLATE_PATH
+              value: {{ .Values.workflowExecutor.calrissianJobTemplatePath | quote }}
+            {{- end }}
+
+
 
           volumeMounts:
             - name: ades-config
@@ -138,6 +144,9 @@ spec:
             - name: ades-config
               mountPath: /zooservices/main.cfg
               subPath: maincfg
+            - name: ades-config
+              mountPath: /opt/error_message_templates/error_message_templates.json
+              subPath: error_messages.json
       volumes:
         - name: ades-config
           configMap:
