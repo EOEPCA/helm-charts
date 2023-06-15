@@ -1,0 +1,31 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "rm-registration-api.fullname" . }}
+rules:
+  - apiGroups: [""]
+    verbs: ["get", "watch", "patch", "create", "delete"]
+    resources:
+      - secrets
+      - configmaps
+      - persistentvolumeclaims
+  - apiGroups: ["extensions"]  # older k8s versions
+    verbs: ["get", "list"]
+    resources:
+      - ingresses
+  - apiGroups: ["networking.k8s.io"]  # newer k8s versions
+    verbs: ["get", "list"]
+    resources:
+      - ingresses
+  - apiGroups: [""]
+    verbs: ["create", "get", "delete"]
+    resources:
+      - namespaces
+  - apiGroups: ["helm.toolkit.fluxcd.io"]
+    verbs: ["create", "patch", "list"]
+    resources:
+      - helmreleases
+  - apiGroups: ["epca.eo"]
+    verbs: ["create"]
+    resources:
+      - buckets
