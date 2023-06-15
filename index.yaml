@@ -3294,17 +3294,6 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/rm-bucket-operator-0.9.5/rm-bucket-operator-0.9.5.tgz
     version: 0.9.5
-  rm-registration-api:
-  - apiVersion: v2
-    appVersion: 1.3.0
-    created: "2023-06-15T12:34:44.404893805Z"
-    description: A Helm chart for Kubernetes
-    digest: a1cba4b8cda4858a0f8226349bfa8f95cd241badd9aa2823e703fc0b0a982cd3
-    name: rm-registration-api
-    type: application
-    urls:
-    - https://github.com/EOEPCA/helm-charts/releases/download/rm-registration-api-1.3.0/rm-registration-api-1.3.0.tgz
-    version: 1.3.0
   rm-resource-catalogue:
   - apiVersion: v2
     appVersion: 3.0.0
