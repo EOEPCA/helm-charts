@@ -21,7 +21,7 @@ vs:
     replicaCount: 2
     image:
       repository: eoepca/rm-data-access-core
-      tag: 1.2.5
+      tag: 1.3-rc1
     ingress:
       enabled: false
 
@@ -37,12 +37,12 @@ vs:
     replicaCount: 1
     image:
       repository: eoepca/rm-data-access-core
-      tag: 1.2.8
+      tag: 1.3-rc1
 
   harvester:
     image:
       repository: eoepca/rm-harvester
-      tag: 1.2.0
+      tag: 1.3-rc1
 
   client:
     image:
