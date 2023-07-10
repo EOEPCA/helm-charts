@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "rm-bucket-operator-wrapper.fullname" . }}
+rules:
+  - apiGroups: [""]
+    verbs: ["get", "watch"]
+    resources:
+      - secrets
+  - apiGroups: ["extensions"]  # older k8s versions
+    verbs: ["get", "list"]
+    resources:
+      - ingresses
+  - apiGroups: ["networking.k8s.io"]  # newer k8s versions
+    verbs: ["get", "list"]
+    resources:
+      - ingresses
+  - apiGroups: ["epca.eo"]
+    verbs: ["create"]
+    resources:
+      - buckets
