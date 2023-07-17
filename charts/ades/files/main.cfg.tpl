@@ -18,8 +18,8 @@ storeExecuteResponse=true
 servicePath=/zooservices/
 
 [identification]
-title=Ellip-WPS
-keywords=
+title=ADES-Processing
+keywords=OGC,WPS,Processes,WebServices
 abstract=
 accessConstraints=none
 fees=None
@@ -43,7 +43,6 @@ individualName=Operations Support team
 
 [javax]
 
-[env]
 
 [database]
 
@@ -75,15 +74,15 @@ resourceManagerWorkspacePrefix= {{ .Values.workflowExecutor.resourceManagerWorks
 [eoepca]
 owsparser=/opt/t2libs/libeoepcaows.so
 buildPath=/opt/t2template/
-
+usernameJwtJsonPath={{ .Values.workflowExecutor.usernameJwtJsonPath }}
 WorkflowExecutorHost=http://localhost:8000
 WorkflowExecutorConfig=/opt/t2config/workflowwxecutorconfig.json
 libWorkflowExecutor=/opt/t2service/libworkflow_executor.so
-
 userworkspace=/opt/zooservices_user
 defaultUser=anonymous
 userSpaceScript=/opt/t2scripts/prepareUserSpace.sh
 removeServiceScript=/opt/t2scripts/removeservice.sh
+
 
 [fnRewrite]
 length=2
@@ -91,3 +90,4 @@ val=.
 rep=_
 val_1=-
 rep_1=_
+
