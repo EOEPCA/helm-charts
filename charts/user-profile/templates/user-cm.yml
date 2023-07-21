@@ -25,3 +25,5 @@ data:
   UP_COLOR_BUTTON_MODIFY: {{ .Values.configMap.colorButtonModify | quote }}
   UP_USE_THREADS: {{ .Values.configMap.useThreads | quote }}
   UP_DEBUG_MODE: {{ .Values.configMap.debugMode | quote }}
+  UP_PDP_URL: http://{{ .Values.global.domain }}
+  UP_PDP_PORT: {{ .Values.configMap.pdpPort | quote }}

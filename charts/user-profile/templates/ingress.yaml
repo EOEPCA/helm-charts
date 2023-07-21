@@ -14,7 +14,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls: 
-  - secretName: {{ printf "%s-user-profile-tls" .Values.context | quote }}
+  - secretName: "user-profile-tls-certificate"
     hosts:
       - {{ .Values.global.domain | quote }}
   rules:

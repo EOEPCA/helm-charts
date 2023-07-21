@@ -38,10 +38,12 @@ configMap:
   colorButtonModify: "#38A79F"
   useThreads: "true"
   debugMode: "true"
+  pdpPort: "5567"
+  pdpUrl: "http://demoexample.gluu.org"
 
 
 image: 
-  repository: eoepca/um-user-profile
+  repository: ghcr.io/eoepca/um-user-profile
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
