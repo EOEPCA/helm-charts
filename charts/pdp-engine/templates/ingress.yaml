@@ -7,7 +7,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: pdp-{{ .Values.context }}-service
+  name: pdp-service
   
   annotations:
     kubernetes.io/ingress.class: nginx
