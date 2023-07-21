@@ -7,7 +7,7 @@ config.load_incluster_config()
 v1 = client.CoreV1Api()
 
 #global vars
-name = "tls-certificate"
+name = "gluu-tls-certificate"
 namespace = "{{ .Values.global.namespace }}"
 
 # check if gluu secret exists
@@ -48,7 +48,7 @@ def create_tls(cert, key):
             logging.exception(e)
         return False
     else:
-        print('tls-certificate already exists as /{}'. format(
+        print('gluu-tls-certificate already exists as /{}'. format(
             secret
         ))
 

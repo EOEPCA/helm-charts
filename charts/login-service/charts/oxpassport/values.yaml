@@ -12,7 +12,7 @@ replicaCount: 1
 
 # image:
 #   repository: eoepca/um-login-passport
-#   # repository: gluufederation/oxpassport
+#   # repository: eoepca/oxpassport
 #   pullPolicy: IfNotPresent
 #   tag: ""
 #   # tag: 4.0.1_03

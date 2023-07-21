@@ -19,10 +19,10 @@ global:
   fsType: ext4
   images:
     config:
-      repository: gluufederation/config-init
+      repository: eoepca/config-init
       tag: 4.1.1_02
     opendj:
-      repository: gluufederation/wrends
+      repository: eoepca/wrends
       pullPolicy: Always
       tag: 4.1.1_01
     passport:
@@ -112,6 +112,9 @@ opendj:
     #client credentials for the coih provider
     coihClientIDv: ""
     coihClientSecretv: ""
+    #Lifetime of UMA resources, maximum value: 2147483647
+    umaResourceLifetime: UMA_RESOURCE_LIFETIME
+    umaResourceLifetimev: 2147483647
   readinessProbe:
     initialDelaySeconds: 150
     periodSeconds: 90
@@ -184,7 +187,7 @@ nginx:
     hosts:
       - demoexample.gluu.org
     tls: 
-    - secretName: tls-certificate
+    - secretName: gluu-tls-certificate
       hosts:
         - demoexample.gluu.org
   resources: {}

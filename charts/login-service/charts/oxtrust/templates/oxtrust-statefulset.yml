@@ -18,7 +18,7 @@ spec:
       containers:
       - name: {{ include "oxtrust.name" . }}
         imagePullPolicy: {{ .Values.global.images.oxtrust.pullPolicy }}
-        image: gluufederation/{{ .Values.global.images.oxtrust.repository }}:{{ .Values.global.images.oxtrust.tag }}
+        image: eoepca/{{ .Values.global.images.oxtrust.repository }}:{{ .Values.global.images.oxtrust.tag }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         lifecycle:

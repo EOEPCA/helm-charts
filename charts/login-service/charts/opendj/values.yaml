@@ -67,6 +67,8 @@ persistence:
   coihClientIDv: ""
   coihClientSecret: COIH_CLIENT_SECRET
   coihClientSecretv: ""
+  umaResourceLifetime: UMA_RESOURCE_LIFETIME
+  umaResourceLifetimev: 2147483647
 #container specific values declared here
 tcpSocket:
   port: 1636

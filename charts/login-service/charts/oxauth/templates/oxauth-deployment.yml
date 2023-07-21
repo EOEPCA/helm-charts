@@ -17,7 +17,7 @@ spec:
       containers:
       - name: {{ template "login-service.fullname" . }}
         imagePullPolicy: {{ .Values.global.images.oxauth.pullPolicy }}
-        image: gluufederation/{{ .Values.global.images.oxauth.repository }}:{{ .Values.global.images.oxauth.tag }}
+        image: eoepca/{{ .Values.global.images.oxauth.repository }}:{{ .Values.global.images.oxauth.tag }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         lifecycle:

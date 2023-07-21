@@ -85,7 +85,7 @@ The global section will apply the values overwriting the defined in the global s
 
 ## Config
 
-For the Config Job the main configuration will focus on certificate signatures and base LDAP customization. The image used is from gluuFederation `gluufederation/config-init:4.1.1_02`.
+For the Config Job the main configuration will focus on certificate signatures and base LDAP customization. The image used is from eoepca `eoepca/config-init:4.1.1_02`.
 This will be the first instance to complete, the rest of the deployments will be waiting for the config-job to finish ingesting data in the volume and then consume it.
                                                                                                                                                                      |
 | Parameter                        | Description                                                                                           | Default                          |
@@ -121,7 +121,7 @@ This Job has its own resource requests specified in the limits and requests same
 
 ## OpenDJ
 
-OpenDJ StatefulSet will set up the LDAP backend of the Login Service and wait for the Persistence Job to ingest the data into the database. The image used is from GluuFederation `gluufederation/wrends:4.1.1_01`. The expected behavior is to start listening in some ports and after the persistence is finish complete the installation by starting the LDAP service.
+OpenDJ StatefulSet will set up the LDAP backend of the Login Service and wait for the Persistence Job to ingest the data into the database. The image used is from eoepca `eoepca/wrends:4.1.1_01`. The expected behavior is to start listening in some ports and after the persistence is finish complete the installation by starting the LDAP service.
 The basic configuration can be done in the values of the parent chart, but for more specific customization the child chart has its own values.
 
 ### Parent
@@ -208,7 +208,7 @@ COIH Provider values needs to be configured after deployment for security issues
 
 ### Parent
 
-The OxAuth deployment will have all configuration derived from the LDAP service, by default the image used belongs to Gluu organization under the name and tag `gluufederation/oxauth:4.1.1_03`. The generic values for the parent will contain:
+The OxAuth deployment will have all configuration derived from the LDAP service, by default the image used belongs to Gluu organization under the name and tag `eoepca/oxauth:4.1.1_03`. The generic values for the parent will contain:
 
 | Parameter                        | Description                                                                                            | Default                          |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------- |
@@ -247,7 +247,7 @@ The base configuration for jetty support needs some mount path for the volume to
 
 ### Parent
 
-The OxTrust deployment will have all configuration derived from the LDAP service same as OxAuth, by default the image used belongs to Gluu organization under the name and tag `gluufederation/oxtrust:4.1.1_02`. The generic values for the parent will contain:
+The OxTrust deployment will have all configuration derived from the LDAP service same as OxAuth, by default the image used belongs to Gluu organization under the name and tag `eoepca/oxtrust:4.1.1_02`. The generic values for the parent will contain:
 
 | Parameter                        | Description                                                                                            | Default                          |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------- |
@@ -286,7 +286,7 @@ The base configuration for jetty support needs some mount path for the volume to
 
 ## Nginx
 
-The Nginx controller can be used as Ingress for load balancing, currently will use the tls-certificates and specify the domain name for the Login Service. It uses an external image to manage tls with Gluu under the name and tag repository `kungus/gluu-tls-initializer:stable`
+The Nginx controller can be used as Ingress for load balancing, currently will use the gluu-tls-certificates and specify the domain name for the Login Service. It uses an external image to manage tls with Gluu under the name and tag repository `kungus/gluu-tls-initializer:stable`
 
   ```yaml
   nginx:
@@ -298,7 +298,7 @@ The Nginx controller can be used as Ingress for load balancing, currently will u
       hosts:
         - myplatform.eoepca.org
       tls: 
-      - secretName: tls-certificate
+      - secretName: gluu-tls-certificate
         hosts:
           - myplatform.eoepca.org
     resources: {}
@@ -318,5 +318,3 @@ The Nginx controller can be used as Ingress for load balancing, currently will u
 ## Liveness and Readiness
 
 The Login Service instance has liveness and readiness checks specified in each sub-chart, it may need to be specified in some specifics services that takes some time to be ready such as OxAuth, OxTrust and OpenDJ.
-
-

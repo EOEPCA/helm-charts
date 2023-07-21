@@ -39,7 +39,7 @@ requests:
   dbMemory: 70Mi
 
 image:
-  repository: eoepca/um-pdp-engine
+  repository: ghcr.io/eoepca/um-pdp-engine
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""

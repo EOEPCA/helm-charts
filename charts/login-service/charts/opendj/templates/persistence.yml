@@ -44,6 +44,8 @@ spec:
           value: {{ .Values.global.namespace }}
         - name: {{ .Values.persistence.gluuSecretNamespace }}
           value: {{ .Values.global.namespace }}
+        - name: {{ .Values.persistence.umaResourceLifetime }}
+          value: {{ .Values.persistence.umaResourceLifetimev | quote }}
       {{- if .Values.pullSecret }}
       imagePullSecrets:
       - name: {{ .Values.pullSecret }}
