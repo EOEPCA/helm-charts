@@ -15,7 +15,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   tls: 
-  - secretName: {{ printf "%s-pdp-tls" .Values.context | quote }}
+  - secretName: "pdp-tls-certificate"
     hosts:
       - {{ .Values.global.domain | quote }}
   rules:
