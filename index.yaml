@@ -1569,6 +1569,18 @@ entries:
     version: 0.1.0
   pdp-engine:
   - apiVersion: v1
+    appVersion: v1.2
+    created: "2023-07-21T14:38:44.296439668Z"
+    description: A Helm chart for PDP Engine
+    digest: 73fb3e0464c7a06c8088d0ada20ad4b8929fcebc2688854c9f81d36c4d941970
+    maintainers:
+    - name: eoepca
+    name: pdp-engine
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/pdp-engine-1.1.12/pdp-engine-1.1.12.tgz
+    version: 1.1.12
+  - apiVersion: v1
     appVersion: v1.1
     created: "2023-07-21T12:05:58.623012707Z"
     description: A Helm chart for PDP Engine
@@ -5176,4 +5188,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2023-07-21T12:05:58.62523934Z"
+generated: "2023-07-21T14:38:44.29862291Z"
