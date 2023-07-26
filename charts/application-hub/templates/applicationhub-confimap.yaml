@@ -1,6 +1,6 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: applicationhub-jupyter-config
+  name: application-hub-jupyter-config
 data:
   {{- (.Files.Glob "files/hub/*").AsConfig | nindent 2 }}

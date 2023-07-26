@@ -1,0 +1,403 @@
+profiles:
+  - id: profile_studio_stac_browser_aws
+    groups: 
+    - group-1
+    - group-2
+    definition:
+      display_name: IGA - Stac Browser Earth-Search AWS
+      slug: ellip_studio_stac_browser_es_aws
+      default: False
+      kubespawner_override:
+        cpu_limit: 1
+        mem_limit: 4G
+        image:  docker.io/eoepca/stac-browser:main@sha256:005dbf4abc03afcd051e7ae316760e0532f975b71016f2c598bc50b310f236bd
+        start_timeout: 600
+    pod_env_vars:
+      STAC_URL: "https://earth-search.aws.element84.com/v1/"
+    config_maps:
+      - name: aws-credentials
+        key: aws-credentials
+        mount_path: /home/jovyan/.aws/credentials
+        default_mode: 0660
+        readonly: true
+      - name: aws-config
+        key: aws-config
+        mount_path: /home/jovyan/.aws/config
+        default_mode: 0660
+        readonly: true
+      - name: docker-config
+        key: docker-config
+        mount_path: /home/jovyan/.docker/config.json
+        default_mode: 0660
+        readonly: true
+    volumes:
+      - name: volume-workspace
+        claim_name: claim-workspace
+        size: 10Gi
+        storage_class: "managed-nfs-storage"
+        access_modes:
+          - "ReadWriteOnce"
+        volume_mount:
+          name: volume-workspace
+          mount_path: "/workspace"
+        persist: true
+    node_selector: 
+      node-role.kubernetes.io/worker: "true"
+
+  - id: profile_studio_stac_browser_planet
+    groups: 
+    - group-1
+    definition:
+      display_name: IGA - Stac Browser Planet
+      slug: ellip_studio_stac_browser_es_planet
+      default: False
+      kubespawner_override:
+        cpu_limit: 1
+        mem_limit: 4G
+        image:  docker.io/eoepca/stac-browser:main@sha256:005dbf4abc03afcd051e7ae316760e0532f975b71016f2c598bc50b310f236bd
+        start_timeout: 600
+    pod_env_vars:
+      STAC_URL: "https://raw.githubusercontent.com/cholmes/sample-stac/master/stac/catalog.json"
+    node_selector: 
+      node-role.kubernetes.io/worker: "true"
+    config_maps:
+      - name: aws-credentials
+        key: aws-credentials
+        mount_path: /home/jovyan/.aws/credentials
+        default_mode: 0660
+        readonly: true
+      - name: aws-config
+        key: aws-config
+        mount_path: /home/jovyan/.aws/config
+        default_mode: 0660
+        readonly: true
+      - name: docker-config
+        key: docker-config
+        mount_path: /home/jovyan/.docker/config.json
+        default_mode: 0660
+        readonly: true
+    volumes:
+      - name: volume-workspace
+        claim_name: claim-workspace
+        size: 10Gi
+        storage_class: "managed-nfs-storage"
+        access_modes:
+          - "ReadWriteOnce"
+        volume_mount:
+          name: volume-workspace
+          mount_path: "/workspace"
+        persist: true
+
+  - id: profile_studio_stac_browser_mlhub
+    groups: 
+    - group-1
+    definition:
+      display_name: IGA - Stac Browser Radiant ML Hub
+      slug: ellip_studio_stac_browser_es_mlhub
+      default: False
+      kubespawner_override:
+        cpu_limit: 1
+        mem_limit: 4G
+        image:  docker.io/eoepca/stac-browser:main@sha256:005dbf4abc03afcd051e7ae316760e0532f975b71016f2c598bc50b310f236bd
+        start_timeout: 600
+    pod_env_vars:
+      STAC_URL: "https://api.radiant.earth/mlhub/v1/"
+      AUTH_CONFIG: "{ type: 'query', key: 'key', description: 'Please get the API key from your [Radiant MLHub Profile](https://mlhub.earth/profile).'}"
+    node_selector: 
+      node-role.kubernetes.io/worker: "true"
+    config_maps:
+      - name: aws-credentials
+        key: aws-credentials
+        mount_path: /home/jovyan/.aws/credentials
+        default_mode: 0660
+        readonly: true
+      - name: aws-config
+        key: aws-config
+        mount_path: /home/jovyan/.aws/config
+        default_mode: 0660
+        readonly: true
+      - name: docker-config
+        key: docker-config
+        mount_path: /home/jovyan/.docker/config.json
+        default_mode: 0660
+        readonly: true
+    volumes:
+      - name: volume-workspace
+        claim_name: claim-workspace
+        size: 10Gi
+        storage_class: "managed-nfs-storage"
+        access_modes:
+          - "ReadWriteOnce"
+        volume_mount:
+          name: volume-workspace
+          mount_path: "/workspace"
+        persist: true
+
+  - id: profile_studio_desktop_native
+    groups: 
+    - group-2
+    definition:
+      display_name: IGA - Remote Desktop base
+      slug: ellip_studio_desktop_native
+      default: False
+      kubespawner_override:
+        cpu_limit: 1
+        mem_limit: 4G
+        image:  eoepca/iga-remote-desktop:develop
+    default_url: "desktop"
+    node_selector: 
+      node-role.kubernetes.io/worker: "true"
+    config_maps:
+      - name: aws-credentials
+        key: aws-credentials
+        mount_path: /home/jovyan/.aws/credentials
+        default_mode: 0660
+        readonly: true
+      - name: aws-config
+        key: aws-config
+        mount_path: /home/jovyan/.aws/config
+        default_mode: 0660
+        readonly: true
+      - name: docker-config
+        key: docker-config
+        mount_path: /home/jovyan/.docker/config.json
+        default_mode: 0660
+        readonly: true
+    volumes:
+      - name: volume-workspace
+        claim_name: claim-workspace
+        size: 10Gi
+        storage_class: "managed-nfs-storage"
+        access_modes:
+          - "ReadWriteOnce"
+        volume_mount:
+          name: volume-workspace
+          mount_path: "/workspace"
+        persist: true
+
+  - id: profile_studio_desktop_snap
+    groups: 
+    - group-2
+    definition:
+      display_name: IGA - SNAP
+      slug: ellip_studio_desktop_snap
+      default: False
+      kubespawner_override:
+        cpu_limit: 1
+        mem_limit: 4G
+        image:  eoepca/iga-remote-desktop-snap:develop
+    default_url: "desktop"
+    node_selector: 
+      node-role.kubernetes.io/worker: "true"
+    config_maps:
+      - name: aws-credentials
+        key: aws-credentials
+        mount_path: /home/jovyan/.aws/credentials
+        default_mode: 0660
+        readonly: true
+      - name: aws-config
+        key: aws-config
+        mount_path: /home/jovyan/.aws/config
+        default_mode: 0660
+        readonly: true
+      - name: docker-config
+        key: docker-config
+        mount_path: /home/jovyan/.docker/config.json
+        default_mode: 0660
+        readonly: true
+    volumes:
+      - name: volume-workspace
+        claim_name: claim-workspace
+        size: 10Gi
+        storage_class: "managed-nfs-storage"
+        access_modes:
+          - "ReadWriteOnce"
+        volume_mount:
+          name: volume-workspace
+          mount_path: "/workspace"
+        persist: true
+
+  - id: profile_studio_desktop_qgis
+    groups: 
+    - group-2
+    definition:
+      display_name: IGA - QGIS
+      slug: ellip_studio_desktop_qgis
+      default: False
+      kubespawner_override:
+        cpu_limit: 1
+        mem_limit: 4G
+        image:  eoepca/iga-remote-desktop-qgis:develop
+    default_url: "desktop"
+    node_selector: 
+      node-role.kubernetes.io/worker: "true"
+    config_maps:
+      - name: aws-credentials
+        key: aws-credentials
+        mount_path: /home/jovyan/.aws/credentials
+        default_mode: 0660
+        readonly: true
+      - name: aws-config
+        key: aws-config
+        mount_path: /home/jovyan/.aws/config
+        default_mode: 0660
+        readonly: true
+      - name: docker-config
+        key: docker-config
+        mount_path: /home/jovyan/.docker/config.json
+        default_mode: 0660
+        readonly: true
+    volumes:
+      - name: volume-workspace
+        claim_name: claim-workspace
+        size: 10Gi
+        storage_class: "managed-nfs-storage"
+        access_modes:
+          - "ReadWriteOnce"
+        volume_mount:
+          name: volume-workspace
+          mount_path: "/workspace"
+        persist: true
+
+  - id: profile_studio_dashboard
+    groups: 
+    - group-1
+    definition:
+      display_name: IGA - Streamlit demo
+      slug: ellip_studio_dashboard
+      default: False
+      kubespawner_override:
+        cpu_limit: 1
+        mem_limit: 4G
+        image:  eoepca/iga-streamlit-demo:develop
+    node_selector: 
+      node-role.kubernetes.io/worker: "true"
+    config_maps:
+      - name: aws-credentials
+        key: aws-credentials
+        mount_path: /home/jovyan/.aws/credentials
+        default_mode: 0660
+        readonly: true
+      - name: aws-config
+        key: aws-config
+        mount_path: /home/jovyan/.aws/config
+        default_mode: 0660
+        readonly: true
+      - name: docker-config
+        key: docker-config
+        mount_path: /home/jovyan/.docker/config.json
+        default_mode: 0660
+        readonly: true
+    volumes:
+      - name: volume-workspace
+        claim_name: claim-workspace
+        size: 10Gi
+        storage_class: "managed-nfs-storage"
+        access_modes:
+          - "ReadWriteOnce"
+        volume_mount:
+          name: volume-workspace
+          mount_path: "/workspace"
+        persist: true
+
+  - id: profile_studio_labs
+    groups: 
+    - group-3
+    definition:
+      display_name: IAT - Interactive Analysis Tool (JupyterLab)
+      slug: studio_labs_slug
+      default: False
+      kubespawner_override:
+        cpu_limit: 1
+        mem_limit: 4G
+        image: jupyter/datascience-notebook
+    default_url: "lab"
+    config_maps:
+      - name: aws-credentials
+        key: aws-credentials
+        mount_path: /home/jovyan/.aws/credentials
+        default_mode: 0660
+        readonly: true
+      - name: aws-config
+        key: aws-config
+        mount_path: /home/jovyan/.aws/config
+        default_mode: 0660
+        readonly: true
+      - name: docker-config
+        key: docker-config
+        mount_path: /home/jovyan/.docker/config.json
+        default_mode: 0660
+        readonly: true
+      - name: new-cm
+        key: new-cm
+        mount_path: /home/jovyan/new-cm
+        default_mode: 0660
+        readonly: true
+        content: |-
+          Hello World!
+        persist: false
+    volumes:
+      - name: volume-workspace
+        claim_name: claim-workspace
+        size: 10Gi
+        storage_class: "managed-nfs-storage"
+        access_modes:
+          - "ReadWriteOnce"
+        volume_mount:
+          name: volume-workspace
+          mount_path: "/workspace"
+        persist: true
+    pod_env_vars:
+      A: 10
+      B: 20
+    node_selector: 
+      node-role.kubernetes.io/worker: "true"
+
+  - id: profile_studio_coder
+    groups: 
+    - group-2
+    definition:
+      display_name: PDE - Processor Development Environment (Code Server) 
+      slug: ellip_studio_coder_slug
+      default: False
+      kubespawner_override:
+        cpu_limit: 1
+        mem_limit: 8G
+        image: eoepca/pde-code-server@sha256:98b77ef39830aec162d9a30311957a48f2b4010930e999969656db11fa788a1b
+    node_selector: 
+      node-role.kubernetes.io/worker: "true"
+    volumes:
+      - name: volume-workspace
+        claim_name: claim-dev
+        size: 10Gi
+        storage_class: "managed-nfs-storage"
+        access_modes:
+          - "ReadWriteOnce"
+        volume_mount:
+          name: volume-workspace
+          mount_path: "/workspace"
+        persist: true
+    configMaps:
+      - name: bash-rc
+        key: bash-rc
+        content: |-
+          alias ll="ls -l"
+          . /home/jovyan/.bashrc 
+        mount_path: /workspace/.bashrc 
+        default_mode: 0660
+        readonly: true
+      - name: aws-credentials
+        key: aws-credentials
+        mount_path: /home/jovyan/.aws/credentials
+        default_mode: 0660
+        readonly: true
+      - name: aws-config
+        key: aws-config
+        mount_path: /home/jovyan/.aws/config
+        default_mode: 0660
+        readonly: true
+      - name: docker-config
+        key: docker-config
+        mount_path: /home/jovyan/.docker/config.json
+        default_mode: 0660
+        readonly: true

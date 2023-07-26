@@ -3,6 +3,9 @@ Utility methods for use in jupyterhub_config.py and dynamic subconfigs.
 
 Methods here can be imported by extraConfig in values.yaml
 """
+#from collections import Mapping
+from collections.abc import Mapping
+from functools import lru_cache
 import os
 from collections.abc import Mapping
 from functools import lru_cache
