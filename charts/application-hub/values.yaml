@@ -67,7 +67,7 @@ affinity: {}
 
 
 
-application-hub:
+jupyterhub:
   # fullnameOverride and nameOverride distinguishes blank strings, null values,
   # and non-blank strings. For more details, see the configuration reference.
   fullnameOverride: "application-hub"
@@ -168,7 +168,7 @@ application-hub:
     image:
       #name: jupyterhub/k8s-hub
       #tag: "2.0.0"
-      name: eoepca/app-hub
+      name: eoepca/application-hub
       tag: "1.0.0"
       pullPolicy:
       pullSecrets: []
