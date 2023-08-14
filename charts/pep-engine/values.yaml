@@ -86,7 +86,7 @@ requests:
 
 image:
   statefulSetReplicas: 1
-  repository: um-pdp-engine
+  repository: eoepca/um-pep-engine
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""

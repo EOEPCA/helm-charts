@@ -8,7 +8,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: pep-engine
+  name: {{ .Values.global.context }}-pep
   annotations:
     {{- if .Values.global.certManager.clusterIssuer }}
     cert-manager.io/cluster-issuer: {{ .Values.global.certManager.clusterIssuer }}
@@ -41,7 +41,7 @@ spec:
   tls:
     - hosts:
         - {{ printf "%s.%s" .Values.global.context .Values.global.domain | quote }}
-      secretName: pep-tls-certificate
+      secretName: {{ printf "%s-pep-tls" .Values.global.context | quote }}
   {{- end }}
 ---
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
