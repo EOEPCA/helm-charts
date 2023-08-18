@@ -38,6 +38,7 @@ ingress:
   pathSuffix:
   pathType: Prefix
   tls: []
+  clusterIssuer: "letsencrypt"
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
