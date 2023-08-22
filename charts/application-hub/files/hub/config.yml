@@ -34,7 +34,7 @@ profiles:
       - name: volume-workspace
         claim_name: claim-workspace
         size: 10Gi
-        storage_class: "managed-nfs-storage"
+        storage_class: "{{ .Values.jupyterhub.hub.extraEnv.STORAGE_CLASS }}"
         access_modes:
           - "ReadWriteOnce"
         volume_mount:
@@ -80,7 +80,7 @@ profiles:
       - name: volume-workspace
         claim_name: claim-workspace
         size: 10Gi
-        storage_class: "managed-nfs-storage"
+        storage_class: "{{ .Values.jupyterhub.hub.extraEnv.STORAGE_CLASS }}"
         access_modes:
           - "ReadWriteOnce"
         volume_mount:
@@ -125,7 +125,7 @@ profiles:
       - name: volume-workspace
         claim_name: claim-workspace
         size: 10Gi
-        storage_class: "managed-nfs-storage"
+        storage_class: "{{ .Values.jupyterhub.hub.extraEnv.STORAGE_CLASS }}"
         access_modes:
           - "ReadWriteOnce"
         volume_mount:
@@ -167,7 +167,7 @@ profiles:
       - name: volume-workspace
         claim_name: claim-workspace
         size: 10Gi
-        storage_class: "managed-nfs-storage"
+        storage_class: "{{ .Values.jupyterhub.hub.extraEnv.STORAGE_CLASS }}"
         access_modes:
           - "ReadWriteOnce"
         volume_mount:
@@ -209,7 +209,7 @@ profiles:
       - name: volume-workspace
         claim_name: claim-workspace
         size: 10Gi
-        storage_class: "managed-nfs-storage"
+        storage_class: "{{ .Values.jupyterhub.hub.extraEnv.STORAGE_CLASS }}"
         access_modes:
           - "ReadWriteOnce"
         volume_mount:
@@ -251,7 +251,7 @@ profiles:
       - name: volume-workspace
         claim_name: claim-workspace
         size: 10Gi
-        storage_class: "managed-nfs-storage"
+        storage_class: "{{ .Values.jupyterhub.hub.extraEnv.STORAGE_CLASS }}"
         access_modes:
           - "ReadWriteOnce"
         volume_mount:
@@ -292,7 +292,7 @@ profiles:
       - name: volume-workspace
         claim_name: claim-workspace
         size: 10Gi
-        storage_class: "managed-nfs-storage"
+        storage_class: "{{ .Values.jupyterhub.hub.extraEnv.STORAGE_CLASS }}"
         access_modes:
           - "ReadWriteOnce"
         volume_mount:
@@ -340,7 +340,7 @@ profiles:
       - name: volume-workspace
         claim_name: claim-workspace
         size: 10Gi
-        storage_class: "managed-nfs-storage"
+        storage_class: "{{ .Values.jupyterhub.hub.extraEnv.STORAGE_CLASS }}"
         access_modes:
           - "ReadWriteOnce"
         volume_mount:
@@ -370,7 +370,7 @@ profiles:
       - name: volume-workspace
         claim_name: claim-dev
         size: 10Gi
-        storage_class: "managed-nfs-storage"
+        storage_class: "{{ .Values.jupyterhub.hub.extraEnv.STORAGE_CLASS }}"
         access_modes:
           - "ReadWriteOnce"
         volume_mount:
