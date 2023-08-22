@@ -41,8 +41,8 @@ profiles:
           name: volume-workspace
           mount_path: "/workspace"
         persist: true
-    node_selector: 
-      node-role.kubernetes.io/worker: "true"
+    node_selector:
+      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
 
   - id: profile_studio_stac_browser_planet
     groups: 
@@ -59,7 +59,7 @@ profiles:
     pod_env_vars:
       STAC_URL: "https://raw.githubusercontent.com/cholmes/sample-stac/master/stac/catalog.json"
     node_selector: 
-      node-role.kubernetes.io/worker: "true"
+      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
     config_maps:
       - name: aws-credentials
         key: aws-credentials
@@ -104,7 +104,7 @@ profiles:
       STAC_URL: "https://api.radiant.earth/mlhub/v1/"
       AUTH_CONFIG: "{ type: 'query', key: 'key', description: 'Please get the API key from your [Radiant MLHub Profile](https://mlhub.earth/profile).'}"
     node_selector: 
-      node-role.kubernetes.io/worker: "true"
+      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
     config_maps:
       - name: aws-credentials
         key: aws-credentials
@@ -146,7 +146,7 @@ profiles:
         image:  eoepca/iga-remote-desktop:develop
     default_url: "desktop"
     node_selector: 
-      node-role.kubernetes.io/worker: "true"
+      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
     config_maps:
       - name: aws-credentials
         key: aws-credentials
@@ -188,7 +188,7 @@ profiles:
         image:  eoepca/iga-remote-desktop-snap:develop
     default_url: "desktop"
     node_selector: 
-      node-role.kubernetes.io/worker: "true"
+      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
     config_maps:
       - name: aws-credentials
         key: aws-credentials
@@ -230,7 +230,7 @@ profiles:
         image:  eoepca/iga-remote-desktop-qgis:develop
     default_url: "desktop"
     node_selector: 
-      node-role.kubernetes.io/worker: "true"
+      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
     config_maps:
       - name: aws-credentials
         key: aws-credentials
@@ -271,7 +271,7 @@ profiles:
         mem_limit: 4G
         image:  eoepca/iga-streamlit-demo:develop
     node_selector: 
-      node-role.kubernetes.io/worker: "true"
+      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
     config_maps:
       - name: aws-credentials
         key: aws-credentials
@@ -351,7 +351,7 @@ profiles:
       A: 10
       B: 20
     node_selector: 
-      node-role.kubernetes.io/worker: "true"
+      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
 
   - id: profile_studio_coder
     groups: 
@@ -365,7 +365,7 @@ profiles:
         mem_limit: 8G
         image: eoepca/pde-code-server@sha256:98b77ef39830aec162d9a30311957a48f2b4010930e999969656db11fa788a1b
     node_selector: 
-      node-role.kubernetes.io/worker: "true"
+      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
     volumes:
       - name: volume-workspace
         claim_name: claim-dev

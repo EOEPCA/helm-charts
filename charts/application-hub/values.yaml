@@ -59,7 +59,9 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: {}
+nodeSelector:
+  key: node-role.kubernetes.io/worker
+  value: \"true\"
 
 tolerations: []
 
