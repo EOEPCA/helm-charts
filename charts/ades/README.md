@@ -29,11 +29,7 @@ $ helm install ades charts/ades --namespace eoepca
 ### Stage-in/Out with Stars
 
 By default, CWL values for stage-in and stage-out are not set. Therefore, the default stage-in and stage-out from [`cwl-wrapper`](https://github.com/EOEPCA/cwl-wrapper) project are used. It is strongly recommended to install the default stage-in and stage-out contained in this repository.
-This can be done installing or upgrading the chart with
-
-```console
-helm upgrade --install ades charts/ades/ --namespace eoepca --set-file workflowExecutor.stagein.cwl=charts/ades/files/cwl/stagein/terradue_stars_t2_latest.cwl  --set-file workflowExecutor.stageout.cwl=charts/ades/files/cwl/stageout/terradue_stars_latest.cwl
-```
+To customize the stage-in and stage-out phases, update the properties **workflowExecutor.stagein.cwl** and **workflowExecutor.stageout.cwl** in the helm chart values file. 
 
 Those stage-in and stage-out includes the [Stars](https://github.com/Terradue/Stars) CLI that are able to read the EOEPCA catalog reference and provision with the assets referenced. In stage-in, data are also harvested to create a [STAC](https://github.com/radiantearth/stac-spec) catalog describing the assets staged.
 
@@ -65,7 +61,7 @@ route.route.openshift.io/ades-5w2ww   ades.eoepca.com   /         ades      http
 1. Run the following command to get the openAPI document
 
 ```console
-$ curl -H 'Accept: application/json' https://ades-cpe.terradue.com/terradue/wps3/api
+$ curl -H 'Accept: application/json' https://ades.eoepca.com/eoepca/wps3/api
 ```
 
 ## Values
@@ -98,7 +94,11 @@ The configuration parameters in this section control the resources requested and
 |workflowExecutor.resourceManagerEndpoint | Resource manager endpoint |`"https://resourcemanager-api.com"`|
 |workflowExecutor.resourceManagerWorkspacePrefix | Resource manager workspace prefix |`rm-user`|
 |workflowExecutor.jobNamespaceLabels.app | Adds a label to the job namespace | `"ades-app"`|
-|workflowExecutor.backofflimit| Number of retries before considering a Job as failed | `Commented Out` |
+|workflowExecutor.backofflimit| Number of retries before considering a Job as failed | `pct_claims.user_name` |
+
+|workflowExecutor.errorMessages| Rewrite k8s error messages | `"Job has reached the specified backoff limit": "Unexpected application error occurred. ( namespace: $namespace , exit codes:  $steps_exit_codes )"` |
+|workflowExecutor.usernameJwtJsonPath| Path to username value in JWT Bearer token | `Commented Out` |
+
 | wps.maincfgtpl                          | Main config file template for WPS interface                                                         | `files/main.cfg.tpl`                            |
 | wps.usePep                              | Use the policy Enforcement Point for registering resources                                                              | `false`                            |
 | wps.pepBaseUrl                          | Policy Enforcement Point Base Url                                                              | `https://pep.eoepca.terradue.com`                            |
