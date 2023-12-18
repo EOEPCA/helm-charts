@@ -1,6 +1,6 @@
 dependencies:
 - name: vs
   repository: https://charts-public.hub.eox.at/
-  version: 2.3.3
-digest: sha256:2862eb345a8049d54062cb53a3478f843c54c8d7d5c4160b4ae311b8e79117a3
-generated: "2023-03-27T11:39:35.628684236+02:00"
+  version: 4.1.3
+digest: sha256:ddea19f505a224edf5f234a61584c7dfc4da665978e6bba74dc0cdd727959ecd
+generated: "2023-12-11T13:44:41.773229233+02:00"
