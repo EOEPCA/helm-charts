@@ -1203,6 +1203,51 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/dummy-0.9.2/dummy-0.9.2.tgz
     version: 0.9.2
+  eoepca-portal:
+  - apiVersion: v2
+    appVersion: v1.3.8
+    created: "2023-12-19T01:37:32.916752964Z"
+    description: A Helm chart for EOEPCA Portal
+    digest: 06e7da2ac7bd6b23a575d3dae54e4c8f5b187c8664e7c5832a9c626e60b23be1
+    name: eoepca-portal
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/eoepca-portal-1.0.9/eoepca-portal-1.0.9.tgz
+    version: 1.0.9
+  identity-service:
+  - apiVersion: v1
+    appVersion: v1
+    created: "2023-12-19T01:37:33.130209719Z"
+    dependencies:
+    - condition: identity-keycloak.enabled
+      name: identity-keycloak
+      repository: ""
+      version: 0.15.0
+    - condition: identity-postgres.enabled
+      name: identity-postgres
+      repository: ""
+      version: 1.0.0
+    - condition: identity-api.enabled
+      name: identity-api
+      repository: ""
+      version: 1.0.0
+    - condition: identity-gatekeeper.enabled
+      name: identity-gatekeeper
+      repository: ""
+      version: 1.0.0
+    - condition: identity-api-gatekeeper.enabled
+      name: identity-api-gatekeeper
+      repository: ""
+      version: 1.0.0
+    description: A Helm chart to deploy Identity Service based on Keycloak
+    digest: 4026d884e0aee4e10dd7cbd8a3f05d0dd2f7d0beaaebe68d9ddb5f057fc196b3
+    maintainers:
+    - name: eoepca
+    name: identity-service
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/identity-service-1.0.76/identity-service-1.0.76.tgz
+    version: 1.0.76
   jupyter:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -5518,4 +5563,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2023-12-18T11:30:29.466852391Z"
+generated: "2023-12-19T01:37:33.13183962Z"
