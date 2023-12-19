@@ -1,0 +1,14 @@
+{{- if .Values.pdb.create }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "identity-api-gatekeeper.fullname" . }}
+  labels:
+    {{- include "identity-api-gatekeeper.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  minAvailable: {{ .Values.pdb.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "identity-api-gatekeeper.selectorLabels" . | nindent 6 }}
+{{- end }}

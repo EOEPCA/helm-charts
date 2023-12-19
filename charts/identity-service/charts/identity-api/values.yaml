@@ -1,0 +1,150 @@
+# Default values for identity-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# ---------------------------------------
+# Global variables
+# ---------------------------------------
+nameOverride: ""
+namespaceOverride: ""
+fullnameOverride: ""
+restartPolicy: Always
+
+# ---------------------------------------------
+# Variable used in hpa template and deployment
+# ---------------------------------------------
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+# ---------------------------------------
+# Variable used in Deployment template
+# ---------------------------------------
+deployment:
+  replicaCount: 1
+  # Additional Pod annotations
+  podAnnotations: {}
+  # Image pull secrets for the Pod
+  imagePullSecrets: []
+    # - name: myRegistrKeySecretName  
+  # SecurityContext for the entire Pod. Every container running in the Pod will inherit this SecurityContext. This might be relevant when other components of the environment inject additional containers into running Pods (service meshes are the most prominent example for this)
+  podSecurityContext:
+    fsGroup: 1000
+  # SecurityContext for the identity-api container
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+  image:
+    repository: ghcr.io/eoepca/um-identity-api
+    pullPolicy: Always
+
+  # Define which port will be used in the containers
+  containerPort: 8080
+  # Liveness probe configuration
+  livenessProbe: |
+    httpGet:
+      path: /health/liveness
+      port: http
+    initialDelaySeconds: 0
+    timeoutSeconds: 5
+  # Readiness probe configuration
+  readinessProbe: |
+    httpGet:
+      path: /health/readiness
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 1
+  # Startup probe configuration
+  startupProbe: |
+    httpGet:
+      path: /health/readiness
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 1
+    failureThreshold: 60
+    periodSeconds: 5
+  # Pod resource requests and limits
+  resources: {}
+    # requests:
+    #   cpu: "500m"
+    #   memory: "1024Mi"
+    # limits:
+    #   cpu: "500m"
+    #   memory: "1024Mi"
+  # Node labels for Pod assignment
+  nodeSelector: {}
+  # Pod affinity
+  affinity: {}
+  # Node taints to tolerate
+  tolerations: []
+
+# ---------------------------------------
+# Variable group used in ingress template
+# ---------------------------------------
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      auth_request /auth;
+      # Preflighted requests
+      if ($request_method = OPTIONS) {
+        return 200;
+      }
+      add_header Access-Control-Allow-Origin $http_origin always;
+      add_header Access-Control-Allow-Methods "*";
+      add_header Access-Control-Allow-Headers "Authorization, Origin, Content-Type";
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location /oauth/(authorize|callback|expired|health|login|logout|token|metrics|discovery) {
+        proxy_pass http://identity-api-gatekeeper.um.svc.cluster.local:3000/$request_uri;
+        # proxy_set_header X-Forwarded-Proto $scheme;
+        # proxy_set_header X-Forwarded-Host $host;
+        # proxy_set_header X-Forwarded-Method $request_method;
+        # proxy_set_header X-Forwarded-URI $request_uri;
+      }
+      location ^~ /auth {
+        internal;
+        proxy_pass http://identity-api-gatekeeper.um.svc.cluster.local:3000/$request_uri;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Method $request_method;
+        proxy_set_header X-Forwarded-URI $request_uri;
+        proxy_busy_buffers_size 64k;
+        proxy_buffers 8 32k;
+        proxy_buffer_size 32k;
+      }
+  hosts:
+    - host: identity.api.demo.eoepca.org
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: identity-api-tls-certificate
+      hosts:
+        - identity.api.demo.eoepca.org
+# ---------------------------------------
+# Variable group used in ingress template
+# ---------------------------------------
+service:
+  type: ClusterIP
+  port: 8080
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+configMap:
+  authServerUrl: https://identity.keycloak.demo.eoepca.org
+secrets:
+  adminPassword: AgARMLjWkexBIMQ5SX8TX0odCeJS1aBLxhWnv/ceEbtbWFMZu4IQuoXFXK0aFitpRR6otmEPISuxJIEP2cQmC22WeDyvEA+GBvEDvgTtqlvxVwNmToeSNQcHTtbrFmJH8GB8m85YnmeZZKGYtMnzMO2DYVh4lD0xS8HNkOaFxAcZmTTRXOvC4RqaKdjGHyDid2tzXWsf4oXn69v/ihjpKEhpFqKW3u36uChd0kG/efloC70eNaiYE3JTAdv6tItyuDDbdU1uQxKgg1gNLc2E/mixXViSxhRSbLOex+kJY/Nkjl+Zo55C+MJw5SrAdkr9hripctwirToxthuGegMMQj5unQrk+DDxbolW8+izYaKJ2U9aJtJh8lasEEdz/VZfBcVVMPMJf2te6oWGV7jYpEkN4P/ObR7XlpyPI/zOQoil4XFc7qGLzJpkN9ccA6LmuE5mjc1+ZirAwjaQNd+4QTnBWBFG02575pwECM7YYaONFH5+PQl7q/jubCxPYlUA9ftOhoKNHZMQsvK7lesJIsDLPQGX9ma717jqy3gQGa3KvV3QfbVHG8O1REtGKdwbubFOu4mTWzzksiJS8Gd7jn1Rl9sz7AzGb2u6JmxU+idkRDU+sI1XVrp+vF9ERvtpWx0BMWeZyijO3BGkNHEG1lkqIRAQTbGgzg4eTdAsoFSWYrOI4Dc4wx7QUJSSi6c+DZGayCWJN6ewopypJOa5Ib0=

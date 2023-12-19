@@ -1,0 +1,144 @@
+# Default values for postgres.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# ---------------------------------------
+# Global variables
+# ---------------------------------------
+nameOverride: ""
+namespaceOverride: ""
+fullnameOverride: ""
+restartPolicy: Always
+
+# ---------------------------------------------
+# Variable used in configMaps template
+# ---------------------------------------------
+configMap:
+  postgresDb: keycloak
+  postgresUser: keycloak
+  pgData: /var/lib/postgresql/data/keycloak
+
+# ---------------------------------------------
+# Variable used in secrets template
+# ---------------------------------------------
+secrets:
+  postgresPassword: AgBm5H6dL9yaJuATwOzX2luUuvz2Qq6rgq+J4B2mG4wS4gQrjvXZpca55j5wQlSj3y+gsJgWQkQEbZyXkNXUUUYfvqCkb+Xc9ZeUPthv9C9aiUUA4+4xKXUyXjUkE3i1/+7kNkrjIwGFFxSRbc+uAgYu6BRYuoGtYdIqVINDCMJ8q7HkTm0yBJ3EjMDJ8sjFZu50famN5Pk4FiY7j6yyyaNDyN1DvIyfhd5B1nieJtWcMoQ4tyvh7gVcJtRrSuy96NyzeSVIU+P4Fjt3oO51PfOF2pTh5pyirh2Emsphn3F1jjd/gsXsfx2d6QUNf/IOwHUOBsgqzGw28uyOma+pvYeZOVQeFJLdLn0JI5ahC9JyQvSkK7ESuZqjDls/f2bMJGVuHBqy8sQwMeamLBkEU8r1CaJ5A6izB3JTB9AbqbMghroL385ZGa3eQLC4oVCNZSjGbK5ITLyN+rO3Dj7TKsNXK4AcYtod+UVlhbglyWe6DgZFQB6CxfsGIRYMgu+1KcRsJg9cvHXZOnT0+JBg2MnsZCEQQA49yP9gkTe3zBe+gtDCKnEjl19Ismxd8Q5RMfChStvocbsllLt1rueyak9m0m5WlViq7pMgAeiLpq9sPdrK15z/wJlJ+zaX5YaMLbl4u5zg5peQLJrMeCL8zFX8DlL3/kcjOOnx/Ij6b26qOF0iTNdzVOzK6S+Eh9kYVSP/OmEt5xBf8HIZzoYYA0k=
+  pgPassword: AgAt0CrASSc0tuW4h0jpclnCSn+jOmt/Q3qSHxZggK4HdhAbPCbyIGbWOBqN56lMgtY7BX8tqkq3If7gN0H16qS9ZPJQ48so2VJ+HdWNBJN2LAzvxCFeMscuC9/LcGJfH4M724dgQpjarxv2GdkMfzsDjouFVkaseK+3N3DURLANTVq117d500ORFC48Cd/tsy5kV83EjD0iH2NZLQPNENadEbvl+bKpADkdRksqj0JXPDo2JQf1dyGKsTRBlu5jP++81K/7Fxh5a+ManU57B9C0YNIiKep/5UyolhN2YfjN+t9rXpEZ9acnydVvUkCgvLHN3l84OWZmywlK6giDvoXpQu6I/5HXTK3tL5dpnNyP7EGVD2DN90olLN4+RjJughBpH7yobnunH2aKmMV4Qa4sqzVimDTbZhNfP0i/D3AZ43FoR+7Bij0Fr9LmItGJNrXzZ3rToE/9JzUG+oHZUzi0joUY/gSVOJ4E/RmmuEQJJHgq7gVsKoav9NxitgkkpJdywjx7ccwT09nNVadRAP+z5VwX9mQW2pofmkx672ojkmdwaIWN+o9oWaKHiU7eX9cnraq89kUz4H1SArC4ZCJna10lk5xPuIlCQjKHam0xontNe5dqqbUuAgTcWeb+NTvuoUSUaZGyxtT3M+FuLyg2uzZEPSak6OhAlCe12qlvIb7MK1Ga5eOlI6Ha9KJ9spjahMMC2BNUDAhnbkLs+JA=
+
+# ---------------------------------------------
+# Variable used in pv and pvc template
+# ---------------------------------------------
+persistence:
+  type: local
+  storageClassName: manual
+  storage: 1Gi
+  accessModes: |
+    - ReadWriteMany
+  hostPath:
+    path: "/data/postgresql"
+
+# ---------------------------------------------
+# Variable used in hpa template and deployment
+# ---------------------------------------------
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+# ---------------------------------------
+# Variable used in Deployment template
+# ---------------------------------------
+deployment:
+  replicaCount: 1
+  # Additional Pod annotations
+  podAnnotations: {}
+  # Image pull secrets for the Pod
+  imagePullSecrets: []
+    # - name: myRegistrKeySecretName  
+  # SecurityContext for the entire Pod. Every container running in the Pod will inherit this SecurityContext. This might be relevant when other components of the environment inject additional containers into running Pods (service meshes are the most prominent example for this)
+  podSecurityContext:
+    fsGroup: 1000
+  # SecurityContext for the Keycloak container
+  securityContext: {}
+    # runAsUser: 0
+    # runAsNonRoot: false
+  image:
+    repository: postgres
+    pullPolicy: IfNotPresent
+  ## Overrides the default args for the Keycloak container
+  args: []
+  # Additional environment variables for Keycloak
+  extraEnv: ""
+  # Additional environment variables for Keycloak mapped from Secret or ConfigMap
+  extraEnvFrom: ""
+  # Define which port will be used in the containers
+  containerPort: 5432
+  # Define Volumes mount
+  volumeMountPath: /var/lib/postgresql/data
+  volumeMountName: postgresdata
+  volumes: |
+    - name: postgresdata
+      persistentVolumeClaim:
+        claimName: eoepca-userman-pvc
+  # Liveness probe configuration
+  livenessProbe: {}
+    # httpGet:
+    #   path: /
+    #   port: http
+    # initialDelaySeconds: 0
+    # timeoutSeconds: 5
+  # Readiness probe configuration
+  readinessProbe: {}
+    # httpGet:
+    #   path: /realms/master
+    #   port: http
+    # initialDelaySeconds: 30
+    # timeoutSeconds: 1
+  # Startup probe configuration
+  startupProbe: {}
+    # httpGet:
+    #   path: /
+    #   port: http
+    # initialDelaySeconds: 30
+    # timeoutSeconds: 1
+    # failureThreshold: 60
+    # periodSeconds: 5
+  # Pod resource requests and limits
+  resources: {}
+    # requests:
+    #   cpu: "500m"
+    #   memory: "1024Mi"
+    # limits:
+    #   cpu: "500m"
+    #   memory: "1024Mi"
+  # Node labels for Pod assignment
+  nodeSelector: {}
+  # Pod affinity
+  affinity: {}
+  # Node taints to tolerate
+  tolerations: []
+
+# ---------------------------------------
+# Variable group used in ingress template
+# ---------------------------------------
+service:
+  type: ClusterIP
+  port: 5432
+
+# ---------------------------------------
+# Variable group used in serviceaccount template
+# ---------------------------------------
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+volumeClaim:
+  name: eoepca-userman-pvc
+  create: false

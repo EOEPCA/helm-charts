@@ -1,0 +1,25 @@
+{{ if .Values.volumeClaim.create }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.volumeClaim.name }}
+  labels:
+    eoepca_type: userman
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  storageClassName: {{ .Values.persistence.storageClassName }}
+  accessModes:
+    {{- with .Values.persistence.accessModes }}
+    {{- tpl . $ | nindent 4 }}
+    {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.storage }}
+  selector:
+    matchLabels:
+      eoepca_type: userman
+{{ end }}

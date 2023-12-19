@@ -1,0 +1,5 @@
+apiVersion: v2
+name: identity-api-gatekeeper
+description: A helm chart for a Gatekeeper to protect identity-api
+version: 1.0.0
+appVersion: "2.8.0"

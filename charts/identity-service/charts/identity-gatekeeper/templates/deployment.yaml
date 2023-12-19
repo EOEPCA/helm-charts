@@ -1,0 +1,117 @@
+{{- $adminPort := regexFind ":[0-9]+" (index .Values.config "listen-admin") | trimPrefix ":" -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "identity-gatekeeper.name" . }}
+  labels:
+    {{- include "identity-gatekeeper.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.deployment.replicaCount }}
+  {{- end }}
+  strategy:
+    {{- toYaml .Values.deployment.strategy | nindent 4 }}
+  selector:
+    matchLabels:
+        {{- include "identity-gatekeeper.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ print .Values.config | sha256sum | quote }}
+        {{- if and (index .Values.config "enable-metrics") .Values.metrics.addPrometheusScrapeAnnotation }}
+        prometheus.io/path: "/oauth/metrics"
+        prometheus.io/port: {{ $adminPort | quote }}
+        prometheus.io/scrape: "true"
+        {{- end }}
+        {{- with .Values.deployment.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "identity-gatekeeper.selectorLabels" . | nindent 8 }}
+        {{- range $key, $value := .Values.deployment.podLabels }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+    spec:
+      {{- with .Values.deployment.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      automountServiceAccountToken: {{ .Values.deployment.automountServiceAccountToken }}
+      serviceAccountName: {{ include "identity-gatekeeper.serviceAccountName" . }}
+      {{- if .Values.deployment.podSecurityContext.enabled }}
+      securityContext:
+        {{- omit .Values.deployment.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- if .Values.deployment.containerSecurityContext.enabled }}
+          securityContext:
+            {{- omit .Values.deployment.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
+          args:
+            - --config
+            - /etc/gatekeeper/config.yaml
+            {{- with .Values.deployment.extraArgs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with .Values.deployment.extraEnvVars }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          envFrom:
+            {{- with .Values.deployment.extraEnvFrom }}
+            {{- tpl . $ | nindent 12 }}
+            {{- end }}
+            - secretRef:
+                name: {{ include "identity-gatekeeper.name" . }}
+          ports:
+            - name: proxy
+              containerPort: {{ regexFind ":[0-9]+" .Values.config.listen | trimPrefix ":" }}
+              protocol: TCP
+            - name: admin
+              containerPort: {{ $adminPort }}
+              protocol: TCP
+          {{- if .Values.deployment.livenessProbe.enabled }}
+          livenessProbe:
+            {{- omit .Values.deployment.livenessProbe "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .Values.deployment.readinessProbe.enabled }}
+          readinessProbe:
+            {{- omit .Values.deployment.readinessProbe "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.deployment.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /etc/gatekeeper
+              name: config
+            {{- with .Values.deployment.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        - configMap:
+            name: {{ include "identity-gatekeeper.fullname" . }}
+          name: config
+        {{- with .Values.deployment.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.deployment.priorityClassName }}
+      priorityClassName: {{ . | quote }}
+      {{- end }}
+      {{- with .Values.deployment.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deployment.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deployment.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.deployment.hostAliases }}
+      hostAliases: {{ toYaml .Values.deployment.hostAliases | nindent 8 }}
+      {{- end }}

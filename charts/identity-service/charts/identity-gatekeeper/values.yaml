@@ -1,0 +1,132 @@
+nameOverride: ""
+fullnameOverride: ""
+kubeVersionOverride: ""
+deployment:
+  replicaCount: 1
+  image:
+    pullPolicy: IfNotPresent
+  strategy:
+    type: Recreate
+    # rollingUpdate:
+    #   maxSurge: 25%
+    #   maxUnavailable: 25%
+  automountServiceAccountToken: false
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext:
+    enabled: false
+    # fsGroup: 2000
+  containerSecurityContext:
+    enabled: true
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    # runAsUser: 1000
+  extraArgs: []
+  # - --foo
+  # - --bar
+  extraEnvVars: []
+  # - name: FOO
+  #   value: BAR
+  extraVolumes: []
+  # - emptyDir: {}
+  #   name: tmp
+  extraVolumeMounts: []
+  # - mountPath: /tmp
+  #   name: tmp
+  priorityClassName: ""
+  hostAliases: []
+  # - ip: "127.0.0.1"
+  #   hostnames:
+  #   - "foo.local"
+  #   - "bar.local"
+  # - ip: "10.1.2.3"
+  #   hostnames:
+  #   - "foo.remote"
+  #   - "bar.remote"
+  resources:
+    limits: {}
+    #   cpu: 100m
+    #   memory: 128Mi
+    requests: {}
+    #   cpu: 100m
+    #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  livenessProbe:
+    enabled: false
+    httpGet:
+      path: /oauth/health
+      port: admin
+  readinessProbe:
+    enabled: true
+    httpGet:
+      path: /oauth/health
+      port: admin
+service:
+  type: ClusterIP
+  annotations: {}
+  proxy:
+    port: 3000
+    nodePort:
+  admin:
+    port: 4000
+    nodePort:
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  hosts:
+    - host: identity.gatekeeper.demo.eoepca.org
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: identity-gatekeeper-tls-certificate
+      hosts:
+        - identity.gatekeeper.demo.eoepca.org
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  #targetMemoryUtilizationPercentage: 80
+pdb:
+  create: false
+  minAvailable: 1
+metrics:
+  addPrometheusScrapeAnnotation: false
+  serviceMonitor:
+    enabled: false
+    namespace: um
+    additionalLabels: {}
+    annotations: {}
+    interval:
+config:
+  client-id: dummy-service
+  discovery-url: https://identity.keycloak.demo.eoepca.org/realms/master
+  no-redirects: true
+  no-proxy: true
+  enable-uma: true
+  cookie-domain: demo.eoepca.org
+  cookie-access-name: auth_user_id
+  cookie-refresh-name: auth_refresh_token
+  enable-metrics: true
+  enable-logging: true
+  enable-request-id: true
+  enable-login-handler: true
+  enable-refresh-tokens: true
+  enable-logout-redirect: true
+  listen: :3000
+  listen-admin: :4000
+secrets:
+  clientSecret: AgBcl/IfO/jTglIelJkWoqBk90oW6eFZYK3KsYTgzEvl3cKTUy9s5jgN0VLYlH8fTq9FQKvvIC+An5ftkzKghsY8Vh6H1c9xL9KdPB0LL1XqRkPsMHORCbE6Cg/1jjVl9NLIf81eyovZR9I65IuJnNQbVyT4GA77M+pS0jx8iQG416t8g9yz0jxR6kTAeGZwTlLtFYi5fO04yCdurUTghMl935vQMCROSb+D2YLGUh4r9IJ5JK8pbXffLR2r4rlrtswAIRPH/j/1J18b6aJCG/aCTnMAiBTp1LKVeOmS5guvthkSj+Jsyznlb4G3cOP85jMeb9zsXmTS83qXvePcmPFv62namzhOiQWFMfLS7TH8OvjaYEOsrX8nw5Er2ke/JJUsaiePq4nHDKUQTjlmiJgU3luGlTOgbJfK8hCWguMSrIWu+/MvAduvHtrkIJTETORNS3S1wEfMOokeGAf/7d/LUCoO2AAoZVAMw5liAbDQM37w5XQc6vPys0tVt7VsSGGuM48I2jR3y07Bex+QhgDC1tIhQtCdqh2BbJCW1C6bvPSUOy/vmP5d8f6eiuSl79Cz6maAlR7OtpbALwjXZXOtNDp+9lznB4SH9a2knppxb6PWSgQlnueWhK1YCYLGiJsqI24U1LbqCYMGE+Pfx7zpsvQo8q0R+Dq6arIOLmPHPY5CN++7LPH+MUGrNlL+7CPOVpaF/LyvuGSqafXDq1hLj1SPbi2pjq7ms8HEDNFWbQ==
+  encryptionKey: AgCpHHk8Oyhmkm4/4XKCXBMrlvV3gv2ngs6opNCP9vFVNoo1JO9VVF8ghipqJxjy6ao+hXWp6x+Hc0oumgl8BtwfSX1KBKQAEDHqImogSYdpkoCP5+CbUNN+Vqgg0NS7SLYd3HY8EJBuFp5Go/G9A0e/6WREo7hT2+CtF6qjg4Dt1fQamKLYDAX3tAKXi6KH0H5IaBskL/RK+ifGVIp2Q44I14XZYBkZ5gsQZPUMGYLFWuPlx+NOL8DXkmTN4Fvq5bGFytfPMW9ZllGkRMLPq8wvgiWhp9rghZKxd/QnLsjkOp5XmS2TnXXbuQTjmh07/Yt4ZdC2cRNsH5b5Rk+n2/MMT+XB/tqtqi67ooig3Rg1NmiuYqHVipywi7YU4VQO855Vmvx2T7hYo+XZQE/CJqIM9v1zUZySWfvATWZHQ3w2Z6eRRxbDRqIAnCI6bMVLCH+1vOeMGQ8bvNOqyr6YBpNQBYvDQfYgEgTTkjQwNNLmfRnfZygPF+NvbUQSkAuNY9uMl9Rj9ccrsf+cbIOuiukOZuleHVe3o4PSuk8VlCRaNTUpUc+lQutnCN20C9ZJLTmBVsho1FFiimnpmCSn7Vo90XAymOwyHW/qq390gB7Py+9OXdzhGJ70t5LTtdTX9ihbZjC1Id133TAqwoCWkEKDSHjmWOj8ElygXLnLDd1YIdyjpONbYuOU/GsPUsgs9E5F07bSfgvf1UaUNn4+OVqSh0W7zE+/yRkmOF3a9+lRLg==

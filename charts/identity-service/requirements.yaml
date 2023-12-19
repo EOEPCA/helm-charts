@@ -1,0 +1,16 @@
+dependencies:
+  - name: identity-keycloak
+    condition: identity-keycloak.enabled
+    version: 0.15.0
+  - name: identity-postgres
+    condition: identity-postgres.enabled
+    version: 1.0.0
+  - name: identity-api
+    condition: identity-api.enabled
+    version: 1.0.0
+  - name: identity-gatekeeper
+    condition: identity-gatekeeper.enabled
+    version: 1.0.0
+  - name: identity-api-gatekeeper
+    condition: identity-api-gatekeeper.enabled
+    version: 1.0.0
