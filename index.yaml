@@ -1224,6 +1224,17 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/eoepca-portal-1.0.9/eoepca-portal-1.0.9.tgz
     version: 1.0.9
+  identity-gatekeeper:
+  - apiVersion: v2
+    appVersion: 2.8.0
+    created: "2024-01-08T09:19:36.071418592Z"
+    description: Policy enforcement integration with Keycloak
+    digest: eef38b9eb83b4651230d806f560aebd7dcef817217943db16f68bd7417281158
+    name: identity-gatekeeper
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/identity-gatekeeper-1.0.0/identity-gatekeeper-1.0.0.tgz
+    version: 1.0.0
   identity-service:
   - apiVersion: v1
     appVersion: v1
@@ -5705,4 +5716,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2024-01-02T11:08:09.027751399Z"
+generated: "2024-01-08T09:19:36.073441835Z"
