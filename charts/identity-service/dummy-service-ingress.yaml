@@ -31,7 +31,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: identity.dummy-service.demo.eoepca.org
+    - host: identity.dummy-service.myplatform.eoepca.org
       http:
         paths:
           - path: /
@@ -43,5 +43,5 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - identity.dummy-service.demo.eoepca.org
+        - identity.dummy-service.myplatform.eoepca.org
       secretName: identity-dummy-service-tls

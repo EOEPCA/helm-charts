@@ -1,0 +1,18 @@
+dependencies:
+- name: identity-keycloak
+  repository: ""
+  version: 0.15.1
+- name: identity-postgres
+  repository: ""
+  version: 1.0.1
+- name: identity-api
+  repository: ""
+  version: 1.0.1
+- name: identity-gatekeeper
+  repository: https://eoepca.github.io/helm-charts/
+  version: 1.0.1
+- name: identity-api-gatekeeper
+  repository: ""
+  version: 1.0.1
+digest: sha256:f0a58fb28812eb280d76b32f5bcf2bcd20dfae2e0efecb2a3679ffb7ea93d3d5
+generated: "2024-01-08T12:12:38.632640775Z"

@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v2
 name: identity-service
 description: A Helm chart to deploy Identity Service based on Keycloak
 maintainers:
@@ -16,9 +16,27 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.0.80
+version: 1.0.82
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 appVersion: "v1"
+
+dependencies:
+  - name: identity-keycloak
+    condition: identity-keycloak.enabled
+    version: 0.15.1
+  - name: identity-postgres
+    condition: identity-postgres.enabled
+    version: 1.0.1
+  - name: identity-api
+    condition: identity-api.enabled
+    version: 1.0.1
+  - name: identity-gatekeeper
+    condition: identity-gatekeeper.enabled
+    version: 1.0.1
+    repository: "https://eoepca.github.io/helm-charts/"
+  - name: identity-api-gatekeeper
+    condition: identity-api-gatekeeper.enabled
+    version: 1.0.1

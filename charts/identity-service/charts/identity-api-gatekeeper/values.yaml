@@ -85,14 +85,14 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
   hosts:
-    - host: identity.api-gatekeeper.demo.eoepca.org
+    - host: identity.api-gatekeeper.myplatform.eoepca.org
       paths:
         - path: /
           pathType: Prefix
   tls:
     - secretName: identity-api-gatekeeper-tls-certificate
       hosts:
-        - identity.gatekeeper.demo.eoepca.org
+        - identity.gatekeeper.myplatform.eoepca.org
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -111,22 +111,24 @@ metrics:
     annotations: {}
     interval:
 config:
-    client-id: identity-api
-    discovery-url: https://identity.keycloak.demo.eoepca.org/realms/master
-    no-redirects: true
-    no-proxy: true
-    enable-uma: true
-    cookie-domain: demo.eoepca.org
-    cookie-access-name: auth_user_id
-    cookie-refresh-name: auth_refresh_token
-    enable-metrics: true
-    enable-logging: true
-    enable-request-id: true
-    enable-login-handler: true
-    enable-refresh-tokens: true
-    enable-logout-redirect: true
-    listen: :3000
-    listen-admin: :4000
+  client-id: identity-api
+  discovery-url: https://identity.keycloak.myplatform.eoepca.org/realms/master
+  no-redirects: true
+  no-proxy: true
+  enable-uma: true
+  #enable-default-deny: true
+  cookie-domain: myplatform.eoepca.org
+  cookie-access-name: auth_user_id
+  cookie-refresh-name: auth_refresh_token
+  #secure-cookie: true
+  enable-metrics: true
+  enable-logging: true
+  enable-request-id: true
+  enable-login-handler: true
+  enable-refresh-tokens: true
+  enable-logout-redirect: true
+  listen: :3000
+  listen-admin: :4000
 secrets:
-    clientSecret: AgClDBQe7hqRlUZaKSaokWJ81tPyAzSUatTk34IvB3KJY032sip8KxY/s6c43clc/63vRWBcOC5WcbRKSxflYPU+nTzY88B0drdMENQaeWg2j57fmda1RUyOGMgADNtSadIkZoBjEfcppOQNTDmmctgVxlhYEnTMZ8XznqFWNUqZi36yNXabf5WVlZAHe0NuP87iQMuff/VZmNcRT0W3p/eKlrMAweJT3JvLocTO7b8PzKnvEe3VMBoWA1r4s9GqOWeCItf6rwIhtvYxUjYjGEuxhgDzHD55Y9icRwJLirh759Q9Ggej3gvM1FbCliOgkWSS7xos4cTWvMsvRUsMBOpxZLCwuYfcifTZ7gHAksGhk6PhRnGcHSvHN5fVmEoD62W97AITu53X8FlnlRuY8a/f/+FoXW+auYMIplLK8ej7ugrXkTEaZaX1guA4OoePH6rmwjTS0gyViE2mN8mOCLvoUA4xTyGdxy8eYwJVO6vQBttkW91qgukrdWAaqW/PFtHBK9R+1hsm0jkAwXzv60797Gf9Hw+GZU6EWPsGj5MuljDicL6b2beKDg+28qzpTb+9W8+h7rszfki9gFFUxrJeVxwLDtSbBpW6E0PBs8LSsm7QEs90lPVfA9xuHpql4VinX7Yo/VX4Y6uDXKcjwRPpQlVTS0OrnIRkkLE0RjnSk6objJMFJsjVJ4hYyqE3bEd+n8yIvkcufKzfOLd18QdPUiM01/p/IIrTQbVesCKzxw==
-    encryptionKey: AgBrCIjYsQpgr8xfaWPXbkaLvnAR03fWz1BY3vYvTBOxIkHBs8y8thEBjGPJ2whZOmFK3r8ePtuj9l+qGW66JRliZiTWMGiSEZH4SvPE1OKbiqja8DvhS84BbL8K4mLhthBfP/BtMhKSiPC/5ojiWKQLKAf5e8PnP2POR33FftvB9RIautKqt8xlAbXrL7IjnzD1dIclSQpVtTKpGLW8lIZO0YLUTTer53EMnkt7kRnmyHPjuuZIkUVkWcjppkYxPAkkG0DaU522JUAVzyyonJ+dydw5tFYarjFvYHkbXUnBYJZe7dQCxi1HW8CU12ITeSGt3bKkazbLrcOW2VPwfmnnY/QVvKrVTHaz8h2OcsJpr226KI9M1yCN2Bg2Fp/krFTXVcu49rdVI9yc/KcVgh6dzXoO8EeBuZkmVLtXIIrfG1KTvyQ7xKb5np+TJMNUA4+N4Ot5+L49xNGRJYYzBHnd63m8/J+lF89ghmCla72EdZERDi0vec36+8Sj/Xm8YmfEI4+bBMuyvJEMnqeKb9cTguLNB7l4p7YSvjJ5auZpg1cWOZ1dKA5TufJ56bjNJx9YdrAZ8gxBkkuNfkKTXqLP3utbl4pLbxyCbGbv/5d7lF4JAIP8iZBH7Rgkfar1b8PZXQuH44ZW3r8l9qJ1DzU/vBxf9VA3e5WVd3uFLcm+9809C22ElEAA8ZkXuNSJ24Hpa0ez1jCesDsnmqXLX7uXZ0Hlxn/n70cjCmCZ22Ncfw==
+  clientSecret: ""
+  encryptionKey: ""
