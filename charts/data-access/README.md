@@ -1,4 +1,4 @@
-# HELM Chart for Resource Guard
+# HELM Chart for Data Access
 
 This README describes how to install the Data Access in your Kubernetes cluster using `Helm`.
 
