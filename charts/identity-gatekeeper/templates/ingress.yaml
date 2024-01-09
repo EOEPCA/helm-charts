@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $name := include "identity-gatekeeper.name" . -}}
+{{- $name := include "identity-gatekeeper.fullname" . -}}
 {{- $svcPort := .Values.service.proxy.port -}}
 apiVersion: {{ include "identity-gatekeeper.ingress.apiVersion" . }}
 kind: Ingress
@@ -9,7 +9,7 @@ metadata:
     {{- include "identity-gatekeeper.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -21,14 +21,14 @@ spec:
     {{- range .Values.ingress.tls }}
     - hosts:
         {{- range .hosts }}
-        - {{ . | quote }}
+        - {{ tpl . $ | quote }}
         {{- end }}
-      secretName: {{ .secretName }}
+      secretName: {{ tpl .secretName $ }}
     {{- end }}
   {{- end }}
   rules:
     {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ tpl .host $ | quote }}
       http:
         paths:
           {{- range .paths }}
@@ -39,12 +39,12 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" (include "identity-gatekeeper.kubeVersion" $) }}
               service:
-                name: {{ $name }}
+                name: {{ tpl .backend.service.name $ }}
                 port:
-                  number: {{ $svcPort }}
+                  number: {{ tpl .backend.service.port.number $ }}
               {{- else }}
-              serviceName: {{ $name }}
-              servicePort: {{ $svcPort }}
+              serviceName: {{ tpl .backend.service.name $ }}
+              servicePort: {{ tpl .backend.service.port.number $ }}
               {{- end }}
           {{- end }}
     {{- end }}

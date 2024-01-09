@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "identity-gatekeeper.name" . }}
+  name: {{ include "identity-gatekeeper.fullname" . }}
   labels:
     {{- include "identity-gatekeeper.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
@@ -66,7 +66,7 @@ spec:
             {{- tpl . $ | nindent 12 }}
             {{- end }}
             - secretRef:
-                name: {{ include "identity-gatekeeper.name" . }}
+                name: {{ include "identity-gatekeeper.fullname" . }}
           ports:
             - name: proxy
               containerPort: {{ regexFind ":[0-9]+" .Values.config.listen | trimPrefix ":" }}
