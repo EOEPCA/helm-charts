@@ -1,30 +1,24 @@
 identity-postgres:
-    enabled: true
-    deployment:
-        image:
-            repository: postgres
-            pullPolicy: IfNotPresent
+  enabled: true
+  deployment:
+    image:
+      repository: postgres
+      pullPolicy: IfNotPresent
 identity-keycloak:
-    enabled: true
-    deployment:
-        image:
-            repository: quay.io/keycloak/keycloak
-            pullPolicy: IfNotPresent
+  enabled: true
+  deployment:
+    image:
+      repository: quay.io/keycloak/keycloak
+      pullPolicy: IfNotPresent
 identity-api:
-    enabled: true
-    deployment:
-        image:
-            repository: ghcr.io/eoepca/um-identity-api
-            pullPolicy: IfNotPresent
+  enabled: true
+  deployment:
+    image:
+      repository: ghcr.io/eoepca/um-identity-api
+      pullPolicy: IfNotPresent
 identity-api-gatekeeper:
-    enabled: true
-    deployment:
-        image:
-            repository: quay.io/gogatekeeper/gatekeeper
-            pullPolicy: IfNotPresent
-identity-gatekeeper:
-    enabled: true
-    deployment:
-        image:
-            repository: quay.io/gogatekeeper/gatekeeper
-            pullPolicy: IfNotPresent
+  enabled: true
+  deployment:
+    image:
+      repository: quay.io/gogatekeeper/gatekeeper
+      pullPolicy: IfNotPresent
