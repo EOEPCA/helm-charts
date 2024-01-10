@@ -4,6 +4,8 @@ kubeVersionOverride: ""
 deployment:
   replicaCount: 1
   image:
+    repository: quay.io/gogatekeeper/gatekeeper
+    # tag: null  # default is Chart.appVersion
     pullPolicy: IfNotPresent
   strategy:
     type: Recreate
