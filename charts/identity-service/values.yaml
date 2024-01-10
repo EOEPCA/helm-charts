@@ -18,7 +18,3 @@ identity-api:
       pullPolicy: IfNotPresent
 identity-api-gatekeeper:
   enabled: true
-  deployment:
-    image:
-      repository: quay.io/gogatekeeper/gatekeeper
-      pullPolicy: IfNotPresent
