@@ -80,3 +80,10 @@ Return the target Kubernetes version
 {{- define "identity-gatekeeper.kubeVersion" -}}
   {{- default .Capabilities.KubeVersion.Version .Values.kubeVersionOverride }}
 {{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "identity-gatekeeper.proxyServiceUrl" -}}
+http://{{ include "identity-gatekeeper.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.service.proxy.port }}
+{{- end }}
