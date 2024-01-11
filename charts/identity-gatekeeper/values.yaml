@@ -103,8 +103,11 @@ ingress:
       # Open endpoints provided by gatekeeper itself
       # - which should passthru to gatekeeper, rather than the 'target' protected service,
       # without need for any auth.
-      location /oauth/(authorize|callback|expired|health|login|logout|token|metrics|discovery) {
+      location ~ /oauth/(authorize|callback|expired|login|logout|token|discovery) {
         proxy_pass {{ include "identity-gatekeeper.proxyServiceUrl" . }}/$request_uri;
+      }
+      location ~ /oauth/(health|metrics) {
+        proxy_pass {{ include "identity-gatekeeper.adminServiceUrl" . }}/$request_uri;
       }
       # Endpoint for the nginx 'auth_request' - which directs to gatekeeper
       location ^~ /auth {

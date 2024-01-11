@@ -82,8 +82,22 @@ Return the target Kubernetes version
 {{- end -}}
 
 {{/*
-Create the name of the service account to use
+Internal base URL for the services (minus port number)
+*/}}
+{{- define "identity-gatekeeper.baseServiceUrl" -}}
+http://{{ include "identity-gatekeeper.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+{{- end }}
+
+{{/*
+Internal URL for the proxy service
 */}}
 {{- define "identity-gatekeeper.proxyServiceUrl" -}}
-http://{{ include "identity-gatekeeper.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.service.proxy.port }}
+http://{{ include "identity-gatekeeper.baseServiceUrl" . }}:{{ .Values.service.proxy.port }}
+{{- end }}
+
+{{/*
+Internal URL for the admin service
+*/}}
+{{- define "identity-gatekeeper.adminServiceUrl" -}}
+http://{{ include "identity-gatekeeper.baseServiceUrl" . }}:{{ .Values.service.admin.port }}
 {{- end }}
