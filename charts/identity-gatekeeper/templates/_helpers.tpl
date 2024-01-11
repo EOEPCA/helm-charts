@@ -92,12 +92,12 @@ http://{{ include "identity-gatekeeper.fullname" . }}.{{ .Release.Namespace }}.s
 Internal URL for the proxy service
 */}}
 {{- define "identity-gatekeeper.proxyServiceUrl" -}}
-http://{{ include "identity-gatekeeper.baseServiceUrl" . }}:{{ .Values.service.proxy.port }}
+{{ include "identity-gatekeeper.baseServiceUrl" . }}:{{ .Values.service.proxy.port }}
 {{- end }}
 
 {{/*
 Internal URL for the admin service
 */}}
 {{- define "identity-gatekeeper.adminServiceUrl" -}}
-http://{{ include "identity-gatekeeper.baseServiceUrl" . }}:{{ .Values.service.admin.port }}
+{{ include "identity-gatekeeper.baseServiceUrl" . }}:{{ .Values.service.admin.port }}
 {{- end }}
