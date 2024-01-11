@@ -10,6 +10,6 @@ dependencies:
   version: 1.0.1
 - name: identity-gatekeeper
   repository: https://eoepca.github.io/helm-charts/
-  version: 1.0.4
-digest: sha256:5f034bc604f5005cf9ee7d4f29e27ba9e7d3d99699580bc554af636b2e79be02
-generated: "2024-01-11T12:38:49.924131145Z"
+  version: 1.0.5
+digest: sha256:446db2be700349bc5517c2cc9146809e4152b7d200edc55b6f56bb4bf2c2f90a
+generated: "2024-01-11T16:23:37.718065001Z"
