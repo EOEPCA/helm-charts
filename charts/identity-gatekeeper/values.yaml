@@ -104,15 +104,15 @@ ingress:
       # - which should passthru to gatekeeper, rather than the 'target' protected service,
       # without need for any auth.
       location ~ /oauth/(authorize|callback|expired|login|logout|token|discovery) {
-        proxy_pass {{ include "identity-gatekeeper.proxyServiceUrl" . }}/$request_uri;
+        proxy_pass {{ include "identity-gatekeeper.proxyServiceUrl" . }}$request_uri;
       }
       location ~ /oauth/(health|metrics) {
-        proxy_pass {{ include "identity-gatekeeper.adminServiceUrl" . }}/$request_uri;
+        proxy_pass {{ include "identity-gatekeeper.adminServiceUrl" . }}$request_uri;
       }
       # Endpoint for the nginx 'auth_request' - which directs to gatekeeper
       location ^~ /auth {
         internal;
-        proxy_pass {{ include "identity-gatekeeper.proxyServiceUrl" . }}/$request_uri;
+        proxy_pass {{ include "identity-gatekeeper.proxyServiceUrl" . }}$request_uri;
         proxy_pass_request_body off;
         proxy_set_header Content-Length "";
         proxy_set_header X-Forwarded-Proto $scheme;
