@@ -1227,6 +1227,16 @@ entries:
   identity-gatekeeper:
   - apiVersion: v2
     appVersion: 2.8.0
+    created: "2024-01-14T16:22:44.865547116Z"
+    description: Policy enforcement integration with Keycloak
+    digest: 87d76bdaae1008780c1533cea6360e37ad4e4c0b2a8b244a4d96de018973ecb9
+    name: identity-gatekeeper
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/identity-gatekeeper-1.0.8/identity-gatekeeper-1.0.8.tgz
+    version: 1.0.8
+  - apiVersion: v2
+    appVersion: 2.8.0
     created: "2024-01-11T17:34:54.006681193Z"
     description: Policy enforcement integration with Keycloak
     digest: 7ee352d15efc1dadc946ef5dde3ee643c320ccce019ac24558eb04f41e05dac6
@@ -6031,4 +6041,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2024-01-11T17:37:47.283745773Z"
+generated: "2024-01-14T16:22:44.868028539Z"
