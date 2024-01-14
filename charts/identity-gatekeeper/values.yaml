@@ -91,7 +91,7 @@ ingress:
   className: ""
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/configuration-snippet: |
+    nginx.ingress.kubernetes.io/configuration-snippet: |-
       auth_request /auth;
       if ($request_method = OPTIONS) {
         return 200;
@@ -99,7 +99,19 @@ ingress:
       add_header Access-Control-Allow-Origin $http_origin always;
       add_header Access-Control-Allow-Methods "*";
       add_header Access-Control-Allow-Headers "Authorization, Origin, Content-Type";
-    nginx.ingress.kubernetes.io/server-snippet: |
+    nginx.ingress.kubernetes.io/server-snippet: |-
+      {{ include "identity-gatekeeper.ingressServerSnippet" . }}
+  serverSnippets:
+    # Server snippets separated into different values, to allow them to be more easily overridden,
+    # and to more easily introduce addition custom locations.
+    custom: |-
+      #----------
+      # Custom server snippets
+      #----------
+    gatekeeper: |-
+      #----------
+      # Gatekeeper-specific server snippets
+      #----------
       # Open endpoints provided by gatekeeper itself
       # - which should passthru to gatekeeper, rather than the 'target' protected service,
       # without need for any auth.
@@ -109,6 +121,10 @@ ingress:
       location ~ /oauth/(health|metrics) {
         proxy_pass {{ include "identity-gatekeeper.adminServiceUrl" . }}$request_uri;
       }
+    auth: |-
+      #----------
+      # Auth Request server snippets
+      #----------
       # Endpoint for the nginx 'auth_request' - which directs to gatekeeper
       location ^~ /auth {
         internal;
@@ -134,7 +150,8 @@ ingress:
               port:
                 number: "{{ .Values.targetService.port.number }}"
   tls:
-    - secretName: "{{ include \"identity-gatekeeper.fullname\" . }}-tls"
+    - secretName: |-
+        {{ include "identity-gatekeeper.fullname" . }}-tls
       hosts:
         - "{{ .Values.targetService.host }}"
 autoscaling:

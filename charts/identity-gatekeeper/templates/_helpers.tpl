@@ -82,6 +82,13 @@ Return the target Kubernetes version
 {{- end -}}
 
 {{/*
+Internal URL for the target service
+*/}}
+{{- define "identity-gatekeeper.targetUrl" -}}
+http://{{ .Values.targetService.name }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.targetService.port.number }}
+{{- end }}
+
+{{/*
 Internal base URL for the services (minus port number)
 */}}
 {{- define "identity-gatekeeper.baseServiceUrl" -}}
@@ -100,4 +107,13 @@ Internal URL for the admin service
 */}}
 {{- define "identity-gatekeeper.adminServiceUrl" -}}
 {{ include "identity-gatekeeper.baseServiceUrl" . }}:{{ .Values.service.admin.port }}
+{{- end }}
+
+{{/*
+Ingress server-snippets - merged from constituent parts
+*/}}
+{{- define "identity-gatekeeper.ingressServerSnippet" -}}
+{{ .Values.ingress.serverSnippets.custom }}
+{{ .Values.ingress.serverSnippets.gatekeeper }}
+{{ .Values.ingress.serverSnippets.auth }}
 {{- end }}

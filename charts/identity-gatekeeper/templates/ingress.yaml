@@ -7,10 +7,10 @@ metadata:
   name: {{ $name }}
   labels:
     {{- include "identity-gatekeeper.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
-    {{- tpl (toYaml .) $ | nindent 4 }}
-  {{- end }}
+    {{- range $k, $v := .Values.ingress.annotations }}
+      {{- dict $k (tpl (tpl $v $) $) | toYaml | nindent 4 }}
+    {{- end }}
   namespace: {{ .Release.Namespace }}
 spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" (include "identity-gatekeeper.kubeVersion" $)) }}
