@@ -18,3 +18,10 @@ identity-api:
       pullPolicy: IfNotPresent
 identity-api-gatekeeper:
   enabled: true
+  ingress:
+    serverSnippets:
+      custom: |-
+        # Additional snippet for open access to the Swagger UI of the identity-api
+        location ~ /(docs|openapi.json) {
+          proxy_pass {{ include "identity-gatekeeper.targetUrl" . }}$request_uri;
+        }

@@ -16,7 +16,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.0.90
+version: 1.0.91
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -26,15 +26,15 @@ appVersion: "v1"
 dependencies:
   - name: identity-keycloak
     condition: identity-keycloak.enabled
-    version: 0.15.1
+    version: 0.15.2
   - name: identity-postgres
     condition: identity-postgres.enabled
-    version: 1.0.1
+    version: 1.0.2
   - name: identity-api
     condition: identity-api.enabled
-    version: 1.0.1
+    version: 1.0.2
   - name: identity-gatekeeper
     condition: identity-gatekeeper.enabled
-    version: 1.0.8
+    version: 1.0.9
     repository: "https://eoepca.github.io/helm-charts/"
     alias: identity-api-gatekeeper

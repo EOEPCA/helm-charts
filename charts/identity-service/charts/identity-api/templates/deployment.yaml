@@ -37,9 +37,7 @@ spec:
           args:
             {{- toYaml .Values.deployment.args | nindent 12 }}
           env:
-            {{- with .Values.deployment.extraEnv }}
-            {{- tpl . $ | nindent 12 }}
-            {{- end }}
+            {{- tpl (toYaml .Values.deployment.extraEnv) $ | nindent 12 }}
           envFrom:
             {{- with .Values.deployment.extraEnvFrom }}
             {{- tpl . $ | nindent 12 }}
