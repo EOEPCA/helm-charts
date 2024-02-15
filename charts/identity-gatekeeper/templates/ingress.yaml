@@ -41,10 +41,10 @@ spec:
               service:
                 name: {{ tpl .backend.service.name $ }}
                 port:
-                  number: {{ tpl .backend.service.port.number $ }}
+                  number: {{ tpl (toString .backend.service.port.number) $ }}
               {{- else }}
               serviceName: {{ tpl .backend.service.name $ }}
-              servicePort: {{ tpl .backend.service.port.number $ }}
+              servicePort: {{ tpl (toString .backend.service.port.number) $ }}
               {{- end }}
           {{- end }}
     {{- end }}
