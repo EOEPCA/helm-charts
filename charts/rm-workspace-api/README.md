@@ -65,8 +65,6 @@ The configuration parameters in this section control the resource catalogue conf
 | workspaceConfigMapName                        | Specify the name of the ConfigMap to locate the | `workspace`                              |
 | s3Endpoint                        | The S3 Endpoint for the users bucket | `https://cf2.cloudferro.com:8080`                              |
 | s3Region                        | The S3 Region for the users bucket | `RegionOne`                              |
-| umaClientSecretName                        | The UMA Client Secret Name | `""`                             |
-| umaClientSecretNamespace                        | The UMA Client Secret Namespace | `""`                             |
 | workspaceChartsConfigMap          | Name of config map which features the helm chart templates which define the workspace | ""      |
 | fluxHelmOperator.enabled     | Whether to install the flux helm operator together with the workspace api (for cluster which don't use flux) | false |
 | redisServiceName           | Name of the redis service in the namespace | "vs-redis-master"      |
@@ -74,8 +72,16 @@ The configuration parameters in this section control the resource catalogue conf
 | harborUsername | Username of harbor admin user | "" |
 | harborPassword | Password of harbor admin user | "" |
 | bucketEndpointUrl | The url of the bucket operator wrapper | "" |
-| pepBaseUrl | The url of the Resources endpoint of the PEP | "" |
-| autoProtectionEnabled | Whether to register register a PEP resource for the created workspace  | "True" |
+! gluuIntegration.enabled | Whether to register with Gluu IAM protection for the created workspace | false |
+| gluuIntegration.pepBaseUrl | The url of the Resources endpoint of the PEP (for Gluu) | "http://workspace-api-pep:5576" |
+| gluuIntegration.umaClientSecretName | The UMA Client Secret Name | `""` |
+| gluuIntegration.umaClientSecretNamespace | The UMA Client Secret Namespace | `""` |
+! keycloakIntegration.enabled | Whether to register with Keycloak IAM protection for the created workspace | false |
+| keycloakIntegration.keycloakUrl | The url of the Keycloak Authorization Server | "http://identity-keycloak.um.svc.cluster.local:8080" |
+| keycloakIntegration.realm | The realm within Keycloak | "master" |
+| keycloakIntegration.identityApiUrl | The url of the Identity API (for Keycloak) | "http://identity-api.um.svc.cluster.local:8080" |
+| keycloakIntegration.workspaceApiIamClientId | The client_id of the IAM client for the Workspace API | "workspace-api" |
+| keycloakIntegration.defaultIamClientSecret | Default client_secret for IAM clients created (for each Workspace) in Keycloak | "changeme" |
 
 ## Defining the workspace
 

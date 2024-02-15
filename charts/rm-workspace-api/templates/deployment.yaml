@@ -67,10 +67,6 @@ spec:
               value: "{{ .Values.s3Endpoint }}"
             - name: S3_REGION
               value: "{{ .Values.s3Region }}"
-            - name: UMA_CLIENT_SECRET_NAME
-              value: "{{ .Values.umaClientSecretName }}"
-            - name: UMA_CLIENT_SECRET_NAMESPACE
-              value: "{{ .Values.umaClientSecretNamespace }}"
             - name: HARBOR_URL
               value: "{{ .Values.harborUrl }}"
             - name: HARBOR_ADMIN_USERNAME
@@ -85,10 +81,26 @@ spec:
               value: "{{ .Values.redisServiceName }}"
             - name: BUCKET_ENDPOINT_URL
               value: "{{ .Values.bucketEndpointUrl }}"
+            - name: GLUU_INTEGRATION_ENABLED
+              value: "{{ .Values.gluuIntegration.enabled }}"
             - name: PEP_BASE_URL
-              value: "{{ .Values.pepBaseUrl }}"
-            - name: AUTO_PROTECTION_ENABLED
-              value: "{{ .Values.autoProtectionEnabled }}"
+              value: "{{ .Values.gluuIntegration.pepBaseUrl }}"
+            - name: UMA_CLIENT_SECRET_NAME
+              value: "{{ .Values.gluuIntegration.umaClientSecretName }}"
+            - name: UMA_CLIENT_SECRET_NAMESPACE
+              value: "{{ .Values.gluuIntegration.umaClientSecretNamespace }}"
+            - name: KEYCLOAK_INTEGRATION_ENABLED
+              value: "{{ .Values.keycloakIntegration.enabled }}"
+            - name: KEYCLOAK_URL
+              value: "{{ .Values.keycloakIntegration.keycloakUrl }}"
+            - name: KEYCLOAK_REALM
+              value: "{{ .Values.keycloakIntegration.realm }}"
+            - name: IDENTITY_API_URL
+              value: "{{ .Values.keycloakIntegration.identityApiUrl }}"
+            - name: WORKSPACE_API_CLIENT_ID
+              value: "{{ .Values.keycloakIntegration.workspaceApiIamClientId }}"
+            - name: DEFAULT_IAM_CLIENT_SECRET
+              value: "{{ .Values.keycloakIntegration.defaultIamClientSecret }}"
           {{- if .Values.harborPasswordSecretName }}
           envFrom:
             - secretRef:
