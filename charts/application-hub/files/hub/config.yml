@@ -350,8 +350,27 @@ profiles:
     pod_env_vars:
       A: 10
       B: 20
+      GITLAB_TOKEN:
+        from_config_map:
+          name: gitlabenv
+          key: GITLAB_TOKEN
     node_selector: 
-      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
+      node-role.kubernetes.io/worker: "true"
+    role_bindings:
+      - name: pod_reader_role_binding
+        subjects:
+          - name: default
+            kind: ServiceAccount
+        role:
+            name: pod_reader_role
+            api_group: rbac.authorization.k8s.io
+            verbs:
+              - get
+              - list
+              - watch
+            resources:
+              - pods
+        persist: false
 
   - id: profile_studio_coder
     groups: 
