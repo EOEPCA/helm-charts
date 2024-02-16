@@ -310,7 +310,7 @@ profiles:
       kubespawner_override:
         cpu_limit: 1
         mem_limit: 4G
-        image: jupyter/datascience-notebook
+        image: eoepca/iat-jupyterlab:main
     default_url: "lab"
     config_maps:
       - name: aws-credentials
