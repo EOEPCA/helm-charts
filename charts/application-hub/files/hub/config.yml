@@ -18,17 +18,17 @@ profiles:
       - name: aws-credentials
         key: aws-credentials
         mount_path: /home/jovyan/.aws/credentials
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: aws-config
         key: aws-config
         mount_path: /home/jovyan/.aws/config
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: docker-config
         key: docker-config
         mount_path: /home/jovyan/.docker/config.json
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
     volumes:
       - name: volume-workspace
@@ -64,17 +64,17 @@ profiles:
       - name: aws-credentials
         key: aws-credentials
         mount_path: /home/jovyan/.aws/credentials
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: aws-config
         key: aws-config
         mount_path: /home/jovyan/.aws/config
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: docker-config
         key: docker-config
         mount_path: /home/jovyan/.docker/config.json
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
     volumes:
       - name: volume-workspace
@@ -109,17 +109,17 @@ profiles:
       - name: aws-credentials
         key: aws-credentials
         mount_path: /home/jovyan/.aws/credentials
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: aws-config
         key: aws-config
         mount_path: /home/jovyan/.aws/config
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: docker-config
         key: docker-config
         mount_path: /home/jovyan/.docker/config.json
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
     volumes:
       - name: volume-workspace
@@ -151,17 +151,17 @@ profiles:
       - name: aws-credentials
         key: aws-credentials
         mount_path: /home/jovyan/.aws/credentials
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: aws-config
         key: aws-config
         mount_path: /home/jovyan/.aws/config
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: docker-config
         key: docker-config
         mount_path: /home/jovyan/.docker/config.json
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
     volumes:
       - name: volume-workspace
@@ -193,17 +193,17 @@ profiles:
       - name: aws-credentials
         key: aws-credentials
         mount_path: /home/jovyan/.aws/credentials
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: aws-config
         key: aws-config
         mount_path: /home/jovyan/.aws/config
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: docker-config
         key: docker-config
         mount_path: /home/jovyan/.docker/config.json
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
     volumes:
       - name: volume-workspace
@@ -235,17 +235,17 @@ profiles:
       - name: aws-credentials
         key: aws-credentials
         mount_path: /home/jovyan/.aws/credentials
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: aws-config
         key: aws-config
         mount_path: /home/jovyan/.aws/config
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: docker-config
         key: docker-config
         mount_path: /home/jovyan/.docker/config.json
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
     volumes:
       - name: volume-workspace
@@ -276,17 +276,17 @@ profiles:
       - name: aws-credentials
         key: aws-credentials
         mount_path: /home/jovyan/.aws/credentials
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: aws-config
         key: aws-config
         mount_path: /home/jovyan/.aws/config
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: docker-config
         key: docker-config
         mount_path: /home/jovyan/.docker/config.json
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
     volumes:
       - name: volume-workspace
@@ -316,22 +316,22 @@ profiles:
       - name: aws-credentials
         key: aws-credentials
         mount_path: /home/jovyan/.aws/credentials
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: aws-config
         key: aws-config
         mount_path: /home/jovyan/.aws/config
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: docker-config
         key: docker-config
         mount_path: /home/jovyan/.docker/config.json
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: new-cm
         key: new-cm
         mount_path: /home/jovyan/new-cm
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
         content: |-
           Hello World!
@@ -348,14 +348,14 @@ profiles:
           mount_path: "/workspace"
         persist: true
     pod_env_vars:
-      A: 10
-      B: 20
-      GITLAB_TOKEN:
-        from_config_map:
-          name: gitlabenv
-          key: GITLAB_TOKEN
+      A: "10"
+      B: "20"
+      # GITLAB_TOKEN:
+      #   from_config_map:
+      #     name: gitlabenv
+      #     key: GITLAB_TOKEN
     node_selector: 
-      node-role.kubernetes.io/worker: "true"
+      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
     role_bindings:
       - name: pod_reader_role_binding
         subjects:
@@ -403,20 +403,20 @@ profiles:
           alias ll="ls -l"
           . /home/jovyan/.bashrc 
         mount_path: /workspace/.bashrc 
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: aws-credentials
         key: aws-credentials
         mount_path: /home/jovyan/.aws/credentials
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: aws-config
         key: aws-config
         mount_path: /home/jovyan/.aws/config
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true
       - name: docker-config
         key: docker-config
         mount_path: /home/jovyan/.docker/config.json
-        default_mode: 0660
+        default_mode: "0660"
         readonly: true

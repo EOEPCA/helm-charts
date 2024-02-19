@@ -170,7 +170,10 @@ c.JupyterHub.authenticator_class = EoepcaOAuthenticator
 c.Authenticator.enable_auth_state = True
 c.Authenticator.admin_users = {'eric','bob'} 
 
-c.Authenticator.scope = 'openid email user_name is_operator'.split(' ')
+# Either, Gluu...
+# c.Authenticator.scope = 'openid email user_name is_operator'.split(' ')
+# Or, Keycloak...
+c.Authenticator.scope = 'openid profile email'.split(' ')
 
 c.JupyterHub.cookie_secret_file = "/srv/jupyterhub/cookie_secret"
 
