@@ -71,6 +71,14 @@ def pre_spawn_hook(spawner):
 
     workspace.initialise()
 
+    profile_id = workspace.config_parser.get_profile_by_slug(slug=profile_slug).id
+
+    default_url = workspace.config_parser.get_profile_default_url(profile_id=profile_id)
+
+    if default_url:
+        spawner.log.info(f"Setting default url to {default_url}")
+        spawner.default_url = default_url
+
     spawner.log.info(f"env: {spawner.environment.get('JPY_DEFAULT_URL')}")
 
 def post_stop_hook(spawner):
