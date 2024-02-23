@@ -2,7 +2,7 @@
 Expand the name of the chart.
 */}}
 {{- define "identity-gatekeeper.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default .Chart.Name (default .Values.fullnameOverride .Values.nameOverride) | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
