@@ -85,40 +85,10 @@ deployment:
 # Variable group used in ingress template
 # ---------------------------------------
 ingress:
-  enabled: true
+  enabled: false
   className: "nginx"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      auth_request /auth;
-      # Preflighted requests
-      if ($request_method = OPTIONS) {
-        return 200;
-      }
-      add_header Access-Control-Allow-Origin $http_origin always;
-      add_header Access-Control-Allow-Methods "*";
-      add_header Access-Control-Allow-Headers "Authorization, Origin, Content-Type";
-    nginx.ingress.kubernetes.io/server-snippet: |
-      location /oauth/(authorize|callback|expired|health|login|logout|token|metrics|discovery) {
-        proxy_pass http://identity-api-gatekeeper.um.svc.cluster.local:3000/$request_uri;
-        # proxy_set_header X-Forwarded-Proto $scheme;
-        # proxy_set_header X-Forwarded-Host $host;
-        # proxy_set_header X-Forwarded-Method $request_method;
-        # proxy_set_header X-Forwarded-URI $request_uri;
-      }
-      location ^~ /auth {
-        internal;
-        proxy_pass http://identity-api-gatekeeper.um.svc.cluster.local:3000/$request_uri;
-        proxy_pass_request_body off;
-        proxy_set_header Content-Length "";
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Method $request_method;
-        proxy_set_header X-Forwarded-URI $request_uri;
-        proxy_busy_buffers_size 64k;
-        proxy_buffers 8 32k;
-        proxy_buffer_size 32k;
-      }
   hosts:
     - host: identity.api.myplatform.eoepca.org
       paths:
