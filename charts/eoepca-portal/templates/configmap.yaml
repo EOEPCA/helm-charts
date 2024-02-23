@@ -6,4 +6,19 @@ metadata:
     {{- include "eoepca-portal.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
 data:
-  CONFIGURATION: "{{ .Values.configmap.configuration }}"
+  AUTH_SERVER_URL: "{{ .Values.configMap.auth_server_url }}"
+  IDENTITY_URL: "{{ .Values.configMap.identity_url }}"
+  REALM: "{{ .Values.configMap.realm }}"
+  CLIENT_ID: "{{ .Values.configMap.client_id }}"
+  IDENTITY_API_URL: "{{ .Values.configMap.identity_api_url }}"
+  ADES_URL: "{{ .Values.configMap.ades_url }}"
+  RESOURCE_CATALOGUE_URL: "{{ .Values.configMap.resource_catalogue_url }}"
+  DATA_ACCESS_URL: "{{ .Values.configMap.data_access_url }}"
+  WORKSPACE_URL: "{{ .Values.configMap.workspace_url }}"
+  WORKSPACE_DOCS_URL: "{{ .Values.configMap.workspace_docs_url }}"
+  IMAGES_REGISTRY_URL: "{{ .Values.configMap.images_registry_url }}"
+  DUMMY_SERVICE_URL: "{{ .Values.configMap.dummy_service_url }}"
+  ACCESS_TOKEN_NAME: "{{ .Values.configMap.access_token_name }}"
+  ACCESS_TOKEN_DOMAIN: "{{ .Values.configMap.access_token_domain }}"
+  REFRESH_TOKEN_NAME: "{{ .Values.configMap.refresh_token_name }}"
+  REFRESH_TOKEN_DOMAIN: "{{ .Values.configMap.refresh_token_domain }}"
