@@ -115,7 +115,9 @@ serviceAccount:
   name: ""
 
 configMap:
-  # authServerUrl: https://identity.keycloak.myplatform.eoepca.org
+  optional: true
+  authServerUrl: null
 
 secrets:
-  # adminPassword: "changeme"
+  optional: true
+  adminPassword: null

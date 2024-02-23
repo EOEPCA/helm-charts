@@ -44,8 +44,10 @@ spec:
             {{- end }}
             - configMapRef:
                 name: {{ include "identity-api.name" . }}
+                optional: {{ .Values.configMap.optional }}
             - secretRef:
                 name: {{ include "identity-api.name" . }}
+                optional: {{ .Values.secrets.optional }}
           ports:
             - name: http
               containerPort: {{ .Values.deployment.containerPort }}
