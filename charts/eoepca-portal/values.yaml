@@ -41,8 +41,7 @@ tolerations: []
 affinity: {}
 configMap:
   auth_server_url: "https://identity.keycloak.demo.eoepca.org"
-  identity_url: "master"
-  realm: "eoepca-portal"
+  realm: "eoepca"
   client_id: "eoepca-portal"
   identity_api_url: "https://identity.api.demo.eoepca.org"
   ades_url: "https://ades.demo.eoepca.org/ogc-api/processes"
