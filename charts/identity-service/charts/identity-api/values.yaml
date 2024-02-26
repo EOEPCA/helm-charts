@@ -119,5 +119,5 @@ configMap:
   authServerUrl: null
 
 secrets:
-  optional: true
+  optional: false
   adminPassword: null
