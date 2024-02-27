@@ -2,7 +2,7 @@ replicaCount: 1
 image:
   repository: eoepca/eoepca-portal
   pullPolicy: IfNotPresent
-  tag: "demo"
+  tag: ""
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -12,7 +12,14 @@ serviceAccount:
   name: ""
 podAnnotations: {}
 podSecurityContext: {}
+  # fsGroup: 2000
 securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
 service:
   type: ClusterIP
   port: 80
@@ -21,15 +28,25 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
   hosts:
-    - host: eoepca-portal.demo.eoepca.org
+    - host: eoepca-portal.myplatform.mydomain
       paths:
         - path: /
           pathType: Prefix
   tls:
     - secretName: eoepca-portal-tls-certificate
       hosts:
-        - eoepca-portal.demo.eoepca.org
+        - eoepca-portal.myplatform.mydomain
 resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -40,18 +57,18 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 configMap:
-  identity_url: "https://identity.keycloak.demo.eoepca.org"
+  identity_url: "https://identity.keycloak.myplatform.mydomain"
   realm: "eoepca"
   client_id: "eoepca-portal"
-  identity_api_url: "https://identity.api.demo.eoepca.org"
-  ades_url: "https://ades.demo.eoepca.org/ogc-api/processes"
-  resource_catalogue_url: "https://resource-catalogue.demo.eoepca.org"
-  data_access_url: "https://data-access.demo.eoepca.org"
-  workspace_url: "https://workspace-api.demo.eoepca.org"
-  workspace_docs_url: "https://workspace-api.demo.eoepca.org/docs#"
-  images_registry_url: "https://harbor.demo.eoepca.org"
-  dummy_service_url: "https://identity.dummy-service.demo.eoepca.org"
+  identity_api_url: "https://identity.api.myplatform.mydomain"
+  ades_url: "https://ades.myplatform.mydomain/ogc-api/processes"
+  resource_catalogue_url: "https://resource-catalogue.myplatform.mydomain"
+  data_access_url: "https://data-access.myplatform.mydomain"
+  workspace_url: "https://workspace-api.myplatform.mydomain"
+  workspace_docs_url: "https://workspace-api.myplatform.mydomain/docs#"
+  images_registry_url: "https://harbor.myplatform.mydomain"
+  dummy_service_url: "https://identity.dummy-service.myplatform.mydomain"
   access_token_name: "auth_user_id"
-  access_token_domain: ".demo.eoepca.org"
+  access_token_domain: ".myplatform.mydomain"
   refresh_token_name: "auth_refresh_token"
-  refresh_token_domain: ".demo.eoepca.org"
+  refresh_token_domain: ".myplatform.mydomain"
