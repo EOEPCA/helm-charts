@@ -156,6 +156,7 @@ jupyterhub:
     extraEnv: 
       JUPYTERHUB_ENV: "dev"
       JUPYTERHUB_SINGLE_USER_IMAGE_NOTEBOOKS: "jupyter/minimal-notebook:2343e33dec46"
+      APP_HUB_NAMESPACE: "app-hub"
       STORAGE_CLASS: "managed-nfs-storage"
       RESOURCE_MANAGER_WORKSPACE_PREFIX: "develop-user"
 

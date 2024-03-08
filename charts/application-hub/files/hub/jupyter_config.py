@@ -168,7 +168,8 @@ class EoepcaOAuthenticator(GenericOAuthenticator):
 
 
 jupyterhub_env = os.environ["JUPYTERHUB_ENV"].upper()
-jupyterhub_hub_host = "application-hub-hub.proc"
+app_hub_namespace = os.getenv("APP_HUB_NAMESPACE", "app-hub")
+jupyterhub_hub_host = f"application-hub-hub.{app_hub_namespace}"
 jupyterhub_single_user_image = os.environ["JUPYTERHUB_SINGLE_USER_IMAGE_NOTEBOOKS"]
 
 resource_manager_workspace_prefix = os.environ["RESOURCE_MANAGER_WORKSPACE_PREFIX"]
@@ -235,7 +236,7 @@ c.KubeSpawner.pod_name_template = (
 c.KubeSpawner.node_selector = {"node-role.kubernetes.io/worker": "true"}
 
 # Namespace
-c.KubeSpawner.namespace = "proc"
+c.KubeSpawner.namespace = app_hub_namespace
 
 # User namespace
 c.KubeSpawner.enable_user_namespaces = True
