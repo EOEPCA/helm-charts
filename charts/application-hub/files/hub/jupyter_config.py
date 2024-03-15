@@ -174,6 +174,7 @@ jupyterhub_single_user_image = os.environ["JUPYTERHUB_SINGLE_USER_IMAGE_NOTEBOOK
 
 resource_manager_workspace_prefix = os.environ["RESOURCE_MANAGER_WORKSPACE_PREFIX"]
 
+c.JupyterHub.base_url = os.getenv("BASE_URL", "/").rstrip("/") + "/"
 
 c.JupyterHub.authenticator_class = EoepcaOAuthenticator
 c.Authenticator.enable_auth_state = True

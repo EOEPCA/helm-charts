@@ -159,6 +159,7 @@ jupyterhub:
       APP_HUB_NAMESPACE: "app-hub"
       STORAGE_CLASS: "managed-nfs-storage"
       RESOURCE_MANAGER_WORKSPACE_PREFIX: "develop-user"
+      BASE_URL: "/"
 
     extraContainers: []
     extraVolumes:
