@@ -115,5 +115,5 @@ Ingress server-snippets - merged from constituent parts
 {{- define "identity-gatekeeper.ingressServerSnippet" -}}
 {{ .Values.ingress.serverSnippets.custom }}
 {{ .Values.ingress.serverSnippets.gatekeeper }}
-{{ .Values.ingress.serverSnippets.auth }}
+{{ tpl .Values.ingress.serverSnippets.auth $ }}
 {{- end }}

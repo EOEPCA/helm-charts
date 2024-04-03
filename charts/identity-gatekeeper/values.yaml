@@ -101,9 +101,13 @@ ingress:
       add_header Access-Control-Allow-Headers "Authorization, Origin, Content-Type";
     nginx.ingress.kubernetes.io/server-snippet: |-
       {{ include "identity-gatekeeper.ingressServerSnippet" . }}
+
+  # openUri specifies a set of $request_uri regex to match for open access - i.e. avoiding the auth check
+  openUri: []
+
+  # Server snippets separated into different values, to allow them to be more easily overridden,
+  # and to more easily introduce addition custom locations.
   serverSnippets:
-    # Server snippets separated into different values, to allow them to be more easily overridden,
-    # and to more easily introduce addition custom locations.
     custom: |-
       #----------
       # Custom server snippets
@@ -128,6 +132,11 @@ ingress:
       # Endpoint for the nginx 'auth_request' - which directs to gatekeeper
       location ^~ /auth {
         internal;
+        {{- range .Values.ingress.openUri }}
+        if ($request_uri ~ {{ . }}) {
+          return 200;
+        }
+        {{- end }}
         proxy_pass {{ include "identity-gatekeeper.proxyServiceUrl" . }}$request_uri;
         proxy_pass_request_body off;
         proxy_set_header Content-Length "";
