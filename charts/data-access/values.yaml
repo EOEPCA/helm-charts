@@ -42,7 +42,7 @@ vs:
   harvester:
     image:
       repository: eoepca/rm-harvester
-      tag: "1.4.0"
+      tag: "1.4.1"
 
   client:
     ingress:
