@@ -39,9 +39,5 @@ identity-api-gatekeeper:
     annotations:
       ingress.kubernetes.io/ssl-redirect: "true"
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    serverSnippets:
-      custom: |-
-        # Additional snippet for open access to the Swagger UI of the identity-api
-        location ~ ^/(docs|openapi.json) {
-          proxy_pass {{ include "identity-gatekeeper.targetUrl" . }}$request_uri;
-        }
+    openUri:
+      - ^/(docs|openapi.json)
