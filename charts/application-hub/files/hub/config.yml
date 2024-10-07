@@ -372,6 +372,74 @@ profiles:
               - pods
         persist: false
 
+  - id: profile_studio_mlops
+    groups:
+      - group-3
+    definition:
+      display_name: MLOps - Model Trainer (JupyterLab)
+      slug: studio_mlops
+      default: False
+      kubespawner_override:
+        cpu_limit: 1
+        mem_limit: 4G
+        image: eoepca/mlops-lab:latest
+    default_url: "lab"
+    config_maps:
+      - name: aws-credentials
+        key: aws-credentials
+        mount_path: /home/jovyan/.aws/credentials
+        default_mode: "0660"
+        readonly: true
+      - name: aws-config
+        key: aws-config
+        mount_path: /home/jovyan/.aws/config
+        default_mode: "0660"
+        readonly: true
+      - name: docker-config
+        key: docker-config
+        mount_path: /home/jovyan/.docker/config.json
+        default_mode: "0660"
+        readonly: true
+      - name: new-cm
+        key: new-cm
+        mount_path: /home/jovyan/new-cm
+        default_mode: "0660"
+        readonly: true
+        content: |-
+          Hello World!
+        persist: false
+    volumes:
+      - name: volume-workspace
+        claim_name: claim-workspace
+        size: 10Gi
+        storage_class: "{{ .Values.jupyterhub.hub.extraEnv.STORAGE_CLASS }}"
+        access_modes:
+          - "ReadWriteOnce"
+        volume_mount:
+          name: volume-workspace
+          mount_path: "/workspace"
+        persist: true
+    pod_env_vars:
+      A: "10"
+      B: "20"
+    node_selector:
+      {{ .Values.nodeSelector.key }}: {{ .Values.nodeSelector.value }}
+    role_bindings:
+      - name: pod_reader_role_binding
+        subjects:
+          - name: default
+            kind: ServiceAccount
+        role:
+            name: pod_reader_role
+            api_group: rbac.authorization.k8s.io
+            verbs:
+              - get
+              - list
+              - watch
+            resources:
+              - pods
+        persist: false
+
   - id: profile_studio_coder
     groups: 
     - group-2
