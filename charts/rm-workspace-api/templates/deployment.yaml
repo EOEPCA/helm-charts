@@ -59,48 +59,12 @@ spec:
               value: "{{ .Values.prefixForName }}"
             - name: WORKSPACE_SECRET_NAME
               value: "{{ .Values.workspaceSecretName }}"
-            - name: NAMESPACE_FOR_BUCKET_RESOURCE
-              value: "{{ .Values.namespaceForBucketResource }}"
-            - name: WORKSPACE_CONFIG_MAP_NAME
-              value: "{{ .Values.workspaceConfigMapName }}"
-            - name: S3_ENDPOINT
-              value: "{{ .Values.s3Endpoint }}"
-            - name: S3_REGION
-              value: "{{ .Values.s3Region }}"
             - name: HARBOR_URL
               value: "{{ .Values.harborUrl }}"
             - name: HARBOR_ADMIN_USERNAME
               value: "{{ .Values.harborUsername }}"
-            {{- if .Values.harborPassword }}
             - name: HARBOR_ADMIN_PASSWORD
               value: "{{ .Values.harborPassword }}"
-            {{- end }}
-            - name: WORKSPACE_CHARTS_CONFIG_MAP
-              value: "{{ .Values.workspaceChartsConfigMap }}"
-            - name: REDIS_SERVICE_NAME
-              value: "{{ .Values.redisServiceName }}"
-            - name: BUCKET_ENDPOINT_URL
-              value: "{{ .Values.bucketEndpointUrl }}"
-            - name: GLUU_INTEGRATION_ENABLED
-              value: "{{ .Values.gluuIntegration.enabled }}"
-            - name: PEP_BASE_URL
-              value: "{{ .Values.gluuIntegration.pepBaseUrl }}"
-            - name: UMA_CLIENT_SECRET_NAME
-              value: "{{ .Values.gluuIntegration.umaClientSecretName }}"
-            - name: UMA_CLIENT_SECRET_NAMESPACE
-              value: "{{ .Values.gluuIntegration.umaClientSecretNamespace }}"
-            - name: KEYCLOAK_INTEGRATION_ENABLED
-              value: "{{ .Values.keycloakIntegration.enabled }}"
-            - name: KEYCLOAK_URL
-              value: "{{ .Values.keycloakIntegration.keycloakUrl }}"
-            - name: KEYCLOAK_REALM
-              value: "{{ .Values.keycloakIntegration.realm }}"
-            - name: IDENTITY_API_URL
-              value: "{{ .Values.keycloakIntegration.identityApiUrl }}"
-            - name: WORKSPACE_API_CLIENT_ID
-              value: "{{ .Values.keycloakIntegration.workspaceApiIamClientId }}"
-            - name: DEFAULT_IAM_CLIENT_SECRET
-              value: "{{ .Values.keycloakIntegration.defaultIamClientSecret }}"
           {{- if .Values.harborPasswordSecretName }}
           envFrom:
             - secretRef:

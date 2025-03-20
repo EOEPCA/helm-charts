@@ -1,29 +1,22 @@
-# Default values for rm-workspace-api.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 replicaCount: 1
 
 image:
   repository: eoepca/rm-workspace-api
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: "1.0.2"
+  # tag: "2.0.0"
 
-imagePullSecrets:
-  - name: flux-workspace-api
+imagePullSecrets: []
+  #- name: workspace-api
 
 nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  # name: ""
 
 podAnnotations:
   prometheus.io/scrape: "true"
@@ -44,14 +37,14 @@ service:
   port: 8080
 
 ingress:
-  enabled: true
+  enabled: false
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
   hosts:
-    - host: workspace-api.eopca.org
+    - host: workspace-api.develop.eopca.org
       paths: ["/"]
   tls: []
   #  - secretName: chart-example-tls
@@ -59,16 +52,6 @@ ingress:
   #      - chart-example.local
 
 resources:
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
   limits:
     cpu: 0.5
     memory: 512Mi
@@ -82,34 +65,9 @@ tolerations: []
 
 affinity: {}
 
-fluxHelmOperator:
-  # If you're cluster doesn't feature the flux helm-operator already,
-  # set this to true to enable it
-  enabled: false
-
-# some values for the workspace API
-prefixForName: "develop-user"
-workspaceSecretName: "bucket"
-namespaceForBucketResource: "rm"
-workspaceConfigMapName: "workspace"
-s3Endpoint: "https://cf2.cloudferro.com:8080"
-s3Region: "RegionOne"
-workspaceChartsConfigMap: ""
-redisServiceName: "vs-redis-master"
+prefixForName: "ws-"
+workspaceSecretName: "workspace"
 harborUrl: ""
 harborUsername: ""
 harborPassword: ""
 harborPasswordSecretName: ""
-bucketEndpointUrl: ""
-gluuIntegration:
-  enabled: false
-  pepBaseUrl: "http://workspace-api-pep:5576"
-  umaClientSecretName: ""
-  umaClientSecretNamespace: ""
-keycloakIntegration:
-  enabled: false
-  keycloakUrl: "http://identity-keycloak.um.svc.cluster.local:8080"
-  realm: "master"
-  identityApiUrl: "http://identity-api.um.svc.cluster.local:8080"
-  workspaceApiIamClientId: "workspace-api"
-  defaultIamClientSecret: "changeme"

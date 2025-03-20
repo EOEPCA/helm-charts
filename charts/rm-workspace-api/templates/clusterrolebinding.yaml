@@ -5,7 +5,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: {{ include "rm-workspace-api.serviceAccountName" . }}
-    namespace: rm
+    namespace: {{ .Release.Namespace }} 
 roleRef:
   kind: ClusterRole
   name: {{ include "rm-workspace-api.fullname" . }}
