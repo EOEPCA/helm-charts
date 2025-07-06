@@ -65,7 +65,7 @@ tolerations: []
 
 affinity: {}
 
-prefixForName: "ws-"
+prefixForName: "ws"
 workspaceSecretName: "workspace"
 harborUrl: ""
 harborUsername: ""

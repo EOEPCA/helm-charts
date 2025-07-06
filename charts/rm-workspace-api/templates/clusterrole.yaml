@@ -23,3 +23,11 @@ rules:
     verbs: ["get", "list"]
     resources:
       - apisixroutes
+  - apiGroups: ["group.keycloak.crossplane.io"]
+    verbs: ["get", "list"]
+    resources:
+      - memberships
+  - apiGroups: ["minio.crossplane.io"]
+    verbs: ["get", "list"]
+    resources:
+      - policies
