@@ -7,18 +7,11 @@ metadata:
   namespace: {{ .Release.Namespace }}
 rules:
   - apiGroups: [""]
+    resources: ["secrets"]
     verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["pkg.internal"]
     resources:
-      - secrets
-  - apiGroups:
-      - "datalabs.pkg.internal"
-    resources:
-      - "*"
-    verbs:
-      - "*"
-  - apiGroups:
-      - "storages.pkg.internal"
-    resources:
-      - "*"
-    verbs:
-      - "*"
+      - datalabs
+      - storages
+    verbs: ["*"]
