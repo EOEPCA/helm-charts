@@ -2,32 +2,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "rm-workspace-api.fullname" . }}
+  labels:
+    {{- include "rm-workspace-api.labels" . | nindent 4 }}
 rules:
-  - apiGroups: [""]
-    verbs: ["get", "watch", "patch", "create", "delete"]
-    resources:
-      - secrets
-  - apiGroups: ["epca.eo"]
-    verbs: ["get", "watch", "patch", "create", "delete"]
-    resources:
-      - workspaces
-  - apiGroups: [""]
-    verbs: ["get", "list"]
-    resources:
-      - namespaces
-  - apiGroups: ["networking.k8s.io"]
-    verbs: ["get", "list"]
-    resources:
-      - ingresses
-  - apiGroups: ["apisix.apache.org"]
-    verbs: ["get", "list"]
-    resources:
-      - apisixroutes
-  - apiGroups: ["group.keycloak.crossplane.io"]
-    verbs: ["get", "list"]
-    resources:
-      - memberships
-  - apiGroups: ["minio.crossplane.io"]
-    verbs: ["get", "list"]
-    resources:
-      - policies
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["customresourcedefinitions"]
+    verbs: ["get"]
+    resourceNames:
+      - storages.pkg.internal
+      - datalabs.pkg.internal

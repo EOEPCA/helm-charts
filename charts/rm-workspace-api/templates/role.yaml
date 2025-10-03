@@ -1,0 +1,24 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "rm-workspace-api.fullname" . }}
+  labels:
+    {{- include "rm-workspace-api.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+rules:
+  - apiGroups: [""]
+    verbs: ["get", "list", "watch"]
+    resources:
+      - secrets
+  - apiGroups:
+      - "datalabs.pkg.internal"
+    resources:
+      - "*"
+    verbs:
+      - "*"
+  - apiGroups:
+      - "storages.pkg.internal"
+    resources:
+      - "*"
+    verbs:
+      - "*"

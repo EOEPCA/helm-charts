@@ -32,7 +32,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:v{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -55,21 +55,28 @@ spec:
             periodSeconds: 8
             failureThreshold: 1
           env:
+            - name: GUNICORN_WORKERS
+              value: "{{ .Values.gunicornWorkers | default "3" }}"
             - name: PREFIX_FOR_NAME
               value: "{{ .Values.prefixForName }}"
-            - name: WORKSPACE_SECRET_NAME
-              value: "{{ .Values.workspaceSecretName }}"
-            - name: HARBOR_URL
-              value: "{{ .Values.harborUrl }}"
-            - name: HARBOR_ADMIN_USERNAME
-              value: "{{ .Values.harborUsername }}"
-            - name: HARBOR_ADMIN_PASSWORD
-              value: "{{ .Values.harborPassword }}"
-          {{- if .Values.harborPasswordSecretName }}
-          envFrom:
-            - secretRef:
-                name: {{ .Values.harborPasswordSecretName }}
-          {{- end }}
+            - name: USE_VCLUSTER
+              value: "{{ .Values.useVcluster | default "no" }}"
+            - name: SESSION_AUTO_MODE
+              value: "{{ .Values.sessionAutoMode | default "no" }}"
+            - name: UI_MODE
+              value: "{{ .Values.uiMode | default "ui" }}"
+            - name: STORAGE_SECRET_NAME
+              value: "{{ .Values.storageSecretNameTemplate | default "<principal>-datalab" }}"
+            - name: CONTAINER_REGISTRY_SECRET_NAME
+              value: "{{ .Values.containerRegistrySecretNameTemplate | default "<principal>-container-registry" }}"
+            {{- if .Values.endpoint }}
+            - name: ENDPOINT
+              value: "{{ .Values.endpoint }}"
+            {{- end }}
+            {{- if .Values.region }}
+            - name: REGION
+              value: "{{ .Values.region }}"
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
