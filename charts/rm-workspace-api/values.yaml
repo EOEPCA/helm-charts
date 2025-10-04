@@ -65,32 +65,16 @@ tolerations: []
 
 affinity: {}
 
-# GUNICORN_WORKERS: Number of gunicorn workers to start
-gunicornWorkers: "3"
-
-# PREFIX_FOR_NAME: Prefix applied to user-facing components (e.g. "ws" for "ws-alice")
-prefixForName: ""
-
-# USE_VCLUSTER: Whether to provision an isolated vcluster for each datalab session
-# ("yes") or just use a namespace on the host cluster ("no")
-useVcluster: "no"
-
-# SESSION_AUTO_MODE: Wheter on-demand sessions ("yes) or always-on sessions ("no") are used.
-sessionAutoMode: "no"
-
-# STORAGE_SECRET_NAME: Template for the secret containing S3 credentials for the workspace.
-storageSecretNameTemplate: "<principal>-datalab"
-
-# CONTAINER_REGISTRY_SECRET_NAME: Template for the secret holding per-workspace
-# container registry (OCI) credentials.
-containerRegistrySecretNameTemplate: "<principal>-container-registry"
-
-# ENDPOINT: Fallback for S3 endpoint URL if not part of storage secret
-endpoint: ""
-
-# ENDPOINT: Fallback for S3 region if not part of storage secret
-region: ""  
-
-# UI_MODE: Set to "ui" to enable templated HTML shell and SPA embedding,
-# otherwise "no".
-uiMode: "ui"
+# gunicornWorkers: "3"
+# prefixForName: ""
+# useVcluster: false
+# sessionMode: "on"
+# storageSecretName: "<principal>-datalab"
+# containerRegistrySecretName: "<principal>-container-registry"
+# endpoint: ""
+# region: ""
+# uiMode: "ui"
+# forwardedAllowIps: ""
+# extraEnv:
+#   - name: EXAMPLE_FLAG
+#     value: "true"

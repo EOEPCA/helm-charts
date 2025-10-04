@@ -55,27 +55,50 @@ spec:
             periodSeconds: 8
             failureThreshold: 1
           env:
+            {{- if hasKey .Values "gunicornWorkers" }}
             - name: GUNICORN_WORKERS
-              value: "{{ .Values.gunicornWorkers | default "3" }}"
+              value: "{{ .Values.gunicornWorkers }}"
+            {{- end }}
+            {{- if hasKey .Values "prefixForName" }}
             - name: PREFIX_FOR_NAME
               value: "{{ .Values.prefixForName }}"
+            {{- end }}
+            {{- if hasKey .Values "useVcluster" }}
             - name: USE_VCLUSTER
-              value: "{{ .Values.useVcluster | default "no" }}"
-            - name: SESSION_AUTO_MODE
-              value: "{{ .Values.sessionAutoMode | default "no" }}"
+              value: "{{ .Values.useVcluster }}"
+            {{- end }}
+            {{- if hasKey .Values "sessionMode" }}
+            - name: SESSION_MODE
+              value: "{{ .Values.sessionMode }}"
+            {{- end }}
+            {{- if hasKey .Values "uiMode" }}
             - name: UI_MODE
-              value: "{{ .Values.uiMode | default "ui" }}"
+              value: "{{ .Values.uiMode }}"
+            {{- end }}
+            {{- if hasKey .Values "storageSecretName" }}
             - name: STORAGE_SECRET_NAME
-              value: "{{ .Values.storageSecretNameTemplate | default "<principal>-datalab" }}"
+              value: "{{ .Values.storageSecretName }}"
+            {{- end }}
+            {{- if hasKey .Values "containerRegistrySecretName" }}
             - name: CONTAINER_REGISTRY_SECRET_NAME
-              value: "{{ .Values.containerRegistrySecretNameTemplate | default "<principal>-container-registry" }}"
-            {{- if .Values.endpoint }}
+              value: "{{ .Values.containerRegistrySecretName }}"
+            {{- end }}
+            {{- if hasKey .Values "endpoint" }}
             - name: ENDPOINT
               value: "{{ .Values.endpoint }}"
             {{- end }}
-            {{- if .Values.region }}
+            {{- if hasKey .Values "region" }}
             - name: REGION
               value: "{{ .Values.region }}"
+            {{- end }}
+            {{- if hasKey .Values "forwardedAllowIps" }}
+            - name: FORWARDED_ALLOW_IPS
+              value: "{{ .Values.forwardedAllowIps }}"
+            - name: GUNICORN_CMD_ARGS
+              value: "--forwarded-allow-ips={{ .Values.forwardedAllowIps }}"
+            {{- end }}
+            {{- with .Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
