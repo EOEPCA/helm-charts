@@ -75,14 +75,6 @@ spec:
             - name: UI_MODE
               value: "{{ .Values.uiMode }}"
             {{- end }}
-            {{- if hasKey .Values "storageSecretName" }}
-            - name: STORAGE_SECRET_NAME
-              value: "{{ .Values.storageSecretName }}"
-            {{- end }}
-            {{- if hasKey .Values "containerRegistrySecretName" }}
-            - name: CONTAINER_REGISTRY_SECRET_NAME
-              value: "{{ .Values.containerRegistrySecretName }}"
-            {{- end }}
             {{- if hasKey .Values "endpoint" }}
             - name: ENDPOINT
               value: "{{ .Values.endpoint }}"

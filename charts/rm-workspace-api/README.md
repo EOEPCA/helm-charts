@@ -6,10 +6,9 @@ e.g.
 ```bash
 helm upgrade --install rm-workspace-api rm-workspace-api
     --repo https://eoepca.github.io/helm-charts
-    --version 2.0.0-rc.6
+    --version 2.0.0
     --namespace workspace
     --create-namespace
-    --set storageSecretName="<principal>"
     --set prefixForName="ws"
     --set endpoint="https://minio.develop.eoepca.org"
     --set region="eoepca-demo"
@@ -28,8 +27,6 @@ helm upgrade --install rm-workspace-api rm-workspace-api
 | `prefixForName` | DNS-1123 prefix (`[a-z0-9]([-a-z0-9]*[a-z0-9])?`) | `PREFIX_FOR_NAME` |
 | `useVcluster` | `true` \| `false` | `USE_VCLUSTER` |
 | `sessionMode` | `auto` \| `on` \| `off` | `SESSION_MODE` |
-| `storageSecretName` | string (may include `<principal>`) | `STORAGE_SECRET_NAME` |
-| `containerRegistrySecretName` | string (may include `<principal>`) | `CONTAINER_REGISTRY_SECRET_NAME` |
 | `endpoint` | URL (`https://…`) or empty | `ENDPOINT` |
 | `region` | AWS region code (e.g. `eu-central-1`) or empty | `REGION` |
 | `uiMode` | `ui` \| `no` | `UI_MODE` |

@@ -69,8 +69,6 @@ affinity: {}
 # prefixForName: ""
 # useVcluster: false
 # sessionMode: "on"
-# storageSecretName: "<principal>-datalab"
-# containerRegistrySecretName: "<principal>-container-registry"
 # endpoint: ""
 # region: ""
 # uiMode: "ui"
