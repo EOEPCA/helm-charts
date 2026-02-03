@@ -3,19 +3,19 @@ kind: Deployment
 metadata:
   namespace: {{ .Values.global.namespace }}
   labels:
-    io.kompose.service: pycsw
+    io.kompose.service: {{ .Values.pycsw.name }}
   name: {{ .Values.pycsw.service_name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.pycsw.replicas }}
   selector:
     matchLabels:
-      io.kompose.service: pycsw
+      io.kompose.service: {{ .Values.pycsw.name }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        io.kompose.service: pycsw
+        io.kompose.service: {{ .Values.pycsw.name }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -25,8 +25,38 @@ spec:
       - env:
         - name: PYCSW_SERVER_URL
           value: {{ .Values.pycsw.config.server.url }}
+        {{- if .Values.external_db }}
+        - name: _DB_HOST
+          value: {{ .Values.external_db.host }}
+        - name: _DB_PORT
+          value: {{ .Values.external_db.port | default "5432" | squote }}
+        - name: _DB_NAME
+          value: {{ .Values.external_db.database | default "pycsw" }}
+        - name: _DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.external_db.auth.secret_name }}
+              key: username
+        - name: _DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.external_db.auth.secret_name }}
+              key: password
+        {{- else }}
+        - name: _DB_HOST
+          value: {{ .Values.db.name }}
+        - name: _DB_PORT
+          value: {{ .Values.db.port | default "5432" | squote }}
+        - name: _DB_NAME
+          value: {{ .Values.db.database | default "pycsw" }}
+        - name: _DB_USER
+          value: {{ .Values.db.user }}
+        - name: _DB_PASS
+          value: {{ .Values.db.pass | squote }}
+        {{- end }}{{/* if .Values.external_db */}}
         - name: PYCSW_REPOSITORY_DATABASE_URI
-          value: {{ .Values.pycsw.config.repository.database }}
+          value: >-
+            postgresql://$(_DB_USER):$(_DB_PASS)@$(_DB_HOST):$(_DB_PORT)/$(_DB_NAME)
         image: {{ .Values.pycsw.image.repository }}:{{ .Values.pycsw.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: {{ .Values.pycsw.image.pullPolicy }}
         name: pycsw

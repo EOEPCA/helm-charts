@@ -34,6 +34,7 @@ The configuration parameters in this section control the resource catalogue conf
 | Parameter                               | Description                                                                                    | Default                          |
 | --------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------- |
 | global.namespace                        | Name of the Kubernetes namespace to install the helm chart  | `rm`                              |
+| db.enabled                        | Set true to enable the db service, false to disable in order to use an external database  | `true`                              |
 | db.name                                 | Name of the database deployment  | `resource-catalogue-db`                              |
 | db.service_name                       | Name of the database service  | `resource-catalogue-db-service`                              |
 | db.image                        | Docker image name for the catalogue database  | `postgis/postgis:12-3.1`                              |
