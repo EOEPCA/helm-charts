@@ -3512,6 +3512,18 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/pricing-engine-0.1.0/pricing-engine-0.1.0.tgz
     version: 0.1.0
+  registration-harvester:
+  - apiVersion: v2
+    appVersion: 1.3.0
+    created: "2026-02-03T16:21:17.758411899Z"
+    description: A Helm chart for the Harvester component of the EOEPCA+ Resource
+      Registration building block
+    digest: a634fea4cf407f5f9715d09844890d14737852c4a790a4c6fee02ecb7e7b8592
+    name: registration-harvester
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/registration-harvester-2.0.0/registration-harvester-2.0.0.tgz
+    version: 2.0.0
   resource-guard:
   - apiVersion: v2
     appVersion: u1.2.5:p1.1.11
@@ -6712,4 +6724,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2026-02-03T11:25:22.993955411Z"
+generated: "2026-02-03T16:21:17.759106566Z"
