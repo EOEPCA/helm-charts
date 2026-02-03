@@ -1432,6 +1432,17 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/eoepca-portal-1.0.9/eoepca-portal-1.0.9.tgz
     version: 1.0.9
+  iam-bb-config:
+  - apiVersion: v2
+    appVersion: 2.0.0
+    created: "2026-02-03T10:23:42.948138565Z"
+    description: Optional Crossplane-based Keycloak configuration for the IAM BB
+    digest: 37df9d0c71a53db785da975ca3df2c7bf66a176dbcce5894d307151107a3d461
+    name: iam-bb-config
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/iam-bb-config-2.0.0/iam-bb-config-2.0.0.tgz
+    version: 2.0.0
   identity-gatekeeper:
   - apiVersion: v2
     appVersion: 2.8.0
@@ -6669,4 +6680,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2026-01-22T19:36:23.367217288Z"
+generated: "2026-02-03T10:23:42.95010386Z"
