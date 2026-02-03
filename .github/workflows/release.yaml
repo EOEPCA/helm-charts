@@ -1,6 +1,11 @@
 name: Release Charts
 
 on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Commit SHA to checkout"
+        required: false
   push:
     branches:
       - main
@@ -12,6 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
+          ref: ${{ github.event.inputs.ref || github.sha }}
           fetch-depth: 0
 
       - name: Configure Git
@@ -32,7 +38,7 @@ jobs:
           helm repo list
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.4.0
+        uses: helm/chart-releaser-action@v1.7.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           CR_SKIP_EXISTING: true
