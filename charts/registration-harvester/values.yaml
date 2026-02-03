@@ -1,0 +1,32 @@
+imagePullSecrets: []
+
+harvester:
+  service:
+    name: registration-harvester
+    type: ClusterIP
+    port: 8080
+  image:
+    repository: eoepca/registration-harvester
+    pullPolicy: Always
+    tag: latest
+  secret:
+    name: ""
+  volume_name: registration-harvester-config
+  volume_path: /worker/config
+  container_port: 8080
+  config:
+    worker:
+      log_level: INFO
+      flowable:
+      topics:
+      handlers:
+  eodata:
+    enabled: false
+    createPVC: true
+    # reuseExistingVolume: existing-pv-name  # optional override
+    claimName: eodata
+    volumeName: eodata
+    mountPath: /eodata
+    accessMode: ReadWriteMany
+    storageClass: standard
+    size: 100Gi

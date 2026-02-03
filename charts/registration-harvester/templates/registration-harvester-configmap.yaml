@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+data:
+  # The key is the filename this config map will appear in the volumeMount
+  config.yaml: |+
+{{- if .Values.harvester.config }}
+  {{- toYaml .Values.harvester.config | nindent 4 -}}
+{{- end }}

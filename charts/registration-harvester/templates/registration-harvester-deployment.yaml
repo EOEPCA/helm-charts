@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+      app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+  strategy:
+    type: Recreate      
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+        imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: {{ .Release.Name }}
+        image: {{ .Values.harvester.image.repository }}:{{ .Values.harvester.image.tag | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.harvester.image.pullPolicy }}
+        env:
+        - name: CONFIG_FILE_PATH
+          value: {{ .Values.harvester.volume_path }}/config.yaml
+        envFrom:
+        - secretRef:
+            name: {{ .Values.harvester.secret.name }}
+        ports:
+        - containerPort: {{ .Values.harvester.container_port }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.harvester.container_port }}
+          initialDelaySeconds: 20
+          timeoutSeconds: 2
+          periodSeconds: 8
+          failureThreshold: 1
+        volumeMounts:
+        - mountPath: {{ .Values.harvester.volume_path }}
+          name: {{ .Values.harvester.volume_name }}
+        {{- if .Values.harvester.eodata.enabled }}
+        - mountPath: {{ .Values.harvester.eodata.mountPath }}
+          name: {{ .Values.harvester.eodata.volumeName }}
+        {{- end }}
+      restartPolicy: Always
+      volumes:
+      - name: {{ .Values.harvester.volume_name }}
+        configMap:
+          name: {{ .Release.Name }}-configmap
+      {{- if .Values.harvester.eodata.enabled }}
+      - name: {{ .Values.harvester.eodata.volumeName }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.harvester.eodata.claimName }}
+      {{- end }}
