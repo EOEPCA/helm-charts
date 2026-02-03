@@ -1432,6 +1432,38 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/eoepca-portal-1.0.9/eoepca-portal-1.0.9.tgz
     version: 1.0.9
+  iam-bb:
+  - apiVersion: v2
+    appVersion: 2.0.0
+    created: "2026-02-03T11:25:22.99333504Z"
+    dependencies:
+    - condition: keycloak.enabled
+      name: keycloak
+      repository: https://charts.bitnami.com/bitnami
+      version: 24.4.11
+    - condition: opal.enabled
+      name: opal
+      repository: https://permitio.github.io/opal-helm-chart
+      version: 0.0.28
+    - condition: identityApi.enabled
+      name: identity-service
+      repository: https://eoepca.github.io/helm-charts
+      version: 1.0.98
+    - condition: apisix.enabled
+      name: apisix
+      repository: https://charts.apiseven.com
+      version: 2.10.0
+    - condition: iam-bb-config.enabled
+      name: iam-bb-config
+      repository: https://eoepca.github.io/helm-charts-dev
+      version: 2.0.0-rc2
+    description: EOEPCA IAM BB Helm chart
+    digest: 33fddaf406e4e3ddeb20b43b82db896b69e91a7d18c7e64fd7abf7ebbcfa43b6
+    name: iam-bb
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/iam-bb-2.0.0/iam-bb-2.0.0.tgz
+    version: 2.0.0
   iam-bb-config:
   - apiVersion: v2
     appVersion: 2.0.0
@@ -6680,4 +6712,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2026-02-03T10:40:56.054534056Z"
+generated: "2026-02-03T11:25:22.993955411Z"
