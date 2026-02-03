@@ -1,0 +1,114 @@
+imagePullSecrets: []
+
+global:
+  namespace: rm
+ingress:
+  enabled: true
+  name: registration-api
+  class: nginx
+  host: registration-api.demo.eoepca.org
+  tls_host: registration-api.demo.eoepca.org
+  tls_secret_name: registration-api-tls
+  subpath_enabled: false
+  subpath: "/registration-api"
+  default_annotations:
+    kubernetes.io/ingress.class: "{{ .Values.ingress.class }}"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+  subpath_annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^({{ .Values.ingress.subpath }})$ $1/ redirect;
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+pygeoapi:
+  name: registration-api
+  image:
+    repository: eoepca/registration-api
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "2.0.0"
+  container_port: 80
+  service_name: registration-api-service
+  service_type: ClusterIP
+  service_port: 80
+  service_port_name: http
+  # service_node_port: 30000
+  service_port_protocol: TCP
+  configmap_name: registration-api-configmap
+  volume_name: registration-api-config
+  volume_path: /pygeoapi
+  # secret:
+  #   name: ""
+  # iam_endpoint: ""
+  # iam_realm: "eoepca"
+  # iam_grant_type: "client_credentials"
+  config:
+    server:
+      bind:
+        host: 0.0.0.0
+        port: 80
+      url: https://registration-api.demo.eoepca.org
+      mimetype: application/json; charset=UTF-8
+      encoding: utf-8
+      gzip: "false"
+      language: en-US
+      cors: "true"
+      pretty_print: "true"
+      limits:
+        default_items: 10
+        max_items: 10
+      # templates: /path/to/templates
+      map:
+        url: https://tile.openstreetmap.org/{z}/{x}/{y}.png
+        attribution: 'Map data &copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+      manager:
+        name: TinyDB
+        connection: /tmp/registration-api-process-manager.db
+        output_dir: /tmp/
+    logging:
+      level: ERROR
+      # /tmp/pygeoapi.log
+    metadata:
+      identification:
+        title: EOEPCA Registration API based on pygeoapi
+        description: pygeoapi provides an API to geospatial data
+        keywords:
+          - EOEPCA
+          - Earth observation
+          - exploitation
+          - processing
+          - registration
+        keywords_type: theme
+        terms_of_service: https://creativecommons.org/licenses/by/4.0/
+        url: https://github.com/geopython/pygeoapi
+      license:
+        name: CC-BY 4.0 license
+        url: https://creativecommons.org/licenses/by/4.0/
+      provider:
+        name: EOEPCA
+        url: https://eoepca.org
+      contact:
+        name: Tzotsos, Angelos
+        position: Core Dev
+        address: Mailing Address
+        city: City
+        stateorprovince: Administrative Area
+        postalcode: Zip or Postal Code
+        country: Greece
+        phone: +xx-xxx-xxx-xxxx
+        fax: +xx-xxx-xxx-xxxx
+        email: you@example.org
+        url: Contact URL
+        hours: Hours of Service
+        instructions: During hours of service.  Off on weekends.
+        role: pointOfContact
+    resources:
+      register:
+        type: process
+        processor:
+          name: registration_api.processes.registration.RegisterProcessor
+      deregister:
+        type: process
+        processor:
+          name: registration_api.processes.registration.DeregisterProcessor

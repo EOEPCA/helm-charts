@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  local.config.yml: |+
+{{- if .Values.pygeoapi.config }}
+  {{- toYaml .Values.pygeoapi.config | nindent 4 -}}
+{{- end }}
+
+kind: ConfigMap
+metadata:
+  name: {{ .Values.pygeoapi.configmap_name }}
+  namespace: {{ .Values.global.namespace }}

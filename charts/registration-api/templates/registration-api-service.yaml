@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    io.kompose.service: {{ .Values.pygeoapi.name }}
+  name: {{ .Values.pygeoapi.service_name }}
+spec:
+  type: {{ .Values.pygeoapi.service_type }}
+  ports:
+    - port: {{ .Values.pygeoapi.service_port }}
+      {{ if .Values.pygeoapi.service_node_port }}
+      nodePort: {{ .Values.pygeoapi.service_node_port }}
+      {{ end }}
+      {{ if .Values.pygeoapi.container_port }}
+      targetPort: {{ .Values.pygeoapi.container_port }}
+      {{ end }}
+      {{ if .Values.pygeoapi.service_port_protocol }}
+      protocol: {{ .Values.pygeoapi.service_port_protocol }}
+      {{ end }}
+      name: {{ .Values.pygeoapi.service_port_name }}
+  selector:
+    io.kompose.service: {{ .Values.pygeoapi.name }}
