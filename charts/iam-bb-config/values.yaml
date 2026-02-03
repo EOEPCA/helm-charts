@@ -1,0 +1,65 @@
+# Default values for iam-bb-config.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Note: The following configuration is a subset of the iam-bb values.yaml
+# file.
+# Hence instead of adapting this values.yaml file, you may also reuse the
+# values.yaml file that was used to install the IAM BB through the iam-bb
+# Helm chart.
+
+iam:
+  keycloak:
+    enabled: true
+    # Optional configuration to apply as Crossplane CRs.
+    # Evaluated by the iam-bb-config Helm chart.
+    # See also section keycloak.keycloakConfigCli for another way to
+    # configure Keycloak, which can be combined with this approach.
+    # By default, the EOEPCA realm and a user account for Crossplane
+    # should be initialized using keycloak-config-cli, whereas further
+    # configuration (like clients, groups etc.) should be applied via
+    # the Crossplane Keycloak Provider.
+    configuration:
+      # Set this to true to enable generation of Crossplane CRs;
+      # if set to false, Crossplane is not used and no CRs are generated.
+      useCrossplane: true
+      # Set to true to auto-generate clients as Crossplane CRs.
+      createClients: true
+      realm:
+        # Set to true to auto-generate realm as Crossplane CR.
+        # Note that this only makes sense if useKeycloakConfigCli is set to
+        # false and the iam-bb-config chart is applied separately.
+        create: false
+        # Name of realm to create or of existing realm to create clients in
+        name: eoepca
+        displayName: EOEPCA
+        # TODO: Maybe add spec or forProvider section here and reference it from template
+      provider:
+        # Reference to existing ProviderConfig to use (instead of creating own one)
+        existingConfigRef: ""
+        # Set to true to generate ProviderConfig for Keycloak (only honoured if
+        # useCrossplane is true)
+        create: true
+        # Reference to existing secret containing Keycloak location and credentials
+        secretRef:
+          name: ""
+          key: ""
+          namespace: ""
+  opa:
+    enabled: false
+    # "Official" OPA URL (used as root URL for the client if one is created)
+    url: https://iam-opa.develop.eoepca.org
+    # Client credentials:
+    # clientId is mandatory if clientSecretRef is *not* specified.
+    clientId: opa
+    # clientSecretRef: Name of an existing secret that contains the client secret and maybe further values like the client ID
+    clientSecretRef: ""
+  identityApi:
+    enabled: false
+    # "Official" Identity API URL (used as root URL for the client if one is created)
+    url: https://identity-api.develop.eoepca.org
+    # Client credentials:
+    # clientId is mandatory if clientSecretRef is *not* specified.
+    clientId: identity-api
+    # clientSecretRef: Name of an existing secret that contains the client secret and maybe further values
+    clientSecretRef: ""

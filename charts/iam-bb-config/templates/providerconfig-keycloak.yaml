@@ -1,0 +1,15 @@
+{{ if .Values.iam.keycloak.configuration.useCrossplane -}}
+{{ if .Values.iam.keycloak.configuration.provider.create -}}
+apiVersion: keycloak.crossplane.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: {{ printf "%s-keycloak-provider-config" .Release.Name }}
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      name: {{ or .Values.iam.keycloak.configuration.provider.secretRef.name "keycloak-provider" }}
+      key: {{ or .Values.iam.keycloak.configuration.provider.secretRef.key "credentials" }}
+      namespace: {{ or .Values.iam.keycloak.configuration.provider.secretRef.namespace .Release.Namespace }}
+{{- end }}
+{{- end }}

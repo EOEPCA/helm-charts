@@ -1,0 +1,16 @@
+{{ if .Values.iam.keycloak.configuration.useCrossplane -}}
+{{ if .Values.iam.keycloak.configuration.realm.create -}}
+apiVersion: realm.keycloak.crossplane.io/v1alpha1
+kind: Realm
+metadata:
+  name: {{ printf "%s-eoepca-realm" .Release.Name }}
+spec:
+  # Do not accidentally delete the realm...
+  deletionPolicy: Orphan
+  forProvider:
+    realm: {{- .Values.iam.keycloak.configuration.realm.name | quote }}
+    displayName: {{- .Values.iam.keycloak.configuration.realm.displayName | quote }}
+  providerConfigRef:
+    name: {{ .Values.iam.keycloak.configuration.provider.existingConfigRef | default (printf "%s-keycloak-provider-config" .Release.Name) }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,37 @@
+{{ if .Values.iam.keycloak.configuration.useCrossplane -}}
+{{ if .Values.iam.keycloak.configuration.createClients -}}
+{{ if .Values.iam.opa.enabled -}}
+apiVersion: openidclient.keycloak.crossplane.io/v1alpha1
+kind: Client
+metadata:
+  name: {{ printf "%s-opa-client" .Release.Name }}
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    accessType: CONFIDENTIAL
+    clientId: {{ .Values.iam.opa.clientId | default "opa" | quote }}
+    clientSecretSecretRef:
+      key: client_secret
+      name: {{ .Values.iam.opa.clientSecretRef | default "opa-route" | quote }}
+      namespace: {{ .Release.Namespace }}
+    realmId: {{ .Values.iam.keycloak.configuration.realm.name }}
+    serviceAccountsEnabled: true
+    standardFlowEnabled: true
+    useRefreshTokens: true
+    name: {{ .Values.iam.opa.clientId | default "opa" | quote }}
+{{- if .Values.iam.opa.url }}
+    rootUrl: {{ .Values.iam.opa.url }}
+    adminUrl: {{ .Values.iam.opa.url }}
+{{- end }}
+    validRedirectUris:
+      - "/*" # TODO: Maybe make more specific
+{{/*{{- if .Values.iam.opa.url }}*/}}
+{{/*      - {{ .Values.iam.opa.url }}/.apisix/redirect*/}}
+{{/*{{- end }}*/}}
+    webOrigins:
+      - "/*"
+  providerConfigRef:
+    name: {{ .Values.iam.keycloak.configuration.provider.existingConfigRef | default (printf "%s-keycloak-provider-config" .Release.Name) }}
+{{- end }}
+{{- end }}
+{{- end }}

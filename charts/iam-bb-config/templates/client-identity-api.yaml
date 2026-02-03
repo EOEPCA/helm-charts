@@ -1,0 +1,39 @@
+{{ if .Values.iam.keycloak.configuration.useCrossplane -}}
+{{ if .Values.iam.keycloak.configuration.createClients -}}
+{{ if .Values.iam.identityApi.enabled -}}
+apiVersion: openidclient.keycloak.crossplane.io/v1alpha1
+kind: Client
+metadata:
+  name: {{ printf "%s-identity-api-client" .Release.Name }}
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    accessType: CONFIDENTIAL
+    clientId: {{ .Values.iam.identityApi.clientId | default "identity-api" | quote }}
+    clientSecretSecretRef:
+      key: client_secret
+      name: {{ .Values.iam.identityApi.clientSecretRef | default "identity-api-route" | quote }}
+      namespace: {{ .Release.Namespace }}
+    realmId: {{ .Values.iam.keycloak.configuration.realm.name }}
+    serviceAccountsEnabled: true
+    standardFlowEnabled: true
+    useRefreshTokens: true
+    authorization:
+      - allowRemoteResourceManagement: false
+        decisionStrategy: UNANIMOUS
+        keepDefaults: true
+        policyEnforcementMode: ""
+    name: {{ .Values.iam.identityApi.clientId | default "identity-api" | quote }}
+{{- if .Values.iam.identityApi.url }}
+    rootUrl: {{ .Values.iam.identityApi.url }}
+    adminUrl: {{ .Values.iam.identityApi.url }}
+{{- end }}
+    validRedirectUris:
+      - "/*"
+    webOrigins:
+      - "/*"
+  providerConfigRef:
+    name: {{ .Values.iam.keycloak.configuration.provider.existingConfigRef | default (printf "%s-keycloak-provider-config" .Release.Name) }}
+{{- end }}
+{{- end }}
+{{- end }}
