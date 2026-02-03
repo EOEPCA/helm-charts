@@ -1,0 +1,19 @@
+{{ if .Values.iam.apisix.enabled -}}
+# By default, APISIX sets the X-Forwarded-Port header to its container port
+# (9443) when forwarding requests. This may confuse upstream systems, because
+# the "official" port is 443. This rule globally replaces the value 9443 with
+# the value 443. Actually the rule also replaces port 9080 with port 80 though
+# this should be irrelevant due to prior HTTP-to-HTTPS redirection.
+apiVersion: apisix.apache.org/v2
+kind: ApisixGlobalRule
+metadata:
+  name: tls-port-correction
+spec:
+  plugins:
+    - name: serverless-pre-function
+      enable: true
+      config:
+        phase: "rewrite"
+        functions:
+          - "return function(conf, ctx) if tonumber(ngx.var.var_x_forwarded_port) > 9000 then ngx.var.var_x_forwarded_port = ngx.var.var_x_forwarded_port - 9000 end end"
+{{- end }}

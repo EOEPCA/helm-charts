@@ -1,0 +1,28 @@
+{{ if .Values.iam.opa.enabled -}}
+{{ if .Values.iam.opa.createRoute -}}
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: opa-route
+spec:
+  http:
+  - name: opa
+    match:
+      hosts: {{- .Values.iam.opa.hosts | toYaml | nindent 6 }}
+      paths: {{- .Values.iam.opa.paths | toYaml | nindent 6 }}
+    backends:
+      - serviceName: iam-opa #{{ printf "%s-opal-client" .Release.Name }}
+        servicePort: 8181
+    plugins:
+      - name: openid-connect
+        enable: true
+        config:
+{{- if .Values.iam.opa.clientId }}
+          client_id: {{ .Values.iam.opa.clientId | quote }}
+{{- end }}
+          access_token_in_authorization_header: true
+          use_jwks: true
+          discovery: {{ printf "%s/realms/%s/.well-known/openid-configuration" .Values.iam.keycloak.url .Values.iam.keycloak.configuration.realm.name | quote }}
+        secretRef: {{ .Values.iam.opa.clientSecretRef | default "opa-route" | quote }}
+{{- end }}
+{{- end }}

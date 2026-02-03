@@ -1,0 +1,65 @@
+{{ if .Values.iam.opa.enabled -}}
+{{ if not .Values.iam.opa.inline -}}
+# Standalone OPA deployment; based on: https://www.openpolicyagent.org/docs/deployments#kubernetes
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iam-opa
+  labels:
+    app: iam-opa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iam-opa
+  template:
+    metadata:
+      labels:
+        app: iam-opa
+      name: iam-opa
+    spec:
+      containers:
+        - name: opa
+          image: {{ printf "%s/%s:%s" (default "docker.io" .Values.iam.opa.image.registry) (default "openpolicyagent/opa" .Values.iam.opa.image.repository)
+                           (default "latest" .Values.iam.opa.image.tag) | quote }}
+          imagePullPolicy: {{ .Values.iam.opa.image.pullPolicy | default "IfNotPresent" | quote }}
+          ports:
+            - name: http
+              containerPort: 8181
+          args:
+            - "run"
+            - "--ignore=.*" # exclude hidden dirs created by Kubernetes
+            - "--addr=0.0.0.0:8181"
+            - "--authentication=token"
+            - "--authorization=basic"
+            - "--server"
+            - "/policies"
+{{- if .Values.opal.client.opaStartupData }}
+          volumeMounts:
+            - mountPath: /policies #/opt/opa/startup-data
+              name: opa-startup-data
+              readOnly: true
+{{- end }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              scheme: HTTP # assumes OPA listens on localhost:8181
+              port: 8181
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health?bundle=true # Include bundle activation in readiness
+              scheme: HTTP
+              port: 8181
+            initialDelaySeconds: 5
+            periodSeconds: 5
+{{- if .Values.opal.client.opaStartupData }}
+      volumes:
+        - name: opa-startup-data
+          configMap:
+            name: opa-startup-data
+            defaultMode: 0444
+{{- end }}
+{{- end }}
+{{- end }}
