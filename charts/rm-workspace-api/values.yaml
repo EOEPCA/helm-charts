@@ -73,6 +73,9 @@ affinity: {}
 # region: ""
 # uiMode: "ui"
 # forwardedAllowIps: ""
+# providerEnvironment: ""
+# disableStores: false
+# disabledStoreTypes: ""
 # extraEnv:
 #   - name: EXAMPLE_FLAG
 #     value: "true"

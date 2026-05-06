@@ -31,4 +31,7 @@ helm upgrade --install rm-workspace-api rm-workspace-api
 | `region` | AWS region code (e.g. `eu-central-1`) or empty | `REGION` |
 | `uiMode` | `ui` \| `no` | `UI_MODE` |
 | `forwardedAllowIps` | `""` \| `"*"` \| comma-sep CIDRs | `FORWARDED_ALLOW_IPS`, `GUNICORN_CMD_ARGS=--forwarded-allow-ips=…` |
+| `providerEnvironment` | provider environment name (e.g. `datalab`) | `PROVIDER_ENVIRONMENT` |
+| `disableStores` | `true` \| `false` | `DISABLE_STORES` |
+| `disabledStoreTypes` | optional comma-sep store types to disable, empty by default | `DISABLED_STORE_TYPES` |
 | `extraEnv` | list of `{name: ..., value: ...}` | extra container env |

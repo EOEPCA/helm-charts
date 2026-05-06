@@ -89,6 +89,18 @@ spec:
             - name: GUNICORN_CMD_ARGS
               value: "--forwarded-allow-ips={{ .Values.forwardedAllowIps }}"
             {{- end }}
+            {{- if .Values.providerEnvironment }}
+            - name: PROVIDER_ENVIRONMENT
+              value: "{{ .Values.providerEnvironment }}"
+            {{- end }}
+            {{- if hasKey .Values "disableStores" }}
+            - name: DISABLE_STORES
+              value: "{{ .Values.disableStores }}"
+            {{- end }}
+            {{- if .Values.disabledStoreTypes }}
+            - name: DISABLED_STORE_TYPES
+              value: "{{ .Values.disabledStoreTypes }}"
+            {{- end }}
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

@@ -11,3 +11,7 @@ rules:
     resourceNames:
       - storages.pkg.internal
       - datalabs.pkg.internal
+      - postgresclusters.postgres-operator.crunchydata.com
+      - qdrantclusters.qdrant.io
+      - redis.redis.opstreelabs.in
+      - mongodbcommunity.mongodbcommunity.mongodb.com
