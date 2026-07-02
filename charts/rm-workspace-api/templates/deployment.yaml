@@ -36,12 +36,12 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
           readinessProbe:
             httpGet:
               path: /probe
-              port: 8080
+              port: {{ .Values.service.port }}
             initialDelaySeconds: 10
             timeoutSeconds: 2
             periodSeconds: 3
@@ -49,12 +49,14 @@ spec:
           livenessProbe:
             httpGet:
               path: /probe
-              port: 8080
+              port: {{ .Values.service.port }}
             initialDelaySeconds: 20
             timeoutSeconds: 2
             periodSeconds: 8
             failureThreshold: 1
           env:
+            - name: GUNICORN_BIND
+              value: "0.0.0.0:{{ .Values.service.port }}"
             {{- if hasKey .Values "gunicornWorkers" }}
             - name: GUNICORN_WORKERS
               value: "{{ .Values.gunicornWorkers }}"
