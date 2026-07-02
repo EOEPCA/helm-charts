@@ -6,7 +6,7 @@ e.g.
 ```bash
 helm upgrade --install rm-workspace-api rm-workspace-api
     --repo https://eoepca.github.io/helm-charts
-    --version 2.0.0
+    --version 2.2.0
     --namespace workspace
     --create-namespace
     --set prefixForName="ws"
@@ -27,11 +27,17 @@ helm upgrade --install rm-workspace-api rm-workspace-api
 | `prefixForName` | DNS-1123 prefix (`[a-z0-9]([-a-z0-9]*[a-z0-9])?`) | `PREFIX_FOR_NAME` |
 | `useVcluster` | `true` \| `false` | `USE_VCLUSTER` |
 | `sessionMode` | `auto` \| `on` \| `off` | `SESSION_MODE` |
+| `maxSessions` | positive integer (default `3`) | `MAX_SESSIONS` |
+| `disableDockerRegistry` | `true` \| `false` | `DISABLE_DOCKER_REGISTRY` |
 | `endpoint` | URL (`https://…`) or empty | `ENDPOINT` |
 | `region` | AWS region code (e.g. `eu-central-1`) or empty | `REGION` |
 | `uiMode` | `ui` \| `no` | `UI_MODE` |
+| `frontendUrl` | base path in prod or absolute dev URL (default `/ui/management`) | `FRONTEND_URL` |
 | `forwardedAllowIps` | `""` \| `"*"` \| comma-sep CIDRs | `FORWARDED_ALLOW_IPS`, `GUNICORN_CMD_ARGS=--forwarded-allow-ips=…` |
 | `providerEnvironment` | provider environment name (e.g. `datalab`) | `PROVIDER_ENVIRONMENT` |
 | `disableStores` | `true` \| `false` | `DISABLE_STORES` |
 | `disabledStoreTypes` | optional comma-sep store types to disable, empty by default | `DISABLED_STORE_TYPES` |
+| `authMode` | `gateway` \| `no` | `AUTH_MODE` |
+| `authAudience` | JWT audience value when `AUTH_MODE=gateway` (default `workspace-api`) | `AUTH_AUDIENCE` |
+| `authDebug` | `true` \| `false` | `AUTH_DEBUG` |
 | `extraEnv` | list of `{name: ..., value: ...}` | extra container env |

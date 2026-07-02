@@ -71,9 +71,33 @@ spec:
             - name: SESSION_MODE
               value: "{{ .Values.sessionMode }}"
             {{- end }}
+            {{- if hasKey .Values "maxSessions" }}
+            - name: MAX_SESSIONS
+              value: "{{ .Values.maxSessions }}"
+            {{- end }}
+            {{- if hasKey .Values "disableDockerRegistry" }}
+            - name: DISABLE_DOCKER_REGISTRY
+              value: "{{ .Values.disableDockerRegistry }}"
+            {{- end }}
             {{- if hasKey .Values "uiMode" }}
             - name: UI_MODE
               value: "{{ .Values.uiMode }}"
+            {{- end }}
+            {{- if hasKey .Values "frontendUrl" }}
+            - name: FRONTEND_URL
+              value: "{{ .Values.frontendUrl }}"
+            {{- end }}
+            {{- if hasKey .Values "authMode" }}
+            - name: AUTH_MODE
+              value: "{{ .Values.authMode }}"
+            {{- end }}
+            {{- if hasKey .Values "authAudience" }}
+            - name: AUTH_AUDIENCE
+              value: "{{ .Values.authAudience }}"
+            {{- end }}
+            {{- if hasKey .Values "authDebug" }}
+            - name: AUTH_DEBUG
+              value: "{{ .Values.authDebug }}"
             {{- end }}
             {{- if hasKey .Values "endpoint" }}
             - name: ENDPOINT
