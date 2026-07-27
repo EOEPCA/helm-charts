@@ -15,3 +15,8 @@ rules:
       - qdrantclusters.qdrant.io
       - redis.redis.redis.opstreelabs.in
       - mongodbcommunity.mongodbcommunity.mongodb.com
+  - apiGroups: [""]
+    resources:
+      - persistentvolumeclaims
+      - resourcequotas
+    verbs: ["list"]
