@@ -34,7 +34,10 @@ jobs:
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add permitio https://permitio.github.io/opal-helm-chart
           helm repo add apiseven https://charts.apiseven.com
+          helm repo add adfinis https://charts.adfinis.com
           helm repo add knative-operator https://knative.github.io/operator
+          helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+          helm repo add opensearch https://opensearch-project.github.io/helm-charts
           helm repo list
 
       - name: Run chart-releaser
