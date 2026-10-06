@@ -1,0 +1,526 @@
+global:
+  ## The internal cluster (sub)domain for services in this deployment,
+  ## typically <namespace>.svc.cluster.local
+  internalDomain: "svc.cluster.local" ## INSTRUCTION: See above
+
+  ## A certificate issues for the above domain
+  defaultInternalIssuerRef:
+    kind: ClusterIssuer
+    name: foo # null ## INSTRUCTION: Set to name of certificate issuer for the internal cluster domain
+
+  # defaultHealthCheckImage:
+  #   repository: docker.io/eoepca/healthcheck_runner
+  #   pullPolicy: IfNotPresent
+  #   tag: "2.0.0-beta2"
+
+  defaultOTLPEndpoint: https://resource-health-opentelemetry-collector:4317
+
+## Dependency values
+
+resource-health:
+  # Needed for predictable DNS and resource names
+  fullnameOverride: "resource-health"
+
+  # mock_api:
+  #   image:
+  #     repository: docker.io/eoepca/mock_service
+  #     pullPolicy: IfNotPresent
+  #     tag: "2.0.0-beta2"
+  #   serviceType: ClusterIP
+  #   containerPort: 5000
+  #   servicePort: 5000
+  #   replicaCount: 2
+  #   environmentFixed:
+  #     - name: OTEL_EXPORTER_OTLP_ENDPOINT
+  #       value: https://resource-health-opentelemetry-collector:4317
+  #   tls:
+  #     commonName: resource-health-mock-api
+  #     # issuerRef:
+  #     #   kind: ClusterIssuer
+  #     #   name: null ## INSTRUCTION: Set to name of certificate issuer for the internal cluster domain
+
+  # healthchecks:
+  #   use_template_configmap: False
+  #   templates:
+  #     nothing.py: |
+  #       ## Put some files containing templates here!
+  #
+  #   checks: []
+  #   # - name: hourly-mock-api-check
+  #   #   # image:
+  #   #   #   repository: docker.io/eoepca/healthcheck_runner
+  #   #   #   pullPolicy: IfNotPresent
+  #   #   #   tag: "2.0.0-rc1"
+  #   #   schedule: "@hourly"
+  #   #   # This is an empty requirements file
+  #   #   requirements: "https://gist.githubusercontent.com/tilowiklundSensmetry/a9fefe2873b731b483f554607a82deaa/raw/1136a82ca3c8f28b1ad4d895871514185927dd1c/requirements.txt"
+  #   #   script: "https://raw.githubusercontent.com/EOEPCA/resource-health/refs/tags/v0.1.0-demo/pytest-health/instrumentation/examples/mock_api_check.py"
+  #   #   # overrideOTLPEndpoint: https://resource-health-opentelemetry-collector:4317
+  #   #   env:
+  #   #     - name: MOCK_API_HOST
+  #   #       value: http://resource-health-mockapi:5000
+
+  #   # - name: daily-trivial-check
+  #   #   ## Every day at 08:00
+  #   #   schedule: "0 8 * * *"
+  #   #   # This is an empty requirements file
+  #   #   requirements: "https://gist.githubusercontent.com/tilowiklundSensmetry/a9fefe2873b731b483f554607a82deaa/raw/1136a82ca3c8f28b1ad4d895871514185927dd1c/requirements.txt"
+  #   #   script: "https://raw.githubusercontent.com/EOEPCA/resource-health/refs/tags/v0.1.0-demo/pytest-health/instrumentation/examples/trivial_check.py"
+    
+  #   tls:
+  #     commonName: healthchecks
+  #     # issuerRef:
+  #     #   kind: ClusterIssuer
+  #     #   name: null ## INSTRUCTION: Set to name of certificate issuer for the internal cluster domain
+
+  # check_api:
+  #   image:
+  #     repository: docker.io/eoepca/resourcehealth_check_api
+  #     pullPolicy: IfNotPresent
+  #     tag: "2.0.0-rc1"
+  #   serviceType: ClusterIP
+  #   containerPort: 8000
+  #   servicePort: 8000
+  #   replicaCount: 2
+  #
+  # use_hook_configmap: False
+  # hooks:
+  #   nothing.py: |
+  #     ## Put some files containing hooks here!
+  #
+  #   environmentFixed: []
+  #   # - name: ...
+  #   #   secret: ...
+  #   #   key: ...
+  #   environmentSecrets: []
+  #   # - name: ...
+  #   #   value: ...
+
+  # telemetry_api:
+  #   image:
+  #     repository: docker.io/eoepca/resourcehealth_telemetry_api
+  #     pullPolicy: IfNotPresent
+  #     tag: "2.0.0-rc1"
+  #   serviceType: ClusterIP
+  #   containerPort: 8080
+  #   servicePort: 8080
+  #   replicaCount: 2
+  #
+  #   use_hook_configmap: False
+  #   hooks:
+  #     nothing.py: |
+  #       ## Put some files containing hooks here!
+  # 
+  #   environmentFixed: []
+  #   # - name: ...
+  #   #   secret: ...
+  #   #   key: ...
+  #   environmentSecrets: []
+  #   # - name: ...
+  #   #   value: ...
+
+  # web:
+  #   image:
+  #     repository: docker.io/eoepca/resourcehealth_web
+  #     pullPolicy: IfNotPresent
+  #     tag: "2.0.0-rc1"
+  #   serviceType: ClusterIP
+  #   containerPort: 3000
+  #   servicePort: 80
+  #   replicaCount: 2
+  #   environmentSecrets: []
+  #   environmentFixed:
+  #     - name: NEXT_PUBLIC_CHECK_MANAGER_ENDPOINT
+  #       value: http://resource-health-check-api:8000/v1
+  #     - name: NEXT_PUBLIC_TELEMETRY_ENDPOINT
+  #       value: http://resource-health-telemetry-api:8080/v1
+  #   tls:
+  #     client:
+  #       commonName: resource-health-web
+  #       # issuerRef:
+  #       #   kind: ClusterIssuer
+  #       #   name: null ## INSTRUCTION: Set to name of certificate issuer for the internal cluster domain
+
+  # imagePullSecrets: []
+
+  # serviceAccount:
+  #   # Specifies whether a service account should be created
+  #   create: false
+  #   # Annotations to add to the service account
+  #   annotations: {}
+  #   # The name of the service account to use.
+  #   # If not set and create is true, a name is generated using the fullname template
+  #   name: ""
+
+  # podAnnotations: {}
+
+  # podSecurityContext: {}
+  #   # fsGroup: 2000
+
+  # securityContext: {}
+  #   # capabilities:
+  #   #   drop:
+  #   #   - ALL
+  #   # readOnlyRootFilesystem: true
+  #   # runAsNonRoot: true
+  #   # runAsUser: 1000
+
+  # ## NOTE: Currently not used
+  # ingress:
+  #   enabled: false
+  #   # className: "traefik"
+  #   # annotations: {}
+  #   # host: "kubernetes"
+  #   # tls: []
+  #   #  - secretName: chart-example-tls
+  #   #    hosts:
+  #   #      - chart-example.local
+
+  # resources: {}
+
+  # nodeSelector: {}
+
+  # tolerations: []
+
+  # affinity: {}
+
+
+
+opentelemetry-collector:
+  # Needed for predictable DNS and resource names
+  fullnameOverride: "resource-health-opentelemetry-collector"
+
+  image:
+    repository: otel/opentelemetry-collector-contrib
+
+  mode: deployment
+
+  config:
+    exporters:
+      debug:
+        verbosity: detailed
+      nop: {}
+      opensearch:
+        http:
+          endpoint: https://opensearch-cluster-master:9200
+          tls:
+            ca_file: /certs/client/ca.crt
+            cert_file: /certs/client/tls.crt
+            key_file: /certs/client/tls.key
+      otlp:
+        endpoint: http://resource-health-alerting:50051
+        tls:
+          insecure: true
+
+    extensions:
+      health_check:
+        endpoint: ${env:MY_POD_IP}:13133
+
+    processors:
+      memory_limiter:
+        check_interval: 5s
+        limit_percentage: 80
+        spike_limit_percentage: 25
+
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+            tls:
+              ca_file: /certs/server/ca.crt
+              cert_file: /certs/server/tls.crt
+              key_file: /certs/server/tls.key
+
+    service:
+      extensions:
+      - health_check
+      pipelines:
+        logs:
+          exporters:
+          - debug
+          - opensearch
+          processors:
+          - memory_limiter
+          - batch
+          receivers:
+          - otlp
+        metrics:
+          exporters:
+          - nop
+          processors:
+          - memory_limiter
+          receivers:
+          - otlp
+        traces:
+          exporters:
+          - debug
+          - opensearch
+          - otlp
+          processors:
+          - memory_limiter
+          - batch
+          receivers:
+          - otlp
+
+  extraVolumeMounts:
+  - mountPath: /certs/client
+    name: clientcertificates
+    readOnly: true
+  - mountPath: /certs/server
+    name: servercertificates
+    readOnly: true
+
+  extraVolumes:
+  - name: clientcertificates
+    secret:
+      secretName: otel-collector-client-certificate
+  - name: servercertificates
+    secret:
+      secretName: otel-collector-certificate
+
+  ports:
+    jaeger-compact:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    metrics:
+      enabled: false
+    otlp-http:
+      enabled: false
+    zipkin:
+      enabled: false
+  presets:
+    clusterMetrics:
+      enabled: false
+    hostMetrics:
+      enabled: false
+    kubeletMetrics:
+      enabled: false
+    kubernetesAttributes:
+      enabled: false
+    logsCollection:
+      enabled: false
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+
+opensearch:
+  # Needed for predictable DNS and resource names
+  fullnameOverride: "resource-health-opensearch"
+
+  replicas: "2"
+
+  opensearchJavaOpts: "-Xmx2G -Xms2G"
+  
+  persistence:
+    enabled: true
+    storageClass: managed-nfs-storage
+    size: 12Gi
+
+  sysctl:
+    enabled: false
+  sysctlInit:
+    enabled: true
+
+  extraEnvs:
+    - name: DISABLE_INSTALL_DEMO_CONFIG
+      value: "true"
+
+  secretMounts:
+    - name: certs
+      secretName: opensearch-tls-certificate
+      path: /usr/share/opensearch/config/esnode
+    - name: admin-certs
+      secretName: opensearch-admin-certificate
+      path: /usr/share/opensearch/config/admin-certs
+
+  config:
+    opensearch.yml: >
+      cluster.name: opensearch-cluster
+
+      network.host: 0.0.0.0
+
+      plugins:
+        security:
+          nodes_dn:
+            - 'CN=resource-health-opensearch-node'
+          ssl:
+            transport:
+              pemcert_filepath: esnode/tls.crt
+              pemkey_filepath: esnode/tls.key
+              pemtrustedcas_filepath: esnode/ca.crt
+              enforce_hostname_verification: false
+            http:
+              enabled: true
+              pemcert_filepath: esnode/tls.crt
+              pemkey_filepath: esnode/tls.key
+              pemtrustedcas_filepath: esnode/ca.crt
+              clientauth_mode: OPTIONAL
+          allow_unsafe_democertificates: false
+          allow_default_init_securityindex: true
+          authcz:
+            admin_dn:
+              - CN=opensearch-admin
+          #     - CN=kirk,OU=client,O=client,L=test,C=de
+          audit.type: internal_opensearch
+          enable_snapshot_restore_privilege: true
+          check_snapshot_restore_write_privileges: true
+          restapi:
+            roles_enabled: ["all_access", "security_rest_api_access"]
+          system_indices:
+            enabled: true
+            indices:
+              [
+                ".opendistro-alerting-config",
+                ".opendistro-alerting-alert*",
+                ".opendistro-anomaly-results*",
+                ".opendistro-anomaly-detector*",
+                ".opendistro-anomaly-checkpoints",
+                ".opendistro-anomaly-detection-state",
+                ".opendistro-reports-*",
+                ".opendistro-notifications-*",
+                ".opendistro-notebooks",
+                ".opendistro-asynchronous-search-response*",
+              ]
+
+  securityConfig:
+    enabled: true
+    path: "/usr/share/opensearch/config/opensearch-security"
+    config:
+      dataComplete: false
+      data:
+        config.yml: |-
+          _meta:
+            type: "config"
+            config_version: 2
+
+          config:
+            dynamic:
+              kibana:
+                multitenancy_enabled: true
+                server_username: 'dashboards-client'
+                index: '.opensearch-dashboards'
+              do_not_fail_on_forbidden: false
+
+              http:
+                anonymous_auth_enabled: false
+              authc:
+                basic_internal_auth_domain:
+                  description: "Authenticate via HTTP Basic against internal users database"
+                  http_enabled: true
+                  transport_enabled: true
+                  order: 2
+                  http_authenticator:
+                    type: basic
+                    challenge: true
+                  authentication_backend:
+                    type: intern
+                clientcert_auth_domain:
+                  description: "Authenticate via SSL client certificates"
+                  http_enabled: true
+                  transport_enabled: false
+                  order: 1
+                  http_authenticator:
+                    type: clientcert
+                    config:
+                      username_attribute: cn
+                    challenge: false
+                  authentication_backend:
+                    type: noop
+
+        internal_users.yml: |-
+          _meta:
+            type: "internalusers"
+            config_version: 2
+
+          ## NOTE: Example admin user
+          # <USER NAME>:
+          #   hash: "<PASSWORD HASH>"
+          #   reserved: true
+          #   backend_roles:
+          #   - "admin"
+          #   description: "Temporary admin user (Delete me)"
+
+        roles.yml: |-
+          _meta:
+            type: "roles"
+            config_version: 2
+          
+          own_trace_data_access:
+            reserved: false
+            hidden: false
+            cluster_permissions: []
+            index_permissions:
+            - index_patterns:
+              - "ss4o_*-default-namespace*"
+              dls: "{ \"bool\": { \"must\" : { \"match\": { \"resource.user.id\" : \"${user.name}\"\
+                \ } } } }"
+              fls: []
+              masked_fields: []
+              allowed_actions:
+              - "crud"
+              - "view_metadata"
+              - "indices:admin/mappings/get"
+              - "indices:monitor/settings/get"
+              - "indices:admin/get"
+            tenant_permissions: []
+            static: false
+
+        roles_mapping.yml: |-
+          _meta:
+            type: "rolesmapping"
+            config_version: 2
+
+          all_access:
+            reserved: false
+            backend_roles:
+            - "admin"
+            users:
+            - "otel-collector"
+            - "opensearch-admin"
+            description: "Maps admin to all_access"
+
+          kibana_server:
+            reserved: true
+            hidden: false
+            backend_roles: []
+            hosts: []
+            users:
+            - "dashboards-client"
+            and_backend_roles: []
+
+        # action_groups.yml: |-
+        # tenants.yml: |-
+
+
+opensearch-dashboards:
+  # Needed for predictable DNS and resource names
+  fullnameOverride: "resource-health-opensearch-dashboards"
+
+  config:
+    opensearch_dashboards.yml:
+      server:
+        name: dashboards
+        host: 0.0.0.0
+        ssl:
+          enabled: true
+          certificate: /usr/share/opensearch-dashboards/certs/tls.crt
+          key: /usr/share/opensearch-dashboards/certs/tls.key
+      opensearch:
+        ssl:
+          verificationMode: full
+          certificateAuthorities: [ "/usr/share/opensearch-dashboards/clientcerts/ca.crt" ]
+          certificate: /usr/share/opensearch-dashboards/clientcerts/tls.crt
+          key: /usr/share/opensearch-dashboards/clientcerts/tls.key
+
+  secretMounts:
+    - name: certs
+      secretName: "opensearch-dashboards-tls-certificate"
+      path: /usr/share/opensearch-dashboards/certs
+    - name: clientcerts
+      secretName: "opensearch-dashboards-client-certificate"
+      path: /usr/share/opensearch-dashboards/clientcerts

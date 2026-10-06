@@ -1,0 +1,27 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: opensearch-tls-certificate
+  labels:
+    app.kubernetes.io/component: "mockapi"
+    {{- include "resource-health-reference-deployment.labels" . | nindent 4 }}
+spec:
+  secretName: opensearch-tls-certificate
+  isCA: false
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+    - client auth
+  commonName: resource-health-opensearch-node
+  dnsNames:
+    - "opensearch-cluster-master-headless.{{ .Release.Namespace }}.{{ .Values.global.internalDomain }}"
+    - "opensearch-cluster-master.{{ .Release.Namespace }}.{{ .Values.global.internalDomain }}"
+    - "opensearch-cluster-master-headless"
+    - "opensearch-cluster-master"
+  issuerRef:
+    {{- toYaml .Values.global.defaultInternalIssuerRef | nindent 4 }}
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS8
+    size: 2048

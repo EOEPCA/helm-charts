@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: opensearch-dashboards-client-certificate
+  labels:
+    app.kubernetes.io/component: "mockapi"
+    {{- include "resource-health-reference-deployment.labels" . | nindent 4 }}
+spec:
+  secretName: opensearch-dashboards-client-certificate
+  isCA: false
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+    - client auth
+  commonName: dashboards-client
+  #dnsNames:
+  #  - "resource-health-opensearch-dashboards.resource-health-opensearch.svc.cluster.local"
+  #  - "resource-health-opensearch-dashboards"
+  issuerRef:
+    {{- toYaml .Values.global.defaultInternalIssuerRef | nindent 4 }}
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS8
+    size: 2048

@@ -1,0 +1,24 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: otel-collector-certificate
+  labels:
+    {{- include "resource-health-reference-deployment.labels" . | nindent 4 }}
+spec:
+  secretName: otel-collector-certificate
+  isCA: false
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+    - client auth
+  commonName: otel-collector
+  dnsNames:
+    - "resource-health-opentelemetry-collector.{{ .Release.Namespace }}.{{ .Values.global.internalDomain }}"
+    - "resource-health-opentelemetry-collector"
+  issuerRef:
+    {{- toYaml .Values.global.defaultInternalIssuerRef | nindent 4 }}
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS8
+    size: 2048

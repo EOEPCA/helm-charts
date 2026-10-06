@@ -1,0 +1,26 @@
+# TODO: This should be a let's encrypt certificate once we use an ingress
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: opensearch-dashboards-tls-certificate
+  labels:
+    app.kubernetes.io/component: "mockapi"
+    {{- include "resource-health-reference-deployment.labels" . | nindent 4 }}
+spec:
+  secretName: opensearch-dashboards-tls-certificate
+  isCA: false
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+    - client auth
+  commonName: resource-health-opensearch-dashboards
+  dnsNames:
+    - "resource-health-opensearch-dashboards.{{ .Release.Namespace }}.{{ .Values.global.internalDomain }}"
+    - "resource-health-opensearch-dashboards"
+  issuerRef:
+    {{- toYaml .Values.global.defaultInternalIssuerRef | nindent 4 }}
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS8
+    size: 2048
