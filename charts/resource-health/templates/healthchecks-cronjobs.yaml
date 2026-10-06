@@ -1,0 +1,72 @@
+{{- $top := . -}}
+{{- range $index,$check := .Values.healthchecks.checks -}}
+{{- $image := $check.image | default $top.Values.global.defaultHealthCheckImage -}}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "resource-health.fullname" $top }}-healthchecks-cronjob-{{ $index }}
+  labels:
+    app.kubernetes.io/component: "mockapi"
+    {{- include "resource-health.labels" $top | nindent 4 }}
+  {{ if $check.annotations -}}
+  annotations:
+    {{- toYaml $check.annotations | nindent 4 }}
+  {{- end }}
+spec:
+  schedule: "{{ $check.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          {{- with $top.Values.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
+          labels:
+            app.kubernetes.io/component: "healthchecks"
+            {{- include "resource-health.selectorLabels" $top | nindent 12 }}
+        spec:
+          restartPolicy: "Never"
+          containers:
+          - name: {{ $top.Chart.Name }}-healthcheck-{{$check.name}}
+            image: "{{ $image.repository }}:{{ $image.tag | default $top.Chart.AppVersion }}"
+            imagePullPolicy: {{ $image.pullPolicy }}
+            args: [
+              pytest, --export-traces, --suppress-tests-failed-exit-code, tests.py, --user-id, defaultuser
+            ]
+            env:
+            {{- range $check.env }}
+            - name: {{ toYaml .name | trim }}
+              value: {{ toYaml .value | trim }}
+            {{- end }}
+
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ $check.overrideOTLPEndpoint | default $top.Values.global.defaultOTLPEndpoint }}
+            - name: OTEL_EXPORTER_OTLP_CERTIFICATE
+              value: "/tls/ca.crt"
+            - name: OTEL_EXPORTER_OTLP_CLIENT_KEY
+              value: "/tls/tls.key"
+            - name: OTEL_EXPORTER_OTLP_CLIENT_CERTIFICATE
+              value: "/tls/tls.crt"
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: >-
+                k8s.cronjob.name={{ include "resource-health.fullname" $top }}-healthchecks-cronjob-{{ $index }},
+                {{- if $check.userid }}
+                user.id={{$check.userid}},
+                {{ end -}}
+                health_check.name={{$check.name}}
+            - name: RH_RUNNER_REQUIREMENTS
+              value: {{ $check.requirements }}
+            - name: RH_RUNNER_SCRIPT
+              value: {{ $check.script }}
+
+            volumeMounts:
+            - name: tls
+              readOnly: true
+              mountPath: "/tls"
+          volumes:
+          - name: tls
+            secret:
+              secretName: {{ include "resource-health.fullname" $top }}-healthchecks-certificate
+{{ end }}

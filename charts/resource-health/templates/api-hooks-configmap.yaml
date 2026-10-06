@@ -1,0 +1,11 @@
+{{- if .Values.check_api.use_hook_configmap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "resource-health.fullname" . }}-api-hooks-configmap
+  labels:
+    app.kubernetes.io/component: "checkapi"
+    {{- include "resource-health.labels" . | nindent 4 }}
+data:
+  {{- .Values.check_api.hooks | toYaml | nindent 2 }}
+{{ end }}

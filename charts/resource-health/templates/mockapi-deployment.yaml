@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "resource-health.fullname" . }}-mock-api
+  labels:
+    app.kubernetes.io/component: "mockapi"
+    {{- include "resource-health.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.mock_api.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: "mockapi"
+      {{- include "resource-health.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/component: "mockapi"
+        {{- include "resource-health.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "resource-health.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      
+      volumes:
+        - name: tls
+          secret:
+            secretName: {{ include "resource-health.fullname" . }}-mock-api-certificate
+      
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.mock_api.image.repository }}:{{ .Values.mock_api.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.mock_api.image.pullPolicy }}
+          env:
+          {{- range .Values.mock_api.environmentFixed }}
+          - name: {{ toYaml .name | trim }}
+            value: {{ toYaml .value | trim }}
+          {{- end }}
+          - name: OTEL_EXPORTER_OTLP_CERTIFICATE
+            value: "/tls/ca.crt"
+          - name: OTEL_EXPORTER_OTLP_CLIENT_KEY
+            value: "/tls/tls.key"
+          - name: OTEL_EXPORTER_OTLP_CLIENT_CERTIFICATE
+            value: "/tls/tls.crt"
+
+          volumeMounts:
+          - name: tls
+            readOnly: true
+            mountPath: "/tls"
+          
+          ports:
+            - name: http
+              containerPort: {{ .Values.mock_api.containerPort }}
+              protocol: TCP
+          #livenessProbe:
+          #  httpGet:
+          #    path: /live
+          #    port: http
+          #readinessProbe:
+          #  httpGet:
+          #    path: /ready
+          #    port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

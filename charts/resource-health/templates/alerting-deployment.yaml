@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "resource-health.fullname" . }}-alerting
+  labels:
+    app.kubernetes.io/component: "alerting"
+    {{- include "resource-health.labels" . | nindent 4 }}
+spec:
+  # If have more replicas, some spans from a failed check trace might go
+  # to one replica, and some to another, thus resulting in two alert emails
+  # or at least neither replica having a complete picture of the trace
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: "alerting"
+      {{- include "resource-health.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/component: "alerting"
+        {{- include "resource-health.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "resource-health.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        {{- range .Values.alerting.secretMounts }}
+        - name: {{ toYaml .name | trim }}
+          secret:
+            secretName: {{ toYaml .secretName | trim }}
+        {{- end }}
+        {{- range .Values.alerting.configmapMounts }}
+        - name: {{ toYaml .name | trim }}
+          configMap:
+            name: {{ toYaml .configmapName | trim }}
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.alerting.image.repository }}:{{ .Values.alerting.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.alerting.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.alerting.containerPort }}
+              protocol: TCP
+          volumeMounts:
+            {{- range .Values.alerting.secretMounts }}
+            - name: {{ toYaml .name | trim }}
+              readOnly: true
+              mountPath: {{ toYaml .mountPath | trim }}
+            {{- end }}
+            {{- range .Values.alerting.configmapMounts }}
+            - name: {{ toYaml .name | trim }}
+              mountPath: {{ toYaml .mountPath | trim }}
+            {{- end }}
+          env:
+          {{- range .Values.alerting.environmentSecrets }}
+            - name: {{ toYaml .name | trim }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ toYaml .secret | trim }}
+                  key: {{ toYaml .key | trim }}
+          {{- end }}
+          {{- range .Values.alerting.environmentFixed }}
+            - name: {{ toYaml .name | trim }}
+              value: {{ toYaml .value | trim }}
+          {{- end }}
+          livenessProbe:
+            tcpSocket:
+              # TODO: unhardcode this
+              port: 50051
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

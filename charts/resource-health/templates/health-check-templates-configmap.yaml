@@ -1,0 +1,11 @@
+{{- if .Values.healthchecks.use_template_configmap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "resource-health.fullname" . }}-check-templates-configmap
+  labels:
+    app.kubernetes.io/component: "checkapi"
+    {{- include "resource-health.labels" . | nindent 4 }}
+data:
+  {{- .Values.healthchecks.templates | toYaml | nindent 2 }}
+{{ end }}

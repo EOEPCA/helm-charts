@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "resource-health.fullname" . }}-web
+  labels:
+    app.kubernetes.io/component: "web"
+    {{- include "resource-health.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.web.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: "web"
+      {{- include "resource-health.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/component: "web"
+        {{- include "resource-health.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "resource-health.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+
+      volumes:
+        - name: client-tls
+          secret:
+            secretName: {{ include "resource-health.fullname" . }}-web-client-certificate
+        {{- range .Values.web.secretMounts }}
+        - name: {{ toYaml .name | trim }}
+          secret:
+            secretName: {{ toYaml .secretName | trim }}
+        {{- end }}
+        {{- range .Values.web.configmapMounts }}
+        - name: {{ toYaml .name | trim }}
+          configMap:
+            name: {{ toYaml .configmapName | trim }}
+        {{- end }}
+
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.web.image.repository }}:{{ .Values.web.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.web.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.web.containerPort }}
+              protocol: TCP
+          env:
+            - name: RESOURCE_HEALTH_WEB_CRONJOB_NAMESPACE
+              value: {{ .Values.web.cronjobNamespace | default .Release.Namespace | quote }}
+            - name: CA_PATH
+              value: /client-tls/ca.crt
+            - name: CLIENT_CERT_PATH
+              value: /client-tls/tls.crt
+            - name: CLIENT_KEY_PATH
+              value: /client-tls/tls.key
+          {{- range .Values.web.environmentSecrets }}
+            - name: {{ toYaml .name | trim }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ toYaml .secret | trim }}
+                  key: {{ toYaml .key | trim }}
+          {{- end }}
+          {{- range .Values.web.environmentFixed }}
+            - name: {{ toYaml .name | trim }}
+              value: {{ toYaml .value | trim }}
+          {{- end }}
+
+          volumeMounts:
+            - name: client-tls
+              readOnly: true
+              mountPath: "/client-tls"
+            {{- range .Values.web.secretMounts }}
+            - name: {{ toYaml .name | trim }}
+              readOnly: true
+              mountPath: {{ toYaml .mountPath | trim }}
+            {{- end }}
+            {{- range .Values.web.configmapMounts }}
+            - name: {{ toYaml .name | trim }}
+              mountPath: {{ toYaml .mountPath | trim }}
+            {{- end }}
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

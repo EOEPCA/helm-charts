@@ -1,0 +1,24 @@
+{{- $issuerRef := .Values.healthchecks.tls.issuerRef | default .Values.global.defaultInternalIssuerRef | required ".Values.healthchecks.tls.issuerRef or .Values.global.defaultInternalIssuerRef must be set" -}}
+{{- $issuerName := $issuerRef.name | required "You probably forgot to set .Values.healthchecks.tls.issuerRef.name" -}}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "resource-health.fullname" . }}-healthchecks-certificate
+  labels:
+    app.kubernetes.io/component: "mockapi"
+    {{- include "resource-health.labels" . | nindent 4 }}
+spec:
+  secretName: {{ include "resource-health.fullname" . }}-healthchecks-certificate
+  isCA: false
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+    - client auth
+  commonName: {{ .Values.healthchecks.tls.commonName }}
+  issuerRef:
+    {{- toYaml $issuerRef | nindent 4 }}
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS8
+    size: 2048

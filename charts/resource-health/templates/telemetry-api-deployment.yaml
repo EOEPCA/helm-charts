@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "resource-health.fullname" . }}-telemetry-api
+  labels:
+    app.kubernetes.io/component: "telemetryapi"
+    {{- include "resource-health.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.telemetry_api.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: "telemetryapi"
+      {{- include "resource-health.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/component: "telemetryapi"
+        {{- include "resource-health.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "resource-health.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: client-tls
+          secret:
+            ## TODO: Implement more restricted privileges
+            secretName: opensearch-admin-certificate
+        {{- if .Values.telemetry_api.use_hook_configmap }}
+        - name: telemetry-api-hooks
+          configMap:
+            name: {{ include "resource-health.fullname" . }}-telemetry-api-hooks-configmap
+        {{- end }}
+        {{- range .Values.telemetry_api.secretMounts }}
+        - name: {{ toYaml .name | trim }}
+          secret:
+            secretName: {{ toYaml .secretName | trim }}
+        {{- end }}
+        {{- range .Values.telemetry_api.configmapMounts }}
+        - name: {{ toYaml .name | trim }}
+          configMap:
+            name: {{ toYaml .configmapName | trim }}
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.telemetry_api.image.repository }}:{{ .Values.telemetry_api.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.telemetry_api.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.telemetry_api.containerPort }}
+              protocol: TCP
+          volumeMounts:
+          - name: client-tls
+            readOnly: true
+            mountPath: "/certs"
+          {{- if .Values.telemetry_api.use_hook_configmap }}
+          - name: telemetry-api-hooks
+            mountPath: /app/hooks/
+          {{- end }}
+            {{- range .Values.telemetry_api.secretMounts }}
+            - name: {{ toYaml .name | trim }}
+              readOnly: true
+              mountPath: {{ toYaml .mountPath | trim }}
+            {{- end }}
+            {{- range .Values.telemetry_api.configmapMounts }}
+            - name: {{ toYaml .name | trim }}
+              mountPath: {{ toYaml .mountPath | trim }}
+            {{- end }}
+          env:
+            - name: RH_TELEMETRY_HOOK_DIR_PATH
+              value: "/app/hooks/"
+          {{- range .Values.telemetry_api.environmentSecrets }}
+            - name: {{ toYaml .name | trim }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ toYaml .secret | trim }}
+                  key: {{ toYaml .key | trim }}
+          {{- end }}
+          {{- range .Values.telemetry_api.environmentFixed }}
+            - name: {{ toYaml .name | trim }}
+              value: {{ toYaml .value | trim }}
+          {{- end }}
+
+          ## TODO: add probe endpoints
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

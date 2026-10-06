@@ -1,0 +1,11 @@
+{{- if .Values.telemetry_api.use_hook_configmap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "resource-health.fullname" . }}-telemetry-api-hooks-configmap
+  labels:
+    app.kubernetes.io/component: "telemetryapi"
+    {{- include "resource-health.labels" . | nindent 4 }}
+data:
+  {{- .Values.telemetry_api.hooks | toYaml | nindent 2 }}
+{{ end }}

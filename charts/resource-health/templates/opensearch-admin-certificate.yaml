@@ -1,0 +1,22 @@
+{{- $name := .Values.global.defaultInternalIssuerRef.name | required ".Values.global.defaultInternalIssuerRef.name should be the certificate issuer of the internal cluster domain" -}}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: opensearch-admin-certificate
+  labels:
+    {{- include "resource-health.labels" . | nindent 4 }}
+spec:
+  secretName: opensearch-admin-certificate
+  isCA: false
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+    - client auth
+  commonName: opensearch-admin
+  issuerRef:
+    {{- toYaml .Values.global.defaultInternalIssuerRef | nindent 4 }}
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS8
+    size: 2048

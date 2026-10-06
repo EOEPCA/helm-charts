@@ -1,0 +1,24 @@
+{{- $issuerRef := .Values.mock_api.tls.issuerRef | default .Values.global.defaultInternalIssuerRef | required ".Values.mock_api.tls.issuerRef or .Values.global.defaultInternalIssuerRef must be set" -}}
+{{- $issuerName := $issuerRef.name | required "You probably forgot to set .Values.healthchecks.tls.issuerRef.name" -}}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "resource-health.fullname" . }}-mock-api-certificate
+  labels:
+    app.kubernetes.io/component: "mockapi"
+    {{- include "resource-health.labels" . | nindent 4 }}
+spec:
+  secretName: {{ include "resource-health.fullname" . }}-mock-api-certificate
+  isCA: false
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+    - client auth
+  commonName: {{ .Values.mock_api.tls.commonName }}
+  issuerRef:
+    {{- toYaml $issuerRef | nindent 4 }}
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS8
+    size: 2048

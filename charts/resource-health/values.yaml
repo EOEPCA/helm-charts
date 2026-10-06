@@ -1,0 +1,221 @@
+global:
+  ## A certificate issues for the above domain
+  defaultInternalIssuerRef:
+   kind: ClusterIssuer
+   name: null ## INSTRUCTION: certificate issuer
+
+  defaultHealthCheckImage:
+    repository: docker.io/eoepca/healthcheck_runner
+    pullPolicy: IfNotPresent
+    tag: "2.0.1-6cbbcf4"
+
+  ## TODO: Remove this default and make sure it is set or unused
+  defaultOTLPEndpoint: https://resource-health-opentelemetry-collector:4317
+  
+mock_api:
+  image:
+    repository: docker.io/eoepca/mock_service
+    pullPolicy: IfNotPresent
+    tag: "2.0.0"
+  serviceType: ClusterIP
+  containerPort: 5000
+  servicePort: 5000
+  replicaCount: 2
+  environmentFixed:
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      value: https://resource-health-opentelemetry-collector:4317
+  tls:
+    commonName: resource-health-mock-api
+    # issuerRef:
+    #   kind: ClusterIssuer
+    #   name: null ## INSTRUCTION: Set to name of certificate issuer for the internal cluster domain
+
+healthchecks:
+  use_template_configmap: False
+  templates:
+    nothing.py: |
+      ## Put some files containing templates here!
+
+  checks: []
+  # - name: hourly-mockapi-check
+  #   # image:
+  #   #   repository: docker.io/eoepca/healthcheck_runner
+  #   #   pullPolicy: IfNotPresent
+  #   #   tag: "2.0.0-rc1"
+  #   schedule: "@hourly"
+  #   # This is an empty requirements file
+  #   requirements: "https://gist.githubusercontent.com/tilowiklundSensmetry/a9fefe2873b731b483f554607a82deaa/raw/1136a82ca3c8f28b1ad4d895871514185927dd1c/requirements.txt"
+  #   script: "https://raw.githubusercontent.com/EOEPCA/resource-health/refs/tags/v0.1.0-demo/pytest-health/instrumentation/examples/mock_api_check.py"
+  #   # overrideOTLPEndpoint: https://resource-health-opentelemetry-collector:4317
+  #   env:
+  #     - name: MOCK_API_HOST
+  #       value: http://resource-health-mockapi:5000
+
+  # - name: daily-trivial-check
+  #   ## Every day at 08:00
+  #   schedule: "0 8 * * *"
+  #   # This is an empty requirements file
+  #   requirements: "https://gist.githubusercontent.com/tilowiklundSensmetry/a9fefe2873b731b483f554607a82deaa/raw/1136a82ca3c8f28b1ad4d895871514185927dd1c/requirements.txt"
+  #   script: "https://raw.githubusercontent.com/EOEPCA/resource-health/refs/tags/v0.1.0-demo/pytest-health/instrumentation/examples/trivial_check.py"
+  
+  tls:
+    commonName: healthchecks
+    # issuerRef:
+    #   kind: ClusterIssuer
+    #   name: null ## INSTRUCTION: Set to name of certificate issuer for the internal cluster domain
+
+check_api:
+  image:
+    repository: docker.io/eoepca/resourcehealth_check_api
+    pullPolicy: IfNotPresent
+    tag: "2.1.1-b013dbe"
+  serviceType: ClusterIP
+  containerPort: 8000
+  servicePort: 8000
+  replicaCount: 2
+
+  use_hook_configmap: False
+  hooks:
+    nothing.py: |
+      ## Put some files containing hooks here!
+
+  environmentFixed: []
+  # - name: ...
+  #   secret: ...
+  #   key: ...
+  environmentSecrets: []
+  # - name: ...
+  #   value: ...
+  configmapMounts: []
+  # - name: ...
+  #   configmapName: ...
+  #   mountPath: ...
+
+telemetry_api:
+  image:
+    repository: docker.io/eoepca/resourcehealth_telemetry_api
+    pullPolicy: IfNotPresent
+    tag: "2.1.0-542cd1c"
+  serviceType: ClusterIP
+  containerPort: 8080
+  servicePort: 8080
+  replicaCount: 2
+
+  use_hook_configmap: False
+  hooks:
+    nothing.py: |
+      ## Put some files containing hooks here!
+
+  environmentFixed:
+  # - name: RH_TELEMETRY_API_BASE_URL
+  #   value: https://resource-health.develop.eoepca.org/api/telemetry/
+  # - name: ...
+  #   secret: ...
+  #   key: ...
+  environmentSecrets: []
+  # - name: ...
+  #   value: ...
+
+alerting:
+  image:
+    repository: docker.io/eoepca/resourcehealth_alerting
+    pullPolicy: IfNotPresent
+    tag: v0.3.0-internal3-228e070
+  serviceType: ClusterIP
+  containerPort: 50051
+  servicePort: 50051
+  environmentFixed:
+  - name: ERROR_TRACES_FILE
+    value: error_traces.sqlite3
+  - name: TRACE_INFOS_FILE
+    value: trace_infos.sqlite3
+  
+  - name: TRACE_RECEIVER_ADDRESS
+    value: "[::]:50051"
+  - name: TRACE_RECEIVER_MAX_WORKERS
+    value: "20"
+  - name: TRACE_RECEIVER_LOG_LEVEL
+    value: INFO
+  
+  - name: EMAIL_COUNTERS
+    value: email_counters.sqlite3
+  # - name: MAX_EMAILS_PER_DAY
+  #   value: "300"
+  # - name: ALERT_USER_EMAILS
+  #   value: alert_user_emails.json
+  # - name: SMTP_MAILER_HOST
+  #   value: smtp.gmail.com
+  # - name: SMTP_MAILER_PORT
+  #   value: "465"
+  - name: EXECUTE_PERIOD_SECS
+    value: "10"
+  - name: SEND_NOTIF_SECS
+    value: "60"
+  - name: REMOVE_TRACE_SECS
+    value: "600"
+  - name: NOTIFIER_LOG_LEVEL
+    value: INFO
+
+
+web:
+  image:
+    repository: docker.io/eoepca/resourcehealth_web
+    pullPolicy: IfNotPresent
+    tag: "2.0.0"
+  serviceType: ClusterIP
+  containerPort: 3000
+  servicePort: 80
+  replicaCount: 2
+  environmentSecrets: []
+  environmentFixed: []
+  tls:
+    client:
+      commonName: resource-health-web
+      # issuerRef:
+      #   kind: ClusterIssuer
+      #   name: null ## INSTRUCTION: Set to name of certificate issuer for the internal cluster domain
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+## NOTE: Currently not used
+ingress:
+  enabled: false
+  # className: "traefik"
+  # annotations: {}
+  # host: "kubernetes"
+  # tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

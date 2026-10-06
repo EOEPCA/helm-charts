@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: resource-health-alerting
+  labels:
+    app.kubernetes.io/component: "alerting"
+    {{- include "resource-health.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.alerting.serviceType }}
+  ports:
+    - port: {{ .Values.alerting.servicePort }}
+      targetPort: {{ .Values.alerting.containerPort }}
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/component: "alerting"
+    {{- include "resource-health.selectorLabels" . | nindent 4 }}
