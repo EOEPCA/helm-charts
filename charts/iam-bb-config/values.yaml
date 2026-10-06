@@ -10,7 +10,7 @@
 
 iam:
   keycloak:
-    enabled: true
+    #enabled: true
     # Optional configuration to apply as Crossplane CRs.
     # Evaluated by the iam-bb-config Helm chart.
     # See also section keycloak.keycloakConfigCli for another way to
@@ -29,11 +29,15 @@ iam:
         # Set to true to auto-generate realm as Crossplane CR.
         # Note that this only makes sense if useKeycloakConfigCli is set to
         # false and the iam-bb-config chart is applied separately.
-        create: false
+        # NOT USED ANY MORE since EOEPCA 2.1
+        #create: false
+        # Preliminary option to allow Crossplane-based realm creation
+        # until its final removal
+        # DEPRECATED
+        createUsingCrossplane: false
         # Name of realm to create or of existing realm to create clients in
         name: eoepca
         displayName: EOEPCA
-        # TODO: Maybe add spec or forProvider section here and reference it from template
       provider:
         # Reference to existing ProviderConfig to use (instead of creating own one)
         existingConfigRef: ""
@@ -46,7 +50,7 @@ iam:
           key: ""
           namespace: ""
   opa:
-    enabled: false
+    #enabled: false
     # "Official" OPA URL (used as root URL for the client if one is created)
     url: https://iam-opa.develop.eoepca.org
     # Client credentials:
@@ -54,12 +58,13 @@ iam:
     clientId: opa
     # clientSecretRef: Name of an existing secret that contains the client secret and maybe further values like the client ID
     clientSecretRef: ""
-  identityApi:
-    enabled: false
-    # "Official" Identity API URL (used as root URL for the client if one is created)
-    url: https://identity-api.develop.eoepca.org
-    # Client credentials:
-    # clientId is mandatory if clientSecretRef is *not* specified.
-    clientId: identity-api
-    # clientSecretRef: Name of an existing secret that contains the client secret and maybe further values
-    clientSecretRef: ""
+  config:
+    # Allows specifying a deviating namespace to which Crossplane resources
+    # shall be installed.
+    # Note: The namespace must already exist. It is not created by the Helm chart.
+    targetNamespace: ~
+    # If a target namespace is specified and this parameter is true, the config Helm
+    # chart generates external secrets in the target namespace, which effectively
+    # creates a copy of the provider and opa-route secrets in the management namespace.
+    # Note that this requires External Secrets Operator to be installed.
+    propagateSecrets: true

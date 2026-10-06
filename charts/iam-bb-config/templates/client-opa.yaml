@@ -1,22 +1,22 @@
 {{ if .Values.iam.keycloak.configuration.useCrossplane -}}
 {{ if .Values.iam.keycloak.configuration.createClients -}}
 {{ if .Values.iam.opa.enabled -}}
-apiVersion: openidclient.keycloak.crossplane.io/v1alpha1
+apiVersion: openidclient.keycloak.m.crossplane.io/v1alpha1
 kind: Client
 metadata:
   name: {{ printf "%s-opa-client" .Release.Name }}
+  namespace: {{ .Values.iam.config.targetNamespace | default .Release.Namespace }}
 spec:
-  deletionPolicy: Delete
   forProvider:
     accessType: CONFIDENTIAL
     clientId: {{ .Values.iam.opa.clientId | default "opa" | quote }}
     clientSecretSecretRef:
       key: client_secret
       name: {{ .Values.iam.opa.clientSecretRef | default "opa-route" | quote }}
-      namespace: {{ .Release.Namespace }}
     realmId: {{ .Values.iam.keycloak.configuration.realm.name }}
-    serviceAccountsEnabled: true
+    serviceAccountsEnabled: false
     standardFlowEnabled: true
+    pkceCodeChallengeMethod: S256
     useRefreshTokens: true
     name: {{ .Values.iam.opa.clientId | default "opa" | quote }}
 {{- if .Values.iam.opa.url }}
@@ -31,7 +31,29 @@ spec:
     webOrigins:
       - "/*"
   providerConfigRef:
-    name: {{ .Values.iam.keycloak.configuration.provider.existingConfigRef | default (printf "%s-keycloak-provider-config" .Release.Name) }}
+    kind: ProviderConfig
+    name: {{ .Values.iam.keycloak.configuration.provider.existingConfigRef | default "keycloak-provider-config" }}
+---
+apiVersion: client.keycloak.m.crossplane.io/v1alpha1
+kind: ProtocolMapper
+metadata:
+  name: {{ printf "%s-opa-client-audience" .Release.Name }}
+  namespace: {{ .Values.iam.config.targetNamespace | default .Release.Namespace }}
+spec:
+  forProvider:
+    realmId: {{ .Values.iam.keycloak.configuration.realm.name }}
+    clientIdRef:
+      name: {{ printf "%s-opa-client" .Release.Name }}
+      namespace: {{ .Values.iam.config.targetNamespace | default .Release.Namespace }}
+    name: {{ printf "audience-%s" .Values.iam.opa.clientId | default "opa" | quote }}
+    protocol: openid-connect
+    protocolMapper: oidc-audience-mapper
+    config:
+      access.token.claim: 'true'
+      included.client.audience: {{ .Values.iam.opa.clientId | default "opa" | quote }}
+  providerConfigRef:
+    kind: ProviderConfig
+    name: {{ .Values.iam.keycloak.configuration.provider.existingConfigRef | default "keycloak-provider-config" }}
 {{- end }}
 {{- end }}
 {{- end }}
