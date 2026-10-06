@@ -1,0 +1,157 @@
+{{- if .Values.apiServerSource.enabled }}
+{{- $name := default (printf "%s-api-server-source" .Release.Name) .Values.apiServerSource.name }}
+{{- $saName := default $name .Values.apiServerSource.serviceAccount.name }}
+{{- $autoSinkToDefaultBroker := .Values.eventing.defaultBroker.create }}
+
+{{- if .Values.apiServerSource.serviceAccount.create }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $saName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: api-server-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $saName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: api-server-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+rules:
+{{- range .Values.apiServerSource.resources }}
+- apiGroups:
+  - {{ if contains "/" .apiVersion }}{{ (split "/" .apiVersion)._0 }}{{ else }}""{{ end }}
+  resources:
+  - {{ .kind | lower }}s
+  verbs:
+  - get
+  - list
+  - watch
+{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $saName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: api-server-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $saName }}
+subjects:
+- kind: ServiceAccount
+  name: {{ $saName }}
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ $saName }}-{{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: api-server-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+rules:
+{{- range .Values.apiServerSource.resources }}
+- apiGroups:
+  - {{ if contains "/" .apiVersion }}{{ (split "/" .apiVersion)._0 }}{{ else }}""{{ end }}
+  resources:
+  - {{ .kind | lower }}s
+  verbs:
+  - get
+  - list
+  - watch
+{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ $saName }}-{{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: api-server-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ $saName }}-{{ .Release.Namespace }}
+subjects:
+- kind: ServiceAccount
+  name: {{ $saName }}
+  namespace: {{ .Release.Namespace }}
+---
+{{- end }}
+
+apiVersion: sources.knative.dev/v1
+kind: ApiServerSource
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: api-server-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- if .Values.eventing.install }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "5"
+{{- end }}
+spec:
+  serviceAccountName: {{ $saName }}
+  mode: {{ .Values.apiServerSource.mode }}
+  resources:
+  {{- range .Values.apiServerSource.resources }}
+  - apiVersion: {{ .apiVersion }}
+    kind: {{ .kind }}
+    {{- if .selector }}
+    selector:
+      {{- if .selector.matchLabels }}
+      matchLabels:
+        {{- range $key, $val := .selector.matchLabels }}
+        {{ $key }}: {{ $val | quote }}
+        {{- end }}
+      {{- end }}
+      {{- if .selector.matchExpressions }}
+      matchExpressions:
+        {{- range .selector.matchExpressions }}
+        - key: {{ .key }}
+          operator: {{ .operator }}
+          {{- if .values }}
+          values:
+            {{- range .values }}
+            - {{ . | quote }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  sink:
+    {{- if and .Values.apiServerSource.sink.ref.name (ne .Values.apiServerSource.sink.ref.name "") }}
+    ref:
+      apiVersion: {{ .Values.apiServerSource.sink.ref.apiVersion }}
+      kind: {{ .Values.apiServerSource.sink.ref.kind }}
+      name: {{ .Values.apiServerSource.sink.ref.name }}
+      {{- if .Values.apiServerSource.sink.ref.namespace }}
+      namespace: {{ .Values.apiServerSource.sink.ref.namespace }}
+      {{- end }}
+    {{- else if $autoSinkToDefaultBroker }}
+    ref:
+      apiVersion: eventing.knative.dev/v1
+      kind: Broker
+      name: {{ .Values.eventing.defaultBroker.name }}
+    {{- end }}
+    {{- if and .Values.apiServerSource.sink.uri (ne .Values.apiServerSource.sink.uri "") }}
+    uri: {{ .Values.apiServerSource.sink.uri | quote }}
+    {{- end }}
+{{- end }}

@@ -1,0 +1,217 @@
+# Default values for notification-automation.
+# This is a YAML-formatted file.
+# Declare variables to be substituted into your templates.
+
+replicaCount: 1
+
+# Control CRD presence checks (used by templates/knative-crd-check.yaml)
+crdChecks:
+  # When true, chart will verify Knative Operator CRDs exist in the cluster and fail if missing.
+  # Keep this false for `helm template` or other offline renders where `lookup` cannot access the cluster.
+  enforce: false
+
+# Knative Eventing configuration
+eventing:
+  # Specifies whether KnativeEventing should be installed
+  install: false
+  # Version of KnativeEventing to install
+  version: "1.18.1"
+  # Namespace where KnativeEventing should be installed
+  namespace: knative-eventing
+  # Enable OIDC authentication
+  authenticationOidc: true
+  defaultAuthorizationMode: ""
+  # Wait for Knative CRDs Job configuration (used when eventing.install=true)
+  waitForCRDs:
+    image: "bitnami/kubectl:latest"
+    timeoutSeconds: 300
+  # Default Broker configuration
+  defaultBroker:
+    # Specifies whether a default Broker should be created
+    create: true
+    # Name of the default Broker
+    name: default
+
+# Knative Serving configuration
+serving:
+  # Specifies whether KnativeServing should be installed
+  install: false
+  # Version of KnativeServing to install
+  version: "1.18.0"
+  # Namespace where KnativeServing should be installed
+  namespace: knative-serving
+  # Domain configuration
+  domain: develop.eoepca.org
+
+
+
+# na-emailer configuration
+emailer:
+  # Specifies whether na-emailer should be deployed
+  install: false
+  replicaCount: 1
+  image:
+    repository: ghcr.io/eoepca/na-emailer
+    tag: latest
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  service:
+    type: ClusterIP
+    port: 80
+  resources: {}
+  # Configuration mapped to na-emailer environment variables
+  config:
+    logLevel: "INFO"
+    # Filtering
+    filterMode: "all"           # all|any
+    filtersJson: ""             # JSON object string
+    # Templates
+    templateDefault: "default"
+    templateMapJson: ""         # JSON object string
+    templateStrictUndefined: false
+    templatesInlineJson: ""     # JSON object string
+    # Email addressing defaults
+    emailFrom: ""
+    emailTo: ""                 # comma-separated list
+    emailCc: ""
+    emailBcc: ""
+    emailSubjectPrefix: ""
+    # Email client
+    emailClient: "yagmail"
+    dryRun: false
+    # Yagmail SMTP settings
+    yagmailUser: ""
+    yagmailPassword: ""
+    yagmailHost: ""
+    yagmailPort: ""
+    yagmailSmtpStarttls: ""
+    yagmailSmtpSsl: ""
+
+image:
+  repository: ""
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+webhookSource:
+  enabled: false
+  # Override the Knative Service name (determines public URL: <name>.<namespace>.<domain>)
+  # When empty, defaults to "<release>-webhook-source"
+  nameOverride: ""
+  # Knative autoscaling
+  minScale: "1"
+  maxScale: "5"
+  image:
+    repository: "ghcr.io/eoepca/na-webhook-source"
+    tag: "sha-405af37"
+    pullPolicy: IfNotPresent
+  containerPort: 8080
+  serviceAccount:
+    create: true
+    name: ""
+  # Optional: custom domain mapping for the Knative Service.
+  # When set, a DomainMapping is created. When empty, the auto-generated
+  # Knative URL is used: <name>.<namespace>.<serving.domain>
+  domainMapping:
+    domain: ""
+  configMap:
+    create: false
+    name: ""
+    key: projects.json
+    projectsJson: "{}"
+  secrets:
+    create: false
+    name: ""
+    githubKey: github-secret
+    gitlabKey: gitlab-secret
+    githubSecret: ""
+    gitlabSecret: ""
+  oidcTokenPath: /var/run/secrets/kubernetes.io/serviceaccount/token
+  sinkBinding:
+    create: false
+    name: ""
+    subject:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: ""
+    sink:
+      ref:
+        apiVersion: eventing.knative.dev/v1
+        kind: Broker
+        name: default
+        namespace: ""
+      uri: ""
+  extraEnv: []
+
+# ApiServerSource configuration
+apiServerSource:
+  enabled: false
+  # Name override (default: <release>-api-server-source)
+  name: ""
+  # Service account used by the ApiServerSource (needs RBAC to watch resources)
+  serviceAccount:
+    create: true
+    name: ""
+  # Kubernetes resources to watch.
+  # Each entry requires apiVersion and kind.
+  # Optional: add a selector with matchLabels / matchExpressions to filter resources.
+  #   selector:
+  #     matchLabels:
+  #       key: value
+  #     matchExpressions:
+  #       - key: app
+  #         operator: In
+  #         values: [myapp, yourapp]
+  resources:
+#    - apiVersion: v1
+#      kind: Event
+    - apiVersion: training.educates.dev/v1beta1
+      kind: WorkshopSession
+    - apiVersion: apps/v1
+      kind: Deployment
+    - apiVersion: apps/v1
+      kind: StatefulSet
+    - apiVersion: batch/v1
+      kind: Job
+  # Event mode: "Reference" sends only a reference, "Resource" sends the full resource body
+  mode: Resource
+  # Sink configuration – when left empty and eventing.defaultBroker.create is true,
+  # the source automatically targets the default broker.
+  sink:
+    ref:
+      apiVersion: eventing.knative.dev/v1
+      kind: Broker
+      name: ""
+      namespace: ""
+    uri: ""
+
+# CloudEvents Player configuration
+cloudEventsPlayer:
+  enabled: false
+  # Override the Knative Service name (determines public URL: <name>.<namespace>.<domain>)
+  # When empty, defaults to "<release>-cloudevents-player"
+  nameOverride: ""
+  # When false (default), the ksvc is cluster-local (private).
+  # Set to true to expose it externally via Knative's ingress gateway.
+  public: false
+  # Knative autoscaling
+  minScale: "1"
+  maxScale: "1"
+  image:
+    repository: "quay.io/ruben/cloudevents-player"
+    tag: "v1.3"
+    pullPolicy: IfNotPresent
+  containerPort: 8080
+  serviceAccount:
+    create: true
+    name: ""
+  # Optional: custom domain mapping for the Knative Service.
+  # When set, a DomainMapping is created. When empty, the auto-generated
+  # Knative URL is used: <name>.<namespace>.<serving.domain>
+  domainMapping:
+    domain: ""
+  subscribeBroker:
+    enabled: true
+    broker:
+      name: ""
+  extraEnv: []

@@ -1,0 +1,45 @@
+{{- if .Values.webhookSource.enabled }}
+{{- $name := default (printf "%s-webhook-source" .Release.Name) .Values.webhookSource.nameOverride }}
+{{- $autoSinkToDefaultBroker := .Values.eventing.defaultBroker.create }}
+{{- if or .Values.webhookSource.sinkBinding.create $autoSinkToDefaultBroker }}
+apiVersion: sources.knative.dev/v1
+kind: SinkBinding
+metadata:
+  name: {{ default (printf "%s-binding" $name) .Values.webhookSource.sinkBinding.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: webhook-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- if .Values.eventing.install }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "5"
+{{- end }}
+spec:
+  subject:
+    apiVersion: {{ default "serving.knative.dev/v1" .Values.webhookSource.sinkBinding.subject.apiVersion }}
+    kind: {{ default "Service" .Values.webhookSource.sinkBinding.subject.kind }}
+    name: {{ default $name .Values.webhookSource.sinkBinding.subject.name }}
+  sink:
+    {{- if .Values.webhookSource.sinkBinding.create }}
+    {{- if .Values.webhookSource.sinkBinding.sink.ref }}
+    ref:
+      apiVersion: {{ .Values.webhookSource.sinkBinding.sink.ref.apiVersion }}
+      kind: {{ .Values.webhookSource.sinkBinding.sink.ref.kind }}
+      name: {{ .Values.webhookSource.sinkBinding.sink.ref.name }}
+      {{- if .Values.webhookSource.sinkBinding.sink.ref.namespace }}
+      namespace: {{ .Values.webhookSource.sinkBinding.sink.ref.namespace }}
+      {{- end }}
+    {{- end }}
+    {{- if and .Values.webhookSource.sinkBinding.sink.uri (ne .Values.webhookSource.sinkBinding.sink.uri "") }}
+    uri: {{ .Values.webhookSource.sinkBinding.sink.uri | quote }}
+    {{- end }}
+    {{- else if $autoSinkToDefaultBroker }}
+    ref:
+      apiVersion: eventing.knative.dev/v1
+      kind: Broker
+      name: {{ .Values.eventing.defaultBroker.name }}
+    {{- end }}
+{{- end }}
+{{- end }}

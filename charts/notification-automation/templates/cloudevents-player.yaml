@@ -1,0 +1,68 @@
+{{- if .Values.cloudEventsPlayer.enabled }}
+{{- $name := default (printf "%s-cloudevents-player" .Release.Name) .Values.cloudEventsPlayer.nameOverride }}
+{{- $saName := default $name .Values.cloudEventsPlayer.serviceAccount.name }}
+{{- $imageRepo := required "cloudEventsPlayer.image.repository is required when cloudEventsPlayer.enabled=true" .Values.cloudEventsPlayer.image.repository }}
+{{- $imageTag := default "latest" .Values.cloudEventsPlayer.image.tag }}
+
+{{- if .Values.cloudEventsPlayer.serviceAccount.create }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $saName }}
+  labels:
+    app.kubernetes.io/name: cloudevents-player
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+---
+{{- end }}
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: cloudevents-player
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- if not .Values.cloudEventsPlayer.public }}
+    networking.knative.dev/visibility: cluster-local
+    {{- end }}
+{{- if .Values.serving.install }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "5"
+{{- end }}
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/min-scale: {{ .Values.cloudEventsPlayer.minScale | quote }}
+        autoscaling.knative.dev/max-scale: {{ .Values.cloudEventsPlayer.maxScale | quote }}
+    spec:
+      serviceAccountName: {{ $saName }}
+      containers:
+      - image: {{ $imageRepo }}:{{ $imageTag }}
+        imagePullPolicy: {{ .Values.cloudEventsPlayer.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.cloudEventsPlayer.containerPort }}
+          protocol: TCP
+        {{- if .Values.cloudEventsPlayer.extraEnv }}
+        env:
+        {{- toYaml .Values.cloudEventsPlayer.extraEnv | nindent 8 }}
+        {{- end }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.cloudEventsPlayer.containerPort }}
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.cloudEventsPlayer.containerPort }}
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+
+{{- end }}

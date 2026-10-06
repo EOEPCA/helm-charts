@@ -1,0 +1,8 @@
+{{- if .Values.serving.install }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.serving.namespace }}
+  labels:
+    name: {{ .Values.serving.namespace }}
+{{- end }}

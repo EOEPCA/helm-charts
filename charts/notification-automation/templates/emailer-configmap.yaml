@@ -1,0 +1,54 @@
+{{- if .Values.emailer.install }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-emailer
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: na-emailer
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  NA_LOG_LEVEL: {{ .Values.emailer.config.logLevel | quote }}
+  NA_FILTER_MODE: {{ .Values.emailer.config.filterMode | quote }}
+  {{- if .Values.emailer.config.filtersJson }}
+  NA_FILTERS_JSON: {{ .Values.emailer.config.filtersJson | quote }}
+  {{- end }}
+  {{- if .Values.emailer.config.templateMapJson }}
+  NA_TEMPLATE_MAP_JSON: {{ .Values.emailer.config.templateMapJson | quote }}
+  {{- end }}
+  NA_TEMPLATE_DEFAULT: {{ .Values.emailer.config.templateDefault | quote }}
+  NA_TEMPLATE_STRICT_UNDEFINED: {{ .Values.emailer.config.templateStrictUndefined | quote }}
+  {{- if .Values.emailer.config.templatesInlineJson }}
+  NA_TEMPLATES_INLINE_JSON: {{ .Values.emailer.config.templatesInlineJson | quote }}
+  {{- end }}
+  {{- if .Values.emailer.config.emailFrom }}
+  NA_EMAIL_FROM: {{ .Values.emailer.config.emailFrom | quote }}
+  {{- end }}
+  {{- if .Values.emailer.config.emailTo }}
+  NA_EMAIL_TO: {{ .Values.emailer.config.emailTo | quote }}
+  {{- end }}
+  {{- if .Values.emailer.config.emailCc }}
+  NA_EMAIL_CC: {{ .Values.emailer.config.emailCc | quote }}
+  {{- end }}
+  {{- if .Values.emailer.config.emailBcc }}
+  NA_EMAIL_BCC: {{ .Values.emailer.config.emailBcc | quote }}
+  {{- end }}
+  {{- if .Values.emailer.config.emailSubjectPrefix }}
+  NA_EMAIL_SUBJECT_PREFIX: {{ .Values.emailer.config.emailSubjectPrefix | quote }}
+  {{- end }}
+  NA_EMAIL_CLIENT: {{ .Values.emailer.config.emailClient | quote }}
+  NA_DRY_RUN: {{ .Values.emailer.config.dryRun | quote }}
+  {{- if .Values.emailer.config.yagmailHost }}
+  NA_YAGMAIL_HOST: {{ .Values.emailer.config.yagmailHost | quote }}
+  {{- end }}
+  {{- if .Values.emailer.config.yagmailPort }}
+  NA_YAGMAIL_PORT: {{ .Values.emailer.config.yagmailPort | quote }}
+  {{- end }}
+  {{- if .Values.emailer.config.yagmailSmtpStarttls }}
+  NA_YAGMAIL_SMTP_STARTTLS: {{ .Values.emailer.config.yagmailSmtpStarttls | quote }}
+  {{- end }}
+  {{- if .Values.emailer.config.yagmailSmtpSsl }}
+  NA_YAGMAIL_SMTP_SSL: {{ .Values.emailer.config.yagmailSmtpSsl | quote }}
+  {{- end }}
+{{- end }}

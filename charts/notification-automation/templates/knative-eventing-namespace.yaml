@@ -1,0 +1,8 @@
+{{- if .Values.eventing.install }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.eventing.namespace }}
+  labels:
+    name: {{ .Values.eventing.namespace }}
+{{- end }}

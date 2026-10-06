@@ -1,0 +1,21 @@
+{{- if .Values.eventing.defaultBroker.create }}
+apiVersion: eventing.knative.dev/v1
+kind: Broker
+metadata:
+  name: {{ .Values.eventing.defaultBroker.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    eventing.knative.dev/broker.class: MTChannelBasedBroker
+{{- if .Values.eventing.install }}
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "0"
+spec:
+  config:
+    apiVersion: v1
+    kind: ConfigMap
+    name: config-br-default-channel
+    namespace: {{ .Values.eventing.namespace }}
+{{- else }}
+spec: {}
+{{- end }}
+{{- end }}

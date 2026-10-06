@@ -1,0 +1,22 @@
+{{- if and .Values.cloudEventsPlayer.enabled .Values.cloudEventsPlayer.domainMapping.domain (ne .Values.cloudEventsPlayer.domainMapping.domain "") }}
+{{- $name := default (printf "%s-cloudevents-player" .Release.Name) .Values.cloudEventsPlayer.nameOverride }}
+apiVersion: serving.knative.dev/v1beta1
+kind: DomainMapping
+metadata:
+  name: {{ .Values.cloudEventsPlayer.domainMapping.domain }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: cloudevents-player
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- if .Values.serving.install }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "10"
+{{- end }}
+spec:
+  ref:
+    name: {{ $name }}
+    kind: Service
+    apiVersion: serving.knative.dev/v1
+{{- end }}

@@ -1,0 +1,4 @@
+#dependencies:
+#  - name: knative-operator
+#    repository: https://knative.github.io/operator
+#    version: v1.19.2

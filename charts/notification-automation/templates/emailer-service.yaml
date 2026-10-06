@@ -1,0 +1,21 @@
+{{- if .Values.emailer.install }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-emailer
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: na-emailer
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.emailer.service.type }}
+  ports:
+    - port: {{ .Values.emailer.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: na-emailer
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}

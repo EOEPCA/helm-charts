@@ -1,0 +1,124 @@
+{{- if .Values.webhookSource.enabled }}
+{{- $name := default (printf "%s-webhook-source" .Release.Name) .Values.webhookSource.nameOverride }}
+{{- $saName := default $name .Values.webhookSource.serviceAccount.name }}
+{{- $imageRepo := required "webhookSource.image.repository is required when webhookSource.enabled=true" .Values.webhookSource.image.repository }}
+{{- $imageTag := default "latest" .Values.webhookSource.image.tag }}
+{{- $autoSinkToDefaultBroker := .Values.eventing.defaultBroker.create }}
+{{- $cmName := default (printf "%s-webhook-source" .Release.Name) .Values.webhookSource.configMap.name }}
+{{- $cmKey := .Values.webhookSource.configMap.key }}
+{{- $secretName := default (printf "%s-webhook-source" .Release.Name) .Values.webhookSource.secrets.name }}
+{{- $githubKey := .Values.webhookSource.secrets.githubKey }}
+{{- $gitlabKey := .Values.webhookSource.secrets.gitlabKey }}
+
+{{- if .Values.webhookSource.serviceAccount.create }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $saName }}
+  labels:
+    app.kubernetes.io/name: webhook-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+---
+{{- end }}
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: webhook-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- if .Values.serving.install }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "5"
+{{- end }}
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/min-scale: {{ .Values.webhookSource.minScale | quote }}
+        autoscaling.knative.dev/max-scale: {{ .Values.webhookSource.maxScale | quote }}
+    spec:
+      serviceAccountName: {{ $saName }}
+      containers:
+      - image: {{ $imageRepo }}:{{ $imageTag }}
+        imagePullPolicy: {{ .Values.webhookSource.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.webhookSource.containerPort }}
+          protocol: TCP
+        env:
+        - name: GITHUB_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ $secretName }}
+              key: {{ $githubKey }}
+              optional: true
+        - name: GITLAB_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ $secretName }}
+              key: {{ $gitlabKey }}
+              optional: true
+        - name: OIDC_TOKEN_PATH
+          value: {{ .Values.webhookSource.oidcTokenPath | quote }}
+        - name: PROJECTS_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: {{ $cmName }}
+              key: {{ $cmKey }}
+              optional: true
+        {{- if .Values.webhookSource.extraEnv }}
+        {{- toYaml .Values.webhookSource.extraEnv | nindent 8 }}
+        {{- end }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.webhookSource.containerPort }}
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: {{ .Values.webhookSource.containerPort }}
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+
+{{- if .Values.webhookSource.configMap.create }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $cmName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: webhook-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  {{ $cmKey }}: |
+{{ .Values.webhookSource.configMap.projectsJson | nindent 4 }}
+---
+{{- end }}
+
+{{- if .Values.webhookSource.secrets.create }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $secretName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: webhook-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+type: Opaque
+stringData:
+  {{ $githubKey }}: {{ .Values.webhookSource.secrets.githubSecret | quote }}
+  {{ $gitlabKey }}: {{ .Values.webhookSource.secrets.gitlabSecret | quote }}
+---
+{{- end }}
+
+{{- end }}

@@ -1,0 +1,40 @@
+{{- if .Values.eventing.install }}
+{{- $defaultAuthorizationMode := .Values.eventing.defaultAuthorizationMode }}
+{{- if and (not $defaultAuthorizationMode) (not .Values.eventing.authenticationOidc) }}
+{{- $defaultAuthorizationMode = "allow-all" }}
+{{- end }}
+apiVersion: operator.knative.dev/v1beta1
+kind: KnativeEventing
+metadata:
+  name: knative-eventing
+  namespace: {{ .Values.eventing.namespace }}
+spec:
+  deployments:
+    - name: eventing-webhook
+      resources:
+      - container: eventing-webhook
+        limits:
+          memory: "500Mi"
+          cpu: "500m"
+        requests:
+          memory: "200Mi"
+          cpu: "200m"
+  config:
+    config-features:
+      authentication-oidc: {{ if .Values.eventing.authenticationOidc }}enabled{{ else }}disabled{{ end }}
+      {{- if $defaultAuthorizationMode }}
+      default-authorization-mode: {{ $defaultAuthorizationMode }}
+      {{- end }}
+      eventtype-auto-create: enabled
+    default-ch-webhook:
+      default-ch-config: |
+        clusterDefault:
+          apiVersion: messaging.knative.dev/v1
+          kind: InMemoryChannel
+          spec:
+            delivery:
+              backoffDelay: PT0.5S
+              backoffPolicy: exponential
+              retry: 5
+  version: {{ .Values.eventing.version }}
+{{- end }}

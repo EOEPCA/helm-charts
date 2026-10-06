@@ -1,0 +1,22 @@
+{{- if and .Values.webhookSource.enabled .Values.webhookSource.domainMapping.domain (ne .Values.webhookSource.domainMapping.domain "") }}
+{{- $name := default (printf "%s-webhook-source" .Release.Name) .Values.webhookSource.nameOverride }}
+apiVersion: serving.knative.dev/v1beta1
+kind: DomainMapping
+metadata:
+  name: {{ .Values.webhookSource.domainMapping.domain }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: webhook-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- if .Values.serving.install }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "10"
+{{- end }}
+spec:
+  ref:
+    name: {{ $name }}
+    kind: Service
+    apiVersion: serving.knative.dev/v1
+{{- end }}

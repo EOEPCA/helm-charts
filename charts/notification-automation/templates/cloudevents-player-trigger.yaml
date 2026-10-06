@@ -1,0 +1,34 @@
+{{- if .Values.cloudEventsPlayer.enabled }}
+{{- $name := default (printf "%s-cloudevents-player" .Release.Name) .Values.cloudEventsPlayer.nameOverride }}
+{{- if .Values.cloudEventsPlayer.subscribeBroker.enabled }}
+{{- $brokerRef := .Values.cloudEventsPlayer.subscribeBroker.broker }}
+{{- $brokerName := $brokerRef.name }}
+{{- if and (not $brokerName) .Values.eventing.defaultBroker.create }}
+{{- $brokerName = .Values.eventing.defaultBroker.name }}
+{{- end }}
+{{- if $brokerName }}
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: {{ $name }}-trigger
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: cloudevents-player
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- if .Values.eventing.install }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "5"
+{{- end }}
+spec:
+  broker: {{ $brokerName }}
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: {{ $name }}
+    uri: /
+{{- end }}
+{{- end }}
+{{- end }}
