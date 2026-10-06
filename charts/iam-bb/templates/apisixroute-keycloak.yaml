@@ -1,4 +1,4 @@
-{{ if .Values.keycloak.enabled -}}
+{{ if .Values.iam.keycloak.enabled -}}
 {{ if .Values.iam.keycloak.createRoute -}}
 apiVersion: apisix.apache.org/v2
 kind: ApisixRoute
@@ -7,22 +7,51 @@ metadata:
   annotations:
     ingress.kubernetes.io/ssl-redirect: "true"
 spec:
+  ingressClassName: {{ .Values.iam.apisix.ingressClassName }}
   http:
   - backends:
-    - serviceName: {{ printf "%s-keycloak" .Release.Name }} #iam-keycloak
-{{- if .Values.keycloak.tls.enabled }}
-      servicePort: 443
+    - serviceName: {{ printf "%s-keycloak-operator-service" .Release.Name }}
+#    - serviceName: {{ printf "%s-keycloak" .Release.Name }}
+{{- if .Values.iam.keycloak.tls.enabled }}
+      #servicePort: 443
+      servicePort: 8443
 {{- else }}
-      servicePort: 80
+      #servicePort: 80
+      servicePort: 8080
 {{- end }}
     match:
       hosts: {{- .Values.iam.keycloak.hosts | toYaml | nindent 6 }}
       paths: {{- .Values.iam.keycloak.paths | toYaml | nindent 6 }}
     name: keycloak
+{{- if or .Values.iam.keycloak.cors.enabled .Values.iam.keycloak.stripPaths }}
     plugins:
-{{- if .Values.keycloak.cors.enabled }}
+{{- end }}
+{{- if .Values.iam.keycloak.cors.enabled }}
       # Allow CORS access
       - name: cors
+        enable: true
+        config:
+          {{- $allowOrigins := .Values.iam.keycloak.cors.allowedOrigins -}}
+          {{- if kindIs "slice" $allowOrigins -}}
+             {{- $allowOrigins = join "," $allowOrigins -}}
+          {{- end }}
+          allow_origins: {{ $allowOrigins | quote }}
+          allow_methods: {{ .Values.iam.keycloak.cors.allowedMethods | quote }}
+          allow_headers: {{ .Values.iam.keycloak.cors.allowedHeaders | quote }}
+          expose_headers: {{ .Values.iam.keycloak.cors.exposedHeaders | quote }}
+          allow_credential: {{ .Values.iam.keycloak.cors.allowCredentials }}
+          max_age: {{ .Values.iam.keycloak.cors.maxAge }}
+{{- end }}
+{{- if .Values.iam.keycloak.stripPaths }}
+      - name: proxy-rewrite
+        config:
+          regex_uri:
+{{- range .Values.iam.keycloak.stripPaths }}
+            - {{ printf "^(%s)$" . }}
+            - /
+            - {{ printf "^(%s)(/.*)" . }}
+            - $2
+{{- end }}
         enable: true
 {{- end }}
 # The following workaround has been replaced with a global rule and is not needed here any more.

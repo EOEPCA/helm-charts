@@ -1,10 +1,11 @@
-{{ if .Values.keycloak.enabled -}}
-{{ if .Values.keycloak.tls.enabled -}}
+{{ if .Values.iam.keycloak.enabled -}}
+{{ if .Values.iam.keycloak.tls.enabled -}}
 apiVersion: apisix.apache.org/v2
 kind: ApisixUpstream
 metadata:
-  name: {{ printf "%s-keycloak" .Release.Name }}
+  name: {{ printf "%s-keycloak-operator-service" .Release.Name }}
 spec:
+  ingressClassName: {{ .Values.iam.apisix.ingressClassName }}
   scheme: https
 {{ end -}}
 {{ end -}}

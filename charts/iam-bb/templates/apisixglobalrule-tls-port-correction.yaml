@@ -9,11 +9,19 @@ kind: ApisixGlobalRule
 metadata:
   name: tls-port-correction
 spec:
+  ingressClassName: {{ .Values.iam.apisix.ingressClassName }}
   plugins:
     - name: serverless-pre-function
       enable: true
       config:
         phase: "rewrite"
         functions:
-          - "return function(conf, ctx) if tonumber(ngx.var.var_x_forwarded_port) > 9000 then ngx.var.var_x_forwarded_port = ngx.var.var_x_forwarded_port - 9000 end end"
+          - |
+            return function(conf, ctx)
+              local port = tonumber(ctx.var.http_x_forwarded_port)
+              if port and port > 9000 then
+                ctx.var.http_x_forwarded_port = tostring(port - 9000)
+              end
+            end
+#          - "return function(conf, ctx) if tonumber(ngx.var.var_x_forwarded_port) > 9000 then ngx.var.var_x_forwarded_port = ngx.var.var_x_forwarded_port - 9000 end end"
 {{- end }}

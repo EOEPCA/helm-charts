@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-postgresql
+  namespace: {{ .Release.Namespace }}
+spec:
+  serviceName: postgresql-db-service
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-postgresql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-postgresql
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-postgresql
+          image: postgres:17
+          volumeMounts:
+            - mountPath: /data
+              name: data
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.iam.keycloak.postgres.secretRef | default "postgresql" }}
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.iam.keycloak.postgres.secretRef | default "postgresql" }}
+                  key: password
+            - name: PGDATA
+              value: /data/pgdata
+            - name: POSTGRES_DB
+              value: {{ .Values.iam.keycloak.postgres.database | default "keycloak" }}
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
+        #storageClassName: managed-nfs-storage-retain
+        volumeMode: Filesystem
+

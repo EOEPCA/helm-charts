@@ -15,36 +15,32 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 2.0.0
+version: 2.1.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "2.0.0"
+appVersion: "2.1.0"
 
 dependencies:
-  - name: keycloak
+  - name: keycloak-operator
     #version: "21.4.4"
-    version: "24.4.11"
-    repository: "https://charts.bitnami.com/bitnami"
-    condition: keycloak.enabled
+    version: "1.13.0"
+    repository: "https://charts.adfinis.com"
+    condition: iam.keycloak.enabled
   - name: opal
     version: "0.0.28"
     repository: "https://permitio.github.io/opal-helm-chart"
-    condition: opal.enabled
-  - name: identity-service
-    version: "1.0.98"
-    repository: "https://eoepca.github.io/helm-charts"
-    condition: identityApi.enabled
+    condition: iam.opa.enabled
   - name: apisix
-    version: "2.10.0"
+    version: "2.13.0"
     repository: "https://charts.apiseven.com"
-    condition: apisix.enabled
+    condition: iam.apisix.enabled
   - name: iam-bb-config
-    version: "2.0.0-rc2"
-    repository: "https://eoepca.github.io/helm-charts-dev"
-    condition: iam-bb-config.enabled
+    version: "2.1.0"
+    repository: "https://eoepca.github.io/helm-charts"
+    condition: iam.config.enabled
 #  - name: kubernetes-secret-generator
 #    version: "3.4.1"
 #    repository: "https://helm.mittwald.de"

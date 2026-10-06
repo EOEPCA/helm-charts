@@ -1,0 +1,60 @@
+{{ if .Values.iam.keycloak.configuration.realm.create -}}
+apiVersion: k8s.keycloak.org/v2beta1
+kind: KeycloakRealmImport
+metadata:
+  name: eoepca-realm
+  namespace: {{ .Release.Namespace }}
+spec:
+  keycloakCRName: {{ .Release.Name }}-keycloak-operator
+  placeholders:
+    client_secret:
+      secret:
+        name: keycloak-provider
+        key: client_secret
+{{- with .Values.iam.keycloak.configuration.realm.customPlaceholders }}
+{{ . | toYaml | indent 4 }}
+{{- end }}
+  realm:
+    id: {{ .Values.iam.keycloak.configuration.realm.name }}
+    realm: {{ .Values.iam.keycloak.configuration.realm.name }}
+    displayName: {{ .Values.iam.keycloak.configuration.realm.displayName }}
+    enabled: true
+{{- if or .Values.iam.keycloak.configuration.provider.createServiceAccount .Values.iam.keycloak.configuration.realm.customClients }}
+    clients:
+{{- if .Values.iam.keycloak.configuration.provider.createServiceAccount }}
+      - clientId: crossplane-keycloak-provider
+        name: crossplane-keycloak-provider
+        type: openid-connect
+        enabled: true
+        clientAuthenticatorType: client-secret
+        secret: "${client_secret}"
+        serviceAccountsEnabled: true
+        #authorizationServicesEnabled: ...
+        publicClient: false
+        fullScopeAllowed: true
+{{- end }}
+{{- with .Values.iam.keycloak.configuration.realm.customClients }}
+{{ . | toYaml | indent 6 }}
+{{- end }}
+{{- end }}
+{{- if or .Values.iam.keycloak.configuration.provider.createServiceAccount .Values.iam.keycloak.configuration.realm.customUsers }}
+    users:
+{{- if .Values.iam.keycloak.configuration.provider.createServiceAccount }}
+      - username: service-account-crossplane-keycloak-provider
+        enabled: true
+        totp: false
+        serviceAccountClientId: "crossplane-keycloak-provider"
+        realmRoles:
+          - default-roles-{{ .Values.iam.keycloak.configuration.realm.name }}
+        clientRoles:
+          realm-management:
+            - realm-admin # required for creating eoepca-admin user
+{{- end }}
+{{- with .Values.iam.keycloak.configuration.realm.customUsers }}
+{{ . | toYaml | indent 6 }}
+{{- end }}
+{{- end }}
+{{- with .Values.iam.keycloak.configuration.realm.customSettings }}
+{{ . | toYaml | indent 4 }}
+{{- end }}
+{{- end }}

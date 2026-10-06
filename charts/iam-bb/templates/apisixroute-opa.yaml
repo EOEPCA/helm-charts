@@ -5,13 +5,14 @@ kind: ApisixRoute
 metadata:
   name: opa-route
 spec:
+  ingressClassName: {{ .Values.iam.apisix.ingressClassName }}
   http:
   - name: opa
     match:
       hosts: {{- .Values.iam.opa.hosts | toYaml | nindent 6 }}
       paths: {{- .Values.iam.opa.paths | toYaml | nindent 6 }}
     backends:
-      - serviceName: {{ printf "%s-opal-client" .Release.Name }}
+      - serviceName: iam-opa #{{ printf "%s-opal-client" .Release.Name }}
         servicePort: 8181
     plugins:
       - name: openid-connect
@@ -22,7 +23,24 @@ spec:
 {{- end }}
           access_token_in_authorization_header: true
           use_jwks: true
+          use_pkce: true
           discovery: {{ printf "%s/realms/%s/.well-known/openid-configuration" .Values.iam.keycloak.url .Values.iam.keycloak.configuration.realm.name | quote }}
+          claim_validator:
+            audience:
+              required: true
+              match_with_client_id: true
         secretRef: {{ .Values.iam.opa.clientSecretRef | default "opa-route" | quote }}
+{{- if .Values.iam.opa.stripPaths }}
+      - name: proxy-rewrite
+        enable: true
+        config:
+          regex_uri:
+{{- range .Values.iam.opa.stripPaths }}
+            - {{ printf "^(%s)$" . }}
+            - /
+            - {{ printf "^(%s)(/.*)" . }}
+            - $2
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}
