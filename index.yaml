@@ -1434,6 +1434,33 @@ entries:
     version: 1.0.9
   iam-bb:
   - apiVersion: v2
+    appVersion: 2.1.0
+    created: "2026-10-06T11:20:38.837549689Z"
+    dependencies:
+    - condition: iam.keycloak.enabled
+      name: keycloak-operator
+      repository: https://charts.adfinis.com
+      version: 1.13.0
+    - condition: iam.opa.enabled
+      name: opal
+      repository: https://permitio.github.io/opal-helm-chart
+      version: 0.0.28
+    - condition: iam.apisix.enabled
+      name: apisix
+      repository: https://charts.apiseven.com
+      version: 2.13.0
+    - condition: iam.config.enabled
+      name: iam-bb-config
+      repository: https://eoepca.github.io/helm-charts
+      version: 2.1.0
+    description: EOEPCA IAM BB Helm chart
+    digest: 913b96702d2063045d0529566efc60993da2c07e6e8067175576ef9911b0fee2
+    name: iam-bb
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/iam-bb-2.1.0/iam-bb-2.1.0.tgz
+    version: 2.1.0
+  - apiVersion: v2
     appVersion: 2.0.0
     created: "2026-02-03T11:25:22.99333504Z"
     dependencies:
@@ -6805,4 +6832,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2026-10-06T10:52:49.584114874Z"
+generated: "2026-10-06T11:20:38.838632439Z"
