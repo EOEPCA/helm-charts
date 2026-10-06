@@ -2888,6 +2888,17 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/notification-automation-0.1.2/notification-automation-0.1.2.tgz
     version: 0.1.2
+  openeo-web-editor:
+  - apiVersion: v2
+    appVersion: 0.14.0
+    created: "2026-10-06T11:29:48.507367339Z"
+    description: EOEPCA's self-hosted instance of the openEO Web Editor
+    digest: 1d840bf6a883587d69035c805556eb3f033f7a87a6dcc4229237f77d2bbfabd7
+    name: openeo-web-editor
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/openeo-web-editor-0.2.0/openeo-web-editor-0.2.0.tgz
+    version: 0.2.0
   pdp-engine:
   - apiVersion: v1
     appVersion: v1.2
@@ -6846,4 +6857,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2026-10-06T11:26:56.160875822Z"
+generated: "2026-10-06T11:29:48.508334314Z"
