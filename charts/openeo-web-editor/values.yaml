@@ -1,0 +1,23 @@
+image:
+  repository: docker.io/eoepca/processing-editor
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: sha-b2c2441
+
+service:
+  type: ClusterIP
+  port: 80
+  containerPort: 8080
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: 0.0.0.0
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+replicaCount: 1
