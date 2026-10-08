@@ -84,7 +84,7 @@ pycsw:
     repository: geopython/pycsw
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "eoepca-2.0.0"
+    tag: "eoepca-2.1.0"
   replicas: 1
   container_port: 8000
   service_name: resource-catalogue-service
@@ -118,7 +118,10 @@ pycsw:
     profiles:
       - apiso
     # federatedcatalogues:
-    #   - http://catalog.data.gov/csw
+    #   - id: arctic-sdi-csw
+    #     type: CSW
+    #     title: Arctic SDI
+    #     url: https://catalogue.arctic-sdi.org/csw
     manager:
       transactions: "false"
       allowed_ips:
@@ -184,6 +187,7 @@ pycsw:
       # mappings: path/to/mappings.py
       # filter: type = 'http://purl.org/dc/dcmitype/Dataset'
       # max_retries: 5
+      # stable_sort: true
       facets:
         - type
         - title
