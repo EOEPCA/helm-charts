@@ -1,5 +1,5 @@
 {{- $issuerRef := .Values.web.tls.client.issuerRef | default .Values.global.defaultInternalIssuerRef | required ".Values.web.tls.client.issuerRef or .Values.global.defaultInternalIssuerRef must be set" -}}
-{{- $issuerName := $issuerRef.name | required "You probably forgot to set .Values.healthchecks.tls.issuerRef.name" -}}
+{{- $issuerName := $issuerRef.name | required "You probably forgot to set .Values.web.tls.client.issuerRef.name" -}}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
