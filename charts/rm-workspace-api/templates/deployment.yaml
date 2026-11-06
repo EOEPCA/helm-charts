@@ -119,14 +119,12 @@ spec:
             - name: PROVIDER_ENVIRONMENT
               value: "{{ .Values.providerEnvironment }}"
             {{- end }}
-            {{- if hasKey .Values "disableStores" }}
-            - name: DISABLE_STORES
-              value: "{{ .Values.disableStores }}"
-            {{- end }}
-            {{- if .Values.disabledStoreTypes }}
-            - name: DISABLED_STORE_TYPES
-              value: "{{ .Values.disabledStoreTypes }}"
-            {{- end }}
+            - name: DISABLE_STORAGE
+              value: "{{ .Values.disableStorage }}"
+            - name: DISABLE_DATALAB
+              value: "{{ .Values.disableDatalab }}"
+            - name: STORES
+              value: {{ .Values.stores | quote }}
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

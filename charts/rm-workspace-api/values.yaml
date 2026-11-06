@@ -77,11 +77,15 @@ affinity: {}
 # frontendUrl: "/ui/management"
 # forwardedAllowIps: ""
 # providerEnvironment: ""
-# disableStores: false
-# disabledStoreTypes: ""
 # authMode: "gateway"
 # authAudience: "workspace-api"
 # authDebug: false
 # extraEnv:
 #   - name: EXAMPLE_FLAG
 #     value: "true"
+
+# Additional namespaces with connection Secrets. These namespaces must exist.
+secretNamespaces: []
+disableStorage: false
+disableDatalab: false
+stores: "postgres,redis,mongo"

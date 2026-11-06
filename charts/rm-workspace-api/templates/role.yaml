@@ -8,10 +8,10 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
-    verbs: ["get", "list", "watch"]
+    verbs: ["get"]
 
   - apiGroups: ["pkg.internal"]
     resources:
       - datalabs
       - storages
-    verbs: ["*"]
+    verbs: ["get", "list", "create", "patch", "delete"]
