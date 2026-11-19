@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Release.Namespace }}-{{ include "rm-workspace-api.fullname" . }}-configuration
+  labels:
+    {{- include "rm-workspace-api.labels" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "rm-workspace-api.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ .Release.Namespace }}-{{ include "rm-workspace-api.fullname" . }}-configuration
+  apiGroup: rbac.authorization.k8s.io

@@ -55,7 +55,20 @@ The API service account needs these permissions in the release namespace:
 
 The chart grants these permissions with a Role and RoleBinding. The API does
 not read CRD definitions, PVCs, or ResourceQuotas. Provider controllers manage
-child resources. No ClusterRole or ClusterRoleBinding is required.
+child resources.
+
+The chart also grants cluster-scoped access with a ClusterRole and
+ClusterRoleBinding:
+
+| API group | Resources | Verbs |
+|---|---|---|
+| `apiextensions.crossplane.io` | `compositions`, `environmentconfigs` | `get`, `list` |
+
+The API uses this access to list provider compositions and configuration
+overrides, and to check selections before workspace creation. The binding
+refers to the API service account in the release namespace. Cluster RBAC names
+include the release namespace so installations in separate namespaces do not
+share these objects. The installer must have permission to grant this access.
 
 Set `disableStorage` or `disableDatalab` to `true` to disable the corresponding
 provider. Both default to `false`.
