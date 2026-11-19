@@ -15,48 +15,9 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: {{ $saName }}
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app.kubernetes.io/name: api-server-source
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-rules:
-{{- range .Values.apiServerSource.resources }}
-- apiGroups:
-  - {{ if contains "/" .apiVersion }}{{ (split "/" .apiVersion)._0 }}{{ else }}""{{ end }}
-  resources:
-  - {{ .kind | lower }}s
-  verbs:
-  - get
-  - list
-  - watch
-{{- end }}
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: {{ $saName }}
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app.kubernetes.io/name: api-server-source
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: {{ $saName }}
-subjects:
-- kind: ServiceAccount
-  name: {{ $saName }}
-  namespace: {{ .Release.Namespace }}
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ $saName }}-{{ .Release.Namespace }}
+  name: {{ $saName }}
   labels:
     app.kubernetes.io/name: api-server-source
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -76,7 +37,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ $saName }}-{{ .Release.Namespace }}
+  name: {{ $saName }}
   labels:
     app.kubernetes.io/name: api-server-source
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -84,7 +45,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ $saName }}-{{ .Release.Namespace }}
+  name: {{ $saName }}
 subjects:
 - kind: ServiceAccount
   name: {{ $saName }}
@@ -113,28 +74,6 @@ spec:
   {{- range .Values.apiServerSource.resources }}
   - apiVersion: {{ .apiVersion }}
     kind: {{ .kind }}
-    {{- if .selector }}
-    selector:
-      {{- if .selector.matchLabels }}
-      matchLabels:
-        {{- range $key, $val := .selector.matchLabels }}
-        {{ $key }}: {{ $val | quote }}
-        {{- end }}
-      {{- end }}
-      {{- if .selector.matchExpressions }}
-      matchExpressions:
-        {{- range .selector.matchExpressions }}
-        - key: {{ .key }}
-          operator: {{ .operator }}
-          {{- if .values }}
-          values:
-            {{- range .values }}
-            - {{ . | quote }}
-            {{- end }}
-          {{- end }}
-        {{- end }}
-      {{- end }}
-    {{- end }}
   {{- end }}
   sink:
     {{- if and .Values.apiServerSource.sink.ref.name (ne .Values.apiServerSource.sink.ref.name "") }}

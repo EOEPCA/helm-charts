@@ -15,6 +15,5 @@ spec:
   ingress:
     kourier:
       enabled: true
-      service-type: ClusterIP # Not not ask for a LB address. It sits behind APISIX
   version: {{ .Values.serving.version }}
 {{- end }}

@@ -1,5 +1,5 @@
 {{- if .Values.webhookSource.enabled }}
-{{- $name := default (printf "%s-webhook-source" .Release.Name) .Values.webhookSource.nameOverride }}
+{{- $name := printf "%s-webhook-source" .Release.Name }}
 {{- $autoSinkToDefaultBroker := .Values.eventing.defaultBroker.create }}
 {{- if or .Values.webhookSource.sinkBinding.create $autoSinkToDefaultBroker }}
 apiVersion: sources.knative.dev/v1
@@ -18,8 +18,8 @@ metadata:
 {{- end }}
 spec:
   subject:
-    apiVersion: {{ default "serving.knative.dev/v1" .Values.webhookSource.sinkBinding.subject.apiVersion }}
-    kind: {{ default "Service" .Values.webhookSource.sinkBinding.subject.kind }}
+    apiVersion: {{ .Values.webhookSource.sinkBinding.subject.apiVersion }}
+    kind: {{ .Values.webhookSource.sinkBinding.subject.kind }}
     name: {{ default $name .Values.webhookSource.sinkBinding.subject.name }}
   sink:
     {{- if .Values.webhookSource.sinkBinding.create }}

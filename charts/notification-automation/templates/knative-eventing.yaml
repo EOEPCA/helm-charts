@@ -9,16 +9,6 @@ metadata:
   name: knative-eventing
   namespace: {{ .Values.eventing.namespace }}
 spec:
-  deployments:
-    - name: eventing-webhook
-      resources:
-      - container: eventing-webhook
-        limits:
-          memory: "500Mi"
-          cpu: "500m"
-        requests:
-          memory: "200Mi"
-          cpu: "200m"
   config:
     config-features:
       authentication-oidc: {{ if .Values.eventing.authenticationOidc }}enabled{{ else }}disabled{{ end }}

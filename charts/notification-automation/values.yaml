@@ -41,7 +41,7 @@ serving:
   # Namespace where KnativeServing should be installed
   namespace: knative-serving
   # Domain configuration
-  domain: develop.eoepca.org
+  domain: functions.eoepca.org
 
 
 
@@ -95,25 +95,30 @@ image:
 
 webhookSource:
   enabled: false
-  # Override the Knative Service name (determines public URL: <name>.<namespace>.<domain>)
-  # When empty, defaults to "<release>-webhook-source"
-  nameOverride: ""
-  # Knative autoscaling
-  minScale: "1"
-  maxScale: "5"
+  replicaCount: 1
   image:
     repository: "ghcr.io/eoepca/na-webhook-source"
-    tag: "sha-405af37"
+    tag: "sha-895c85f"
     pullPolicy: IfNotPresent
   containerPort: 8080
   serviceAccount:
     create: true
     name: ""
-  # Optional: custom domain mapping for the Knative Service.
-  # When set, a DomainMapping is created. When empty, the auto-generated
-  # Knative URL is used: <name>.<namespace>.<serving.domain>
-  domainMapping:
-    domain: ""
+  service:
+    create: true
+    type: ClusterIP
+    port: 80
+    targetPort: 8080
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: webhook-source.local
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []
   configMap:
     create: false
     name: ""
@@ -131,8 +136,8 @@ webhookSource:
     create: false
     name: ""
     subject:
-      apiVersion: serving.knative.dev/v1
-      kind: Service
+      apiVersion: apps/v1
+      kind: Deployment
       name: ""
     sink:
       ref:
@@ -152,29 +157,12 @@ apiServerSource:
   serviceAccount:
     create: true
     name: ""
-  # Kubernetes resources to watch.
-  # Each entry requires apiVersion and kind.
-  # Optional: add a selector with matchLabels / matchExpressions to filter resources.
-  #   selector:
-  #     matchLabels:
-  #       key: value
-  #     matchExpressions:
-  #       - key: app
-  #         operator: In
-  #         values: [myapp, yourapp]
+  # Kubernetes resources to watch
   resources:
-#    - apiVersion: v1
-#      kind: Event
-    - apiVersion: training.educates.dev/v1beta1
-      kind: WorkshopSession
-    - apiVersion: apps/v1
-      kind: Deployment
-    - apiVersion: apps/v1
-      kind: StatefulSet
-    - apiVersion: batch/v1
-      kind: Job
+    - apiVersion: v1
+      kind: Event
   # Event mode: "Reference" sends only a reference, "Resource" sends the full resource body
-  mode: Resource
+  mode: Reference
   # Sink configuration – when left empty and eventing.defaultBroker.create is true,
   # the source automatically targets the default broker.
   sink:
@@ -188,15 +176,7 @@ apiServerSource:
 # CloudEvents Player configuration
 cloudEventsPlayer:
   enabled: false
-  # Override the Knative Service name (determines public URL: <name>.<namespace>.<domain>)
-  # When empty, defaults to "<release>-cloudevents-player"
-  nameOverride: ""
-  # When false (default), the ksvc is cluster-local (private).
-  # Set to true to expose it externally via Knative's ingress gateway.
-  public: false
-  # Knative autoscaling
-  minScale: "1"
-  maxScale: "1"
+  replicaCount: 1
   image:
     repository: "quay.io/ruben/cloudevents-player"
     tag: "v1.3"
@@ -205,11 +185,21 @@ cloudEventsPlayer:
   serviceAccount:
     create: true
     name: ""
-  # Optional: custom domain mapping for the Knative Service.
-  # When set, a DomainMapping is created. When empty, the auto-generated
-  # Knative URL is used: <name>.<namespace>.<serving.domain>
-  domainMapping:
-    domain: ""
+  service:
+    create: true
+    type: ClusterIP
+    port: 80
+    targetPort: 8080
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: cloudevents-player.local
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []
   subscribeBroker:
     enabled: true
     broker:

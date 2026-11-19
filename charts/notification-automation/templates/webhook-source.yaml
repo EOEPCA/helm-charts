@@ -1,5 +1,5 @@
 {{- if .Values.webhookSource.enabled }}
-{{- $name := default (printf "%s-webhook-source" .Release.Name) .Values.webhookSource.nameOverride }}
+ {{- $name := printf "%s-webhook-source" .Release.Name }}
 {{- $saName := default $name .Values.webhookSource.serviceAccount.name }}
 {{- $imageRepo := required "webhookSource.image.repository is required when webhookSource.enabled=true" .Values.webhookSource.image.repository }}
 {{- $imageTag := default "latest" .Values.webhookSource.image.tag }}
@@ -22,8 +22,8 @@ metadata:
 ---
 {{- end }}
 
-apiVersion: serving.knative.dev/v1
-kind: Service
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: {{ $name }}
   namespace: {{ .Release.Namespace }}
@@ -31,26 +31,29 @@ metadata:
     app.kubernetes.io/name: webhook-source
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- if .Values.serving.install }}
-  annotations:
-    "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "5"
-{{- end }}
 spec:
+  replicas: {{ .Values.webhookSource.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: webhook-source
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
-      annotations:
-        autoscaling.knative.dev/min-scale: {{ .Values.webhookSource.minScale | quote }}
-        autoscaling.knative.dev/max-scale: {{ .Values.webhookSource.maxScale | quote }}
+      labels:
+        app.kubernetes.io/name: webhook-source
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       serviceAccountName: {{ $saName }}
       containers:
-      - image: {{ $imageRepo }}:{{ $imageTag }}
+      - name: webhook-source
+        image: {{ $imageRepo }}:{{ $imageTag }}
         imagePullPolicy: {{ .Values.webhookSource.image.pullPolicy }}
         ports:
         - containerPort: {{ .Values.webhookSource.containerPort }}
           protocol: TCP
         env:
+        - name: PORT
+          value: {{ .Values.webhookSource.containerPort | quote }}
         - name: GITHUB_WEBHOOK_SECRET
           valueFrom:
             secretKeyRef:
@@ -87,6 +90,27 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
 ---
+{{- if .Values.webhookSource.service.create }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: webhook-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  selector:
+    app.kubernetes.io/name: webhook-source
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  ports:
+  - port: {{ .Values.webhookSource.service.port }}
+    targetPort: {{ .Values.webhookSource.service.targetPort }}
+    protocol: TCP
+  type: {{ .Values.webhookSource.service.type }}
+---
+{{- end }}
 
 {{- if .Values.webhookSource.configMap.create }}
 apiVersion: v1
