@@ -2874,6 +2874,20 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/nfs-provisioner-0.1.0/nfs-provisioner-0.1.0.tgz
     version: 0.1.0
+  notification-automation:
+  - apiVersion: v1
+    appVersion: "1"
+    created: "2026-11-19T12:22:34.646382239Z"
+    description: A Helm chart for the EOEPCA+ Notification Automation Building Block
+    digest: 6d6f5cf4def5765d7de8fe1a102d4c4e38e89db9ba3f83fd686fe18eac42432f
+    kubeVersion: '>=1.31.0'
+    maintainers:
+    - name: eoepca
+    name: notification-automation
+    type: application
+    urls:
+    - https://github.com/EOEPCA/helm-charts/releases/download/notification-automation-0.1.2/notification-automation-0.1.2.tgz
+    version: 0.1.2
   openeo-web-editor:
   - apiVersion: v2
     appVersion: 0.14.0
@@ -6957,4 +6971,4 @@ entries:
     urls:
     - https://github.com/EOEPCA/helm-charts/releases/download/user-profile-0.1.1/user-profile-0.1.1.tgz
     version: 0.1.1
-generated: "2026-11-19T12:04:22.030063126Z"
+generated: "2026-11-19T12:22:34.646797719Z"
